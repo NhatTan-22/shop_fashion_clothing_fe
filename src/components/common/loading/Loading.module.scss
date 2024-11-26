@@ -1,0 +1,7 @@
+.loadingContainer {
+    @apply fixed z-50 bg-black bg-opacity-25 flex justify-center items-center top-0 left-0 right-0 bottom-0 w-full h-full;
+}
+
+.loadingContent {
+    @apply w-12 h-12 inline-block box-border animate-spin rounded-full border-[5px] border-gondola-900 border-b-transparent border-solid;
+}

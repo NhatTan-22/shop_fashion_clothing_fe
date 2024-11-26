@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["src/*"],
+            "~page/*": ["src/pages/*"],
+            "~redux/*": ["src/redux/*"],
+            "~thunks/*": ["src/thunks/*"],
+            "~components/*": ["src/components/*"],
+            "~common/*": ["src/components/common/*"]
+        }
+    }
+}
