@@ -3,11 +3,12 @@
         "baseUrl": ".",
         "paths": {
             "~/*": ["src/*"],
+            "~assets/*": ["src/assets/*"],
             "~page/*": ["src/pages/*"],
             "~redux/*": ["src/redux/*"],
             "~thunks/*": ["src/thunks/*"],
-            "~components/*": ["src/components/*"],
-            "~common/*": ["src/components/common/*"]
+            "~common/*": ["src/components/common/*"],
+            "~specific/*": ["src/components/specific/*"]
         }
     }
 }

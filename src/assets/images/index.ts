@@ -1,8 +1,7 @@
-import adminLogoSidebar from '~/assets/images/admin_logo_sidebar.svg';
+import notFound from '~/assets/images/404_Page.png';
 
 const images = {
-  adminLogoSidebar,
-  adminBackgroundImageLogin: require('./admin_background_image_login.png'),
+  notFound
 };
 
 export default images;
