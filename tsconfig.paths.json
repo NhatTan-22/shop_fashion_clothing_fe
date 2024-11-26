@@ -6,8 +6,8 @@
             "~page/*": ["src/pages/*"],
             "~redux/*": ["src/redux/*"],
             "~thunks/*": ["src/thunks/*"],
-            "~common/*": ["src/components/common/*"],
-            "~specific/*": ["src/components/specific/*"]
+            "~components/*": ["src/components/*"],
+            "~common/*": ["src/components/common/*"]
         }
     }
 }
