@@ -12,7 +12,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const LoginAdmin = (props: Props) => {
+const Register = (props: Props) => {
     //#region Destructuring Props
     const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
@@ -35,4 +35,4 @@ const LoginAdmin = (props: Props) => {
     return <div>Register</div>;
 };
 
-export default LoginAdmin;
+export default Register;

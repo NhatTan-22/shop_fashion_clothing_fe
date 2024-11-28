@@ -1,7 +1,9 @@
-import notFound from '~/assets/images/404_Page.png';
+import notFound from './notFound.png';
+import fashionStore from './fashionStore.png';
 
 const images = {
-  notFound
+  notFound,
+  fashionStore
 };
 
 export default images;

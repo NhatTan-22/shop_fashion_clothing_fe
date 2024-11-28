@@ -1,10 +1,10 @@
 // Libs
-import React from 'react';
 import classNames from 'classnames/bind';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
 import styles from './Login.module.scss';
+import { images } from '../../assets';
 
 type Props = {
     content?: string;
@@ -12,7 +12,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const LoginAdmin = (props: Props) => {
+const Login = (props: Props) => {
     //#region Destructuring Props
     const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
@@ -32,7 +32,17 @@ const LoginAdmin = (props: Props) => {
     //#region Handle Function
     //#endregion Handle Function
 
-    return <div>Login</div>;
+    return (
+        <div className={cx('mainLogin')}>
+            <div>
+                <img className={cx('logoStoreLogin')} src={images.fashionStore} alt='' />
+            </div>
+            <div className={cx('formLogin')}>
+                <form>
+                </form>
+            </div>
+        </div>
+    );
 };
 
-export default LoginAdmin;
+export default Login;

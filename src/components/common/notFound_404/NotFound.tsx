@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { images } from '../../../assets/index';
 
 const NotFoundPage = () => {
     return (
