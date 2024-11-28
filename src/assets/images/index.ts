@@ -1,8 +1,9 @@
-import adminLogoSidebar from '~/assets/images/admin_logo_sidebar.svg';
+import notFound from './notFound.png';
+import fashionStore from './fashionStore.png';
 
 const images = {
-  adminLogoSidebar,
-  adminBackgroundImageLogin: require('./admin_background_image_login.png'),
+  notFound,
+  fashionStore
 };
 
 export default images;
