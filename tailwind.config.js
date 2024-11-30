@@ -13,13 +13,14 @@ export default {
             colors: {
             },
             backgroundColor: {
-                'black': '#000'
+                'black': '#000',
+                'primary-500': '#1570ef',
+                'grey-100': '#d0d3d9'
             },
             borderColor: {
                 'gondola-900': '#1c1b29'
             },
             fontSize: {
-    
             },
         },
     },

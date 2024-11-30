@@ -9,7 +9,7 @@ type Props = {
   content?: string;
 };
 
-const cx = classNames.bind(styles);
+// const cx = classNames.bind(styles);
 
 const HomePage = (props: Props) => {
   //#region Destructuring Props

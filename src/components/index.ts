@@ -1,4 +1,5 @@
 //#region Specific Component
+export { default as BaseButton } from './specific/button/ButtonBase';
 //#endregion Specific Component
 
 //#region Common Component
