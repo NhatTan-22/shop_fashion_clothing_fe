@@ -1,6 +1,8 @@
 // Libs
 import classNames from 'classnames/bind';
+import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
+import { BaseButton } from '../../components';
 // Others
 // Styles, Images, icons
 import styles from './Login.module.scss';
@@ -18,6 +20,7 @@ const Login = (props: Props) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
+    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
@@ -38,8 +41,6 @@ const Login = (props: Props) => {
                 <img className={cx('logoStoreLogin')} src={images.fashionStore} alt='' />
             </div>
             <div className={cx('formLogin')}>
-                <form>
-                </form>
             </div>
         </div>
     );
