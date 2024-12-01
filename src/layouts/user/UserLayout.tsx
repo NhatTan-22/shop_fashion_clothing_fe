@@ -2,10 +2,14 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
-import { BaseButton } from '../../components';
 // Others
 // Styles, Images, icons
+<<<<<<<< HEAD:src/layouts/user/UserLayout.tsx
 import styles from './UserLayout.module.scss';
+========
+import styles from './Login.module.scss';
+import { images } from '~/assets';
+>>>>>>>> a1e3ec9 (Code component base table):src/pages/auth/login/Login.tsx
 
 type Props = {
     content?: string;
@@ -35,9 +39,17 @@ const UserLayout = (props: Props) => {
     //#endregion Handle Function
 
     return (
+<<<<<<<< HEAD:src/layouts/user/UserLayout.tsx
         <div id='userLayout' className={cx('mainUserLayout')}>
             <div>HEADER</div>
             <div>{content}</div>
+========
+        <div className={cx('mainLogin')}>
+            <div>
+                <img className={cx('logoStoreLogin')} src={images.fashionStore} alt='' />
+            </div>
+            <div className={cx('formLogin')}></div>
+>>>>>>>> a1e3ec9 (Code component base table):src/pages/auth/login/Login.tsx
         </div>
     );
 };
