@@ -1,13 +1,13 @@
 .titleButton {
-    @apply mx-2 text-base;
+    @apply mx-1;
 }
 
 .defaultStyle {
-    @apply flex justify-center items-center rounded text-black border-gondola-900 border-2;
+    @apply flex justify-center items-center px-4 py-2 rounded text-black border-gondola-900 border-2;
 }
 
 .primaryStyle {
-    @apply flex justify-center items-center text-white bg-primary-500 rounded;
+    @apply flex justify-center items-center px-4 py-2 text-white bg-primary-500 rounded;
 }
 
 .primaryStyle:hover {
@@ -15,9 +15,13 @@
 }
 
 .textStyle {
-    @apply flex justify-center items-center rounded text-black;
+    @apply items-center rounded text-black;
 }
 
 .textStyle:hover {
-    @apply bg-grey-100;
+    @apply text-primary-500;
+}
+
+.childrenButton {
+    @apply mx-1;
 }
