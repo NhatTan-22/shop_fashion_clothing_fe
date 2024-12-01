@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthLayout } from './layouts';
-import { publicAuthRoutes, publicUserRoutes, userRoute } from './utils/constants/route';
+import { privateAdminRoutes, publicAuthRoutes, publicUserRoutes, userRoute } from './utils/constants/route';
 
 const App = () => {
     return (
@@ -33,7 +33,7 @@ const App = () => {
                 </Route>
 
                 <Route path={userRoute.base} element={<AuthLayout />}>
-                    {publicUserRoutes.map((route, index) => {
+                    {privateAdminRoutes.map((route, index) => {
                         const Page = route.component || '';
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
