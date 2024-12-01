@@ -10,6 +10,7 @@ import styles from './ButtonBase.module.scss';
 
 type Props = {
     title?: string;
+    nameButton?: string;
     label?: string;
     type?: TypeButton;
     styleButton?: ButtonStyleEnum;
@@ -29,6 +30,7 @@ const Button = (props: Props) => {
     //#region Destructuring Props
     const {
         title,
+        nameButton,
         styleButton,
         onClick,
         width = '100%',
@@ -58,17 +60,18 @@ const Button = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='baseButtonComponent' className={cx('baseButton')} style={{ minWidth: width }}>
+        <div id='baseButtonComponent' className={cx('baseButton')} style={{ height: `${height}px` }}>
             <button
                 className={cx(`${styleButton ? styleButton : 'defaultStyle'}`)}
                 type={type}
                 onClick={onClick}
                 disabled={disabled}
-                style={{ minWidth: width, height: `${height}px` }}
+                style={{ width: width, height: `${height}px` }}
                 title={title}
             >
                 {prevIcon && <img className={cx('iconButton')} src={`${prevIcon}`} alt='icon' />}
-                <span className={cx('titleButton')}>{children ? children : title}</span>
+                <span className={cx('titleButton')}>{nameButton}</span>
+                {children}
                 {nextIcon && <img className={cx('iconButton')} src={`${nextIcon}`} alt='icon' />}
             </button>
         </div>
