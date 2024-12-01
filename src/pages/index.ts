@@ -1,10 +1,10 @@
 //#region Auth Page
-export { default as Login } from './login/Login';
-export { default as Register } from './register/Register';
+export { default as Login } from './auth/login/Login';
+export { default as Register } from './auth/register/Register';
 //#endregion Auth Page
 
 //#region Admin Page
-// export { default as DashboardAdmin } from './admin/dashboard/Dashboard';
+export { default as Dashboard } from './admin/dashboard/Dashboard';
 //#endregion Admin Page
 
 //#region User Page

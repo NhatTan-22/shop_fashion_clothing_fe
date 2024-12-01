@@ -1,7 +1,7 @@
 // Libs
 import { ReactNode, createContext, useState } from 'react';
 // Components, Layouts, Pages
-import { Loading } from '../../components';
+import { Loading } from '~/components';
 // Others
 // Styles, images, icons
 
