@@ -11,6 +11,11 @@ export default {
                 sans: ['Inter', 'Arial', 'sans-serif'],
             },
             colors: {
+                'primary-500': '#1570ef',
+                'grey-300': '#989fad',
+                'grey-500': '#667085',
+                'grey-700': '#48505e',
+                'grey-900': '#2b2f38'
             },
             backgroundColor: {
                 'black': '#000',

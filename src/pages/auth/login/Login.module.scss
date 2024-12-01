@@ -1,25 +1,31 @@
-.mainLogin {
-    @apply flex;
+.headerFormLogin {
+    @apply text-center text-grey-900 mb-[30px];
+}
+
+.headerFormLogin h1 {
+    @apply font-bold text-4xl leading-10 mb-3;
     @media screen and (max-width: 768px) {
-        display: block;
+        font-size: 25px;
+        line-height: 29px;
     }
 }
 
-.logoStoreLogin {
-    @apply min-w-[50%] h-screen object-fill;
-    @media screen and (max-width: 768px) {
-        width: 100vw;
-        height: 50%;
-        margin-bottom: 32px;
-    }
+.headerFormLogin p {
+    @apply text-grey-500;
 }
 
-.formLogin {
-    @apply m-auto min-w-[400px] p-6 text-center;
-    @media screen and (max-width: 768px) {
-        text-align: center;
-        margin: auto;
-        min-width: 100px;
-        padding: 12px;
-    }
+.labelLogin {
+    @apply block text-grey-700 mb-2 font-bold;
+}
+
+.inputFormLogin {
+    @apply w-full px-[14px] py-[10px] items-center rounded-lg border border-grey-300 outline-none;
+}
+
+.textForgotPass {
+    @apply flex justify-end items-center text-[16px];
+}
+
+.textRegister {
+    @apply flex justify-center items-center mt-6 text-[16px];
 }
