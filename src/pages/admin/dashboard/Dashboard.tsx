@@ -91,6 +91,8 @@ const Dashboard = (props: Props) => {
     return (
         <div className={cx('dashBoard')}>
             <BaseTable columns={columns} dataSource={data} />
+            <BaseTable columns={columns} dataSource={data} />
+            <BaseTable columns={columns} dataSource={data} />
         </div>
     );
 };

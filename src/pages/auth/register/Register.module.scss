@@ -1,0 +1,27 @@
+.headerFormRegister {
+    @apply text-center text-grey-900 mb-[30px];
+}
+
+.headerFormRegister h1 {
+    @apply font-bold text-4xl leading-10 mb-3;
+    @media screen and (max-width: 768px) {
+        font-size: 25px;
+        line-height: 29px;
+    }
+}
+
+.fullName {
+    @apply flex justify-between gap-2 mb-6;
+}
+
+.labelRegister {
+    @apply flex gap-1 text-grey-700 mb-2 font-bold;
+}
+
+.inputFormRegister {
+    @apply w-full px-[14px] py-[10px] items-center rounded-lg border border-grey-300 outline-none;
+}
+
+.textLogin {
+    @apply flex justify-center items-center mt-6 text-[16px];
+}
