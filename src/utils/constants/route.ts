@@ -1,6 +1,6 @@
 import { NotFoundPage } from '~/components';
 import { IRouteModel } from '../interfaces/common';
-import { Dashboard, HomePage, Login, Register } from '~/pages';
+import { AboutPage, Dashboard, HomePage, Login, Register } from '~/pages';
 
 // Path Router
 export const authRoute = {
@@ -19,14 +19,11 @@ export const userRoute = {
     home: '/home',
     products: '/products',
     cart: '/cart',
+    about: '/about',
 };
 
 //#region Auth Routes
 export const publicAuthRoutes: IRouteModel[] = [
-    {
-        path: '*',
-        component: NotFoundPage,
-    },
     {
         path: `${authRoute.base}${authRoute.login}`,
         index: true,
@@ -42,10 +39,6 @@ export const publicAuthRoutes: IRouteModel[] = [
 //#region Admin Routes
 export const privateAdminRoutes: IRouteModel[] = [
     {
-        path: '*',
-        component: NotFoundPage,
-    },
-    {
         path: `${adminRoute.base}${adminRoute.dashboard}`,
         component: Dashboard,
     },
@@ -55,24 +48,16 @@ export const privateAdminRoutes: IRouteModel[] = [
 //#region Patient Routes
 export const publicUserRoutes: IRouteModel[] = [
     {
-        path: '*',
-        component: NotFoundPage,
-    },
-    {
         path: userRoute.home,
         component: HomePage,
     },
-    // {
-    //   path: userRoute.products,
-    //   component: AboutUser,
-    // },
+    {
+        path: userRoute.about,
+        component: AboutPage,
+    },
 ];
 
 export const privateUserRoutes: IRouteModel[] = [
-    {
-        path: '*',
-        component: NotFoundPage,
-    },
     // {
     //   path: `${userRoute.products}${userRoute.cart}`,
     //   component: HomeUser,
@@ -80,6 +65,6 @@ export const privateUserRoutes: IRouteModel[] = [
 ];
 //#endregion Patient Routes
 
-export const publicRoutes = [ ...publicAuthRoutes, ...publicUserRoutes];
+export const publicRoutes = [...publicAuthRoutes];
 
 export const privateRoutes = [...privateAdminRoutes, ...privateUserRoutes];

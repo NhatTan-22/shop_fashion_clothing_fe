@@ -1,12 +1,9 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Outlet } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
-import styles from './AuthLayout.module.scss';
-import { images } from '~/assets';
+import styles from './UserLayout.module.scss';
 
 type Props = {
     content?: string;
@@ -14,13 +11,12 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const AuthLayout = (props: Props) => {
+const UserLayout = (props: Props) => {
     //#region Destructuring Props
     const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
-    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
@@ -36,18 +32,11 @@ const AuthLayout = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='authLayout' className={cx('mainAuthLayout')}>
-            <div>
-                <img className={cx('logoStoreLogin')} src={images.fashionStore} alt={t('')} />
-            </div>
-            <div className={cx('formLogin')}>
-                {/* <div></div> */}
-                <div>
-                    <Outlet />
-                </div>
-            </div>
+        <div id='userLayout' className={cx('mainUserLayout')}>
+            <div>HEADER</div>
+            <div>{content}</div>
         </div>
     );
 };
 
-export default AuthLayout;
+export default UserLayout;

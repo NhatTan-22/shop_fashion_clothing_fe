@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { AuthLayout } from './layouts';
-import { privateAdminRoutes, publicRoutes, userRoute } from './utils/constants/route';
+import { AdminLayout, AuthLayout, UserLayout } from './layouts';
+import { privateAdminRoutes, publicAuthRoutes, publicUserRoutes, userRoute } from './utils/constants/route';
+import { NotFoundPage } from './components';
 
 const App = () => {
     return (
@@ -10,7 +11,7 @@ const App = () => {
                 <Route path='/' element={<Navigate to={userRoute.home} replace />} />
 
                 <Route element={<AuthLayout />}>
-                    {publicRoutes.map((route, index) => {
+                    {publicAuthRoutes.map((route, index) => {
                         const Page = route.component || '';
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
@@ -32,7 +33,30 @@ const App = () => {
                     })}
                 </Route>
 
-                <Route path={userRoute.base} element={<AuthLayout />}>
+                <Route element={<UserLayout />}>
+                    {publicUserRoutes.map((route, index) => {
+                        const Page = route.component || '';
+                        return (
+                            <Route key={index} path={route.path} element={<Page />}>
+                                {route.children &&
+                                    route.children.length > 0 &&
+                                    route.children.map((childRoute, index) => {
+                                        const ChildComponent = childRoute.component;
+                                        return (
+                                            <Route
+                                                key={index}
+                                                path={childRoute.path}
+                                                index={childRoute.index ?? false}
+                                                element={<ChildComponent />}
+                                            />
+                                        );
+                                    })}
+                            </Route>
+                        );
+                    })}
+                </Route>
+
+                <Route path={userRoute.base} element={<AdminLayout />}>
                     {privateAdminRoutes.map((route, index) => {
                         const Page = route.component || '';
                         return (
@@ -54,6 +78,8 @@ const App = () => {
                         );
                     })}
                 </Route>
+
+                <Route path='*' element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
     );

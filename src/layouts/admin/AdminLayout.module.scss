@@ -1,0 +1,19 @@
+.mainAdminLayout {
+    @apply flex bg-grey-100;
+}
+
+.sideBarAdmin {
+    @apply min-w-[280px] h-screen bg-white;
+}
+
+.wrapperAdmin {
+    @apply flex-1;
+}
+
+.headerAdmin {
+    @apply h-[100px] bg-white border-l border-l-gray-100;
+}
+
+.contentAdmin {
+    @apply bg-white flex-grow overflow-y-scroll max-h-[calc(100vh-100px)];
+}
