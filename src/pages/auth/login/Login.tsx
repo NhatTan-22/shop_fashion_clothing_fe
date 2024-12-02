@@ -8,6 +8,7 @@ import { BaseButton } from '~/components';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './Login.module.scss';
+import { icons } from '~/assets';
 
 type Props = {
     content?: string;
@@ -40,7 +41,7 @@ const Login = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div className={cx('mainLogin')}>
+        <div id='formLoginPage' className={cx('mainLogin')}>
             <form onSubmit={handleLogin}>
                 <div className={cx('headerFormLogin')}>
                     <h1>{t('Log in to your account')}</h1>
@@ -48,7 +49,7 @@ const Login = (props: Props) => {
                 </div>
                 <div className='mb-6'>
                     <label className={cx('labelLogin')} htmlFor='email-login'>
-                        {t('Email')}
+                        <img src={icons.emailIcon} alt='' /> {t('Email')}
                     </label>
                     <input
                         className={cx('inputFormLogin')}
@@ -62,7 +63,7 @@ const Login = (props: Props) => {
                 </div>
                 <div>
                     <label className={cx('labelLogin')} htmlFor='password-login'>
-                        {t('Password')}
+                        <img src={icons.keyIcon} alt='' /> {t('Password')}
                     </label>
                     <input
                         className={cx('inputFormLogin')}

@@ -10,5 +10,5 @@ export { default as Dashboard } from './admin/dashboard/Dashboard';
 //#region User Page
 // export { default as LoginUser } from './user/login/Login';
 export { default as HomePage } from './user/home/HomePage';
-// export { default as AboutUser } from './user/about/About';
+export { default as AboutPage } from './user/about/AboutPage';
 //#endregion User Page

@@ -1,12 +1,11 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Outlet } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
-import styles from './AuthLayout.module.scss';
-import { images } from '~/assets';
+import styles from './AdminLayout.module.scss';
+import { Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     content?: string;
@@ -14,9 +13,9 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const AuthLayout = (props: Props) => {
+const AdminLayout = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
+    const { content = 'AdminLayout' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -36,13 +35,14 @@ const AuthLayout = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='authLayout' className={cx('mainAuthLayout')}>
-            <div>
-                <img className={cx('logoStoreLogin')} src={images.fashionStore} alt={t('')} />
+        <div id='adminLayout' className={cx('mainAdminLayout')}>
+            <div className={cx('sideBarAdmin')}>
+                <img src='' alt='' />
+                {t('SIDEBAR')}
             </div>
-            <div className={cx('formLogin')}>
-                {/* <div></div> */}
-                <div>
+            <div className={cx('wrapperAdmin')}>
+                <div className={cx('headerAdmin')}>{t('HEADER')}</div>
+                <div className={cx('contentAdmin')}>
                     <Outlet />
                 </div>
             </div>
@@ -50,4 +50,4 @@ const AuthLayout = (props: Props) => {
     );
 };
 
-export default AuthLayout;
+export default AdminLayout;
