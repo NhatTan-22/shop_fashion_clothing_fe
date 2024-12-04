@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import styles from './AdminLayout.module.scss';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { icons } from '~/assets';
 
 type Props = {
     content?: string;
@@ -41,7 +42,16 @@ const AdminLayout = (props: Props) => {
                 {t('SIDEBAR')}
             </div>
             <div className={cx('wrapperAdmin')}>
-                <div className={cx('headerAdmin')}>{t('HEADER')}</div>
+                <div className={cx('headerAdmin')}>
+                    <div className={cx('searchAll')}>
+                        <img src={icons.searchIcon} width={20} height={20} alt='' />
+                        <input type='text' className={cx('inputSearchAll')} placeholder={t('Search product, supplier, order')} />
+                    </div>
+                    <div className={cx('')}>
+                        <img src='' alt='' />
+                        <img src={''} alt='' />
+                    </div>
+                </div>
                 <div className={cx('contentAdmin')}>
                     <Outlet />
                 </div>

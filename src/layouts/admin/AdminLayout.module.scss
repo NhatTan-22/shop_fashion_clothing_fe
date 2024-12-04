@@ -3,17 +3,25 @@
 }
 
 .sideBarAdmin {
-    @apply min-w-[280px] h-screen bg-white;
+    @apply w-[280px] h-screen bg-white;
 }
 
 .wrapperAdmin {
-    @apply flex-1;
+    @apply w-full h-screen overflow-y-hidden;
 }
 
 .headerAdmin {
-    @apply h-[100px] bg-white border-l border-l-gray-100;
+    @apply sticky top-0 z-20 bg-white border-l border-l-gray-100 px-8 py-7;
+}
+
+.searchAll {
+    @apply flex border rounded-[8px] py-[6px] px-4 w-[400px] gap-2;
+}
+
+.inputSearchAll {
+    @apply w-full outline-none;
 }
 
 .contentAdmin {
-    @apply bg-white flex-grow overflow-y-scroll max-h-[calc(100vh-100px)];
+    @apply mt-8 mx-8 p-5 bg-white rounded overflow-y-auto;
 }
