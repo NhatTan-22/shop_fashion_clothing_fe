@@ -20,6 +20,12 @@
 
 .inputFormLogin {
     @apply w-full px-[14px] py-[10px] items-center rounded-lg border border-grey-300 outline-none;
+
+    &:-webkit-autofill {
+        background-color: #f5ebfa !important;
+        border-color: #f5ebfa !important;
+        color: #333 !important;
+    }
 }
 
 .textForgotPass {

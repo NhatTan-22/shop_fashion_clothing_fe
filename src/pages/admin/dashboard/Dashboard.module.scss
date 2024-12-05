@@ -1,3 +1,11 @@
-// .dashBoard {
-//     @apply mt-52;
-// }
+.dashBoard {
+    @apply h-full overflow-auto;
+}
+
+.dashBoard::-webkit-scrollbar {
+    width: 0;
+}
+
+.dashBoard::-webkit-scrollbar-thumb {
+    background: transparent;
+}

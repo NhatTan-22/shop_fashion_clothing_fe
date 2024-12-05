@@ -1,19 +1,52 @@
 .mainAdminLayout {
-    @apply flex bg-grey-100;
+    @apply flex bg-grey-100 h-screen w-screen;
 }
 
-.sideBarAdmin {
-    @apply min-w-[280px] h-screen bg-white;
+.sideBarAdminOpen {
+    @apply w-[280px] h-full bg-blue-chalk-100 p-4 text-center;
+}
+
+.sideBarAdminClose {
+    @apply w-0;
+}
+
+.logoFashionStore {
+    @apply w-full h-[60px] mb-8;
 }
 
 .wrapperAdmin {
-    @apply flex-1;
+    @apply w-full h-full overflow-y-hidden flex flex-col;
+    @apply animate-sidebar-open;
 }
 
 .headerAdmin {
-    @apply h-[100px] bg-white border-l border-l-gray-100;
+    @apply sticky top-0 z-20 bg-blue-chalk-100 border-l border-l-gray-100 px-8 py-7 flex justify-between;
+}
+
+.listMenu {
+    @apply cursor-pointer;
+}
+
+.searchAll {
+    @apply flex border rounded-[8px] py-[6px] px-4 w-[400px] gap-2;
+}
+
+.inputSearchAll {
+    @apply w-full outline-none bg-blue-chalk-100;
+}
+
+.information {
+    @apply flex gap-2;
+}
+
+.iconNotification {
+    @apply cursor-pointer;
+}
+
+.imageAvatar {
+    @apply rounded-full cursor-pointer;
 }
 
 .contentAdmin {
-    @apply bg-white flex-grow overflow-y-scroll max-h-[calc(100vh-100px)];
+    @apply  m-4 p-5 bg-blue-chalk-100 rounded overflow-hidden flex-1;
 }

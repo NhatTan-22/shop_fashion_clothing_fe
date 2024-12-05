@@ -16,7 +16,12 @@ export default {
                 'grey-300': '#989fad',
                 'grey-500': '#667085',
                 'grey-700': '#48505e',
-                'grey-900': '#2b2f38'
+                'grey-900': '#2b2f38',
+                'blue-chalk-100': '#f5ebfa',
+                'snuff-200': '#e7dbef',
+                'wisteria-600': '#a56abd',
+                'eminence-800': '#6e3482',
+                'bossa-nova-900': '#49225b',
             },
             backgroundColor: {
                 'black': '#000',
@@ -26,7 +31,19 @@ export default {
             borderColor: {
                 'gondola-900': '#1c1b29'
             },
-            fontSize: {
+            animation: {
+                'sidebar-open': 'sidebarOpen 0.1s ease-out',
+                'sidebar-close': 'sidebarClose 0.1s ease-out',
+            },
+            keyframes: {
+                sidebarOpen: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(0)' },
+                },
+                sidebarClose: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-100%)' },
+                },
             },
         },
     },

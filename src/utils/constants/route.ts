@@ -1,6 +1,5 @@
-import { NotFoundPage } from '~/components';
 import { IRouteModel } from '../interfaces/common';
-import { AboutPage, Dashboard, HomePage, Login, Register } from '~/pages';
+import { AboutPage, Dashboard, HomePage, Inventory, Login, Register, Report } from '~/pages';
 
 // Path Router
 export const authRoute = {
@@ -11,7 +10,9 @@ export const authRoute = {
 
 export const adminRoute = {
     base: '/admin',
-    dashboard: '/dashboard',
+    dashboard: '/dash-board',
+    inventory: '/inventory',
+    reports: '/reports',
 };
 
 export const userRoute = {
@@ -41,6 +42,14 @@ export const privateAdminRoutes: IRouteModel[] = [
     {
         path: `${adminRoute.base}${adminRoute.dashboard}`,
         component: Dashboard,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.inventory}`,
+        component: Inventory,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.reports}`,
+        component: Report,
     },
 ];
 //#endregion Admin Routes

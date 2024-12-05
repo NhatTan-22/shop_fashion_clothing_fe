@@ -1,11 +1,15 @@
 // Libs
 import classNames from 'classnames/bind';
-// Components, Layouts, Pages
-// Others
-// Styles, Images, icons
-import styles from './AdminLayout.module.scss';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+// Components, Layouts, Pages
+import { SideBar } from '~/components';
+// Others
+import { sidebarItems } from '~/utils/constants/common';
+// Styles, Images, icons
+import styles from './AdminLayout.module.scss';
+import { icons, images } from '~/assets';
+import { useState } from 'react';
 
 type Props = {
     content?: string;
@@ -20,6 +24,7 @@ const AdminLayout = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
     //#endregion Declare Hook
 
     //#region Selector
@@ -32,16 +37,41 @@ const AdminLayout = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
+    const handleSideBar = () => {
+        setIsOpenSidebar(!isOpenSideBae);
+    };
+    const handleOpenDialog = () => {};
     //#endregion Handle Function
 
     return (
         <div id='adminLayout' className={cx('mainAdminLayout')}>
-            <div className={cx('sideBarAdmin')}>
-                <img src='' alt='' />
-                {t('SIDEBAR')}
+            <div className={cx(`${isOpenSideBae ? 'sideBarAdminOpen' : 'sideBarAdminClose'}`)}>
+                <img className={cx('logoFashionStore')} src='' alt='' />
+                {isOpenSideBae && <SideBar items={sidebarItems} />}
             </div>
             <div className={cx('wrapperAdmin')}>
-                <div className={cx('headerAdmin')}>{t('HEADER')}</div>
+                <div className={cx('headerAdmin')}>
+                    <img className={cx('listMenu')} width={24} height={24} src={icons.listMenuIcon} alt='' onClick={handleSideBar} />
+                    <div className={cx('searchAll')}>
+                        <img src={icons.searchIcon} width={24} height={24} alt='' />
+                        <input
+                            type='text'
+                            className={cx('inputSearchAll')}
+                            placeholder={t('Search product, supplier, order')}
+                        />
+                    </div>
+                    <div className={cx('information')}>
+                        <img className={cx('iconNotification')} src={icons.notification} alt='' />
+                        <img
+                            className={cx('imageAvatar')}
+                            src={images.fashionStore}
+                            alt=''
+                            width={40}
+                            height={40}
+                            onClick={handleOpenDialog}
+                        />
+                    </div>
+                </div>
                 <div className={cx('contentAdmin')}>
                     <Outlet />
                 </div>

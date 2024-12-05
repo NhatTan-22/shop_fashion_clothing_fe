@@ -1,0 +1,21 @@
+.highLightItem {
+    @apply px-8 mb-6 relative;
+}
+
+.highLightItem::before {
+    @apply absolute left-0 top-1/2 transform translate-y-[-50%] w-0 h-0;
+    content: '';
+    border-left-width: 15px;
+    border-left-color: #6e3482;
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.itemSideBar {
+    @apply flex flex-row gap-4 mb-6 fill-red-500;
+}

@@ -2,7 +2,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 // Components, Layouts, Pages
-import BaseTable from '~/components/specific/table/BaseTable';
+import BaseTable from '~/components/common/table/BaseTable';
 // Others
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 // Styles, Images, icons
@@ -45,8 +45,8 @@ const Dashboard = (props: Props) => {
             dataIndex: 'tags',
             render: (_, record) => (
                 <div>
-                    {record.tags.map((tag) => {
-                        return <p>{tag}</p>;
+                    {record.tags.map((tag, index) => {
+                        return <p key={index}>{tag}</p>;
                     })}
                 </div>
             ),
@@ -86,13 +86,97 @@ const Dashboard = (props: Props) => {
             address: 'Sydney No. 1 Lake Park',
             tags: ['cool', 'teacher'],
         },
+        {
+            key: '4',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+            tags: ['nice', 'developer'],
+        },
+        {
+            key: '5',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+            tags: ['loser'],
+        },
+        {
+            key: '6',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sydney No. 1 Lake Park',
+            tags: ['cool', 'teacher'],
+        },
+        {
+            key: '7',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+            tags: ['nice', 'developer'],
+        },
+        {
+            key: '8',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+            tags: ['loser'],
+        },
+        {
+            key: '9',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sydney No. 1 Lake Park',
+            tags: ['cool', 'teacher'],
+        },
+        {
+            key: '10',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+            tags: ['nice', 'developer'],
+        },
+        {
+            key: '11',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+            tags: ['loser'],
+        },
+        {
+            key: '12',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sydney No. 1 Lake Park',
+            tags: ['cool', 'teacher'],
+        },
+        {
+            key: '13',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+            tags: ['nice', 'developer'],
+        },
+        {
+            key: '14',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+            tags: ['loser'],
+        },
+        {
+            key: '15',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sydney No. 1 Lake Park',
+            tags: ['cool', 'teacher'],
+        },
     ];
 
     return (
         <div className={cx('dashBoard')}>
-            <BaseTable columns={columns} dataSource={data} />
-            <BaseTable columns={columns} dataSource={data} />
-            <BaseTable columns={columns} dataSource={data} />
+            <div>
+                <BaseTable columns={columns} dataSource={data} />
+            </div>
         </div>
     );
 };
