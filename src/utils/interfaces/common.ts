@@ -14,3 +14,9 @@ export interface IChildRouteModel {
     index: boolean;
     children?: IChildRouteModel[];
 }
+
+export interface ISideBar {
+    path: string;
+    label: string;
+    images?: string;
+}

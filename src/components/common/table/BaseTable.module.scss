@@ -1,9 +1,9 @@
 .baseTable {
-    @apply font-serif size-96 h-[350px] w-full;
+    @apply h-screen w-full;
 }
 
-.baseTable thead th {
-    @apply h-[50px] sticky top-0 z-[1px] bg-white overflow-y-hidden;
+.baseTable thead tr th {
+    @apply h-[50px] bg-white sticky top-0 z-[5px];
 }
 
 .bodyBaseTable {
