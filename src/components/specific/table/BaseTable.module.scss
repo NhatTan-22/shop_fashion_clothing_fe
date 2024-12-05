@@ -1,0 +1,19 @@
+.baseTable {
+    @apply font-serif size-96 h-[350px] w-full;
+}
+
+.baseTable thead th {
+    @apply h-[50px] sticky top-0 z-[1px] bg-white overflow-y-hidden;
+}
+
+.bodyBaseTable {
+    @apply overflow-auto;
+}
+
+table {
+    @apply border-collapse w-full text-left;
+}           
+
+th, td {
+    @apply border border-slate-400 py-2 px-4;
+}

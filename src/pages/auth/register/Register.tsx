@@ -1,14 +1,14 @@
 // Libs
 import React from 'react';
 import classNames from 'classnames/bind';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 // Components, Layouts, Pages
+import { BaseButton } from '~/components';
 // Others
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './Register.module.scss';
-import { BaseButton } from '~/components';
-import { useTranslation } from 'react-i18next';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { Link } from 'react-router-dom';
 import { icons } from '~/assets';
 
 type Props = {

@@ -1,0 +1,27 @@
+.titleButton {
+    @apply mx-1;
+}
+
+.defaultStyle {
+    @apply flex justify-center items-center px-4 py-2 rounded text-black border-gondola-900 border-2;
+}
+
+.primaryStyle {
+    @apply flex justify-center items-center px-4 py-2 text-white bg-primary-500 rounded;
+}
+
+.primaryStyle:hover {
+    @apply opacity-85;
+}
+
+.textStyle {
+    @apply items-center rounded text-black;
+}
+
+.textStyle:hover {
+    @apply text-primary-500;
+}
+
+.childrenButton {
+    @apply mx-1;
+}
