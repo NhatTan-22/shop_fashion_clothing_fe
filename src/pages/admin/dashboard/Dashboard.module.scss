@@ -1,3 +1,11 @@
 .dashBoard {
-    @apply h-[calc(100vh-100px)];
+    @apply h-full overflow-auto;
+}
+
+.dashBoard::-webkit-scrollbar {
+    width: 0;
+}
+
+.dashBoard::-webkit-scrollbar-thumb {
+    background: transparent;
 }
