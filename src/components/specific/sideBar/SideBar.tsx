@@ -7,6 +7,7 @@ import { ISideBar } from '~/utils/interfaces/common';
 // Styles, Images, icons
 import styles from './SideBar.module.scss';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     items?: ISideBar[];
@@ -23,13 +24,15 @@ const SideBar = (props: Props) => {
 
     //#region Declare Hook
     const location = useLocation();
-    const [selectedIndex, setSelectedIndex] = useState<string | null>(location.pathname);
+    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
     //#endregion Selector
 
     //#region Declare State
+    const [selectedIndex, setSelectedIndex] = useState<string | null>(location.pathname);
+
     //#endregion Declare State
 
     //#region Implement Hook
@@ -51,7 +54,7 @@ const SideBar = (props: Props) => {
                             <Link to={`${item.path}`} onClick={() => handleItemClick(item.path)}>
                                 <div className={cx('itemSideBar')}>
                                     <img src={item.images} alt={item.label} />
-                                    {item.label}
+                                    {t(`${item.label}`)}
                                 </div>
                             </Link>
                         </div>

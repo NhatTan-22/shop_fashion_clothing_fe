@@ -2,7 +2,6 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 // Components, Layouts, Pages
-import BaseTable from '~/components/common/table/BaseTable';
 // Others
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 // Styles, Images, icons
@@ -175,7 +174,7 @@ const Dashboard = (props: Props) => {
     return (
         <div className={cx('dashBoard')}>
             <div>
-                <BaseTable columns={columns} dataSource={data} />
+                {/* <BaseTable columns={columns} dataSource={data} /> */}
             </div>
         </div>
     );
