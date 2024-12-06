@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 // Others
 // Styles, Images, icons
 import styles from './UserLayout.module.scss';
-import { images } from '~/assets';
 
 type Props = {
     content?: string;
