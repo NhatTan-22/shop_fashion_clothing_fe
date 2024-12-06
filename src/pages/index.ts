@@ -7,6 +7,7 @@ export { default as Register } from './auth/register/Register';
 export { default as Dashboard } from './admin/dashboard/Dashboard';
 export { default as Inventory } from './admin/inventory/Inventory';
 export { default as Report } from './admin/report/Report';
+export { default as Supplier } from './admin/supplier/Supplier';
 //#endregion Admin Page
 
 //#region User Page

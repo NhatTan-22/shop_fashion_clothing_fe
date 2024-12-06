@@ -7,5 +7,5 @@ export interface Columns<T, DataType> {
 }
 
 export type DataType<T extends object> = T & {
-    key: string;
+    key?: string;
 };

@@ -1,13 +1,8 @@
-.mainInventory {
-    @apply flex flex-col gap-5;
-}
-
-.contentInventory,
-.bodyInventory {
+.mainSupplier {
     @apply p-5 rounded bg-blue-chalk-100;
 }
 
-.headerInventory {
+.headerSupplier {
     @apply flex justify-between mb-4;
 }
 

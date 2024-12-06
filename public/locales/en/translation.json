@@ -1,0 +1,46 @@
+{
+    "_common": "Common",
+    "common_login": "Login",
+    "common_button_login_title": "Button Login",
+    "common_register": "Register",
+    "common_button_register_title": "Button Register",
+    "common_add_product": "Add Product",
+    "common_filters": "Filters",
+
+    "_login": "Login",
+    "login_title_header": "Log in to your account",
+    "login_title_label": "Welcome back! Please enter your details.",
+    "login_email_label": "Email",
+    "login_email_placeholder": "Enter your email",
+    "login_password_label": "Password",
+    "login_password_placeholder": "********",
+    "login_forgot_password": "Forgot password",
+    "login_not_account": "Don’t have an account?",
+
+    "_register": "Register",
+    "register_title_header": "Create an account",
+    "register_first_name_label": "First Name",
+    "register_first_name_placeholder": "First Name",
+    "register_last_name_label": "Last Name",
+    "register_last_name_placeholder": "Last Name",
+    "register_phone_label": "Phone",
+    "register_phone_placeholder": "Phone",
+    "register_email_label": "Email",
+    "register_email_placeholder": "Email",
+    "register_password_label": "Password",
+    "register_password_placeholder": "********",
+    "register_have_account": "Already have an account?",
+
+
+    "_admin": "Admin",
+    "admin_dashBoard": "DashBoard",
+    "admin_inventory": "Inventory",
+    "admin_reports": "Reports",
+    "admin_suppliers": "Suppliers",
+
+    "admin_overall_inventory_header": "Overall Inventory",
+    "admin_products_header": "Products",
+    "admin_suppliers_header": "Suppliers",
+
+    "_user": "User"
+}

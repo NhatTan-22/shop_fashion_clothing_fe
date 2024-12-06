@@ -39,7 +39,6 @@ const Register = (props: Props) => {
     const handleGetInput = () => {};
 
     const handleRegister = () => {
-        alert('Register');
     };
     //#endregion Handle Function
 
@@ -53,7 +52,7 @@ const Register = (props: Props) => {
                 <div className={cx('fullName')}>
                     <div>
                         <label className={cx('labelRegister')} htmlFor='firstName-register'>
-                            <img src={icons.userIcon} alt='' /> {t('First Name')}
+                            <img src={icons.userIcon} alt='' /> {t('register_first_name_label')}
                         </label>
                         <input
                             className={cx('inputFormRegister')}
@@ -61,7 +60,7 @@ const Register = (props: Props) => {
                             type='text'
                             name='name'
                             autoComplete='new-firstName'
-                            placeholder={t('First Name')}
+                            placeholder={t('register_first_name_placeholder')}
                             required
                             onChange={handleGetInput}
                         />
@@ -69,7 +68,7 @@ const Register = (props: Props) => {
 
                     <div>
                         <label className={cx('labelRegister')} htmlFor='lastName-register'>
-                            <img src={icons.userIcon} alt='' /> {t('Last Name')}
+                            <img src={icons.userIcon} alt='' /> {t('register_last_name_label')}
                         </label>
                         <input
                             className={cx('inputFormRegister')}
@@ -77,44 +76,44 @@ const Register = (props: Props) => {
                             type='text'
                             name='name'
                             autoComplete='new-lastName'
-                            placeholder={t('Last Name')}
+                            placeholder={t('register_last_name_placeholder')}
                             required
                             onChange={handleGetInput}
                         />
                     </div>
                 </div>
                 <div className='mb-6'>
-                    <label className={cx('labelRegister')} htmlFor='lastName-register'>
-                        <img src={icons.phoneIcon} alt='' /> {t('Phone')}
+                    <label className={cx('labelRegister')} htmlFor='phone-register'>
+                        <img src={icons.phoneIcon} alt='' /> {t('register_phone_label')}
                     </label>
                     <input
                         className={cx('inputFormRegister')}
-                        id='lastName-register'
+                        id='phone-register'
                         type='text'
                         name='phone'
                         autoComplete='new-lastName'
-                        placeholder={t('Phone')}
+                        placeholder={t('register_phone_placeholder')}
                         required
                         onChange={handleGetInput}
                     />
                 </div>
                 <div className='mb-6'>
                     <label className={cx('labelRegister')} htmlFor='email-register'>
-                        <img src={icons.emailIcon} alt='' /> {t('Email')}
+                        <img src={icons.emailIcon} alt='' /> {t('register_email_label')}
                     </label>
                     <input
                         className={cx('inputFormRegister')}
                         id='email-register'
                         type='email'
                         name='email'
-                        placeholder={t('Email')}
+                        placeholder={t('register_email_placeholder')}
                         required
                         onChange={handleGetInput}
                     />
                 </div>
                 <div className='mb-6'>
                     <label className={cx('labelRegister')} htmlFor='password-register'>
-                        <img src={icons.keyIcon} alt='' /> {t('Password')}
+                        <img src={icons.keyIcon} alt='' /> {t('register_password_label')}
                     </label>
                     <input
                         className={cx('inputFormRegister')}
@@ -123,15 +122,15 @@ const Register = (props: Props) => {
                         name='password'
                         autoComplete='new-password'
                         required
-                        placeholder={t('********')}
+                        placeholder={t('register_password_placeholder')}
                         onChange={handleGetInput}
                     />
                 </div>
-                <BaseButton styleButton={ButtonStyleEnum.PRIMARY} nameButton={t('Register')} />
+                <BaseButton styleButton={ButtonStyleEnum.PRIMARY} nameButton={t('common_register')} />
                 <div className={cx('textLogin')}>
-                    {t('Already have an account?')}
+                    {t('register_have_account')}
                     <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                        <Link to='/auth/login'>{t('Login')}</Link>
+                        <Link to='/auth/login'>{t('common_login')}</Link>
                     </BaseButton>
                 </div>
             </form>
