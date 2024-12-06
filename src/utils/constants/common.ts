@@ -9,17 +9,22 @@ export type TypeButton = "submit" | "reset" | "button";
 export const sidebarItems: ISideBar[] = [
     {
         path: '/admin/dash-board',
-        label: 'DashBoard',
+        label: 'admin_dashBoard',
         images: `${icons.homeIcon}`
     },
     {
         path: '/admin/inventory',
-        label: 'Inventory',
+        label: 'admin_inventory',
         images: `${icons.inventoryIcon}`
     },
     {
         path: '/admin/reports',
-        label: 'Reports',
+        label: 'admin_reports',
         images: `${icons.reportIcon}`
+    },
+    {
+        path: '/admin/suppliers',
+        label: 'admin_suppliers',
+        images: `${icons.supplierIcon}`
     }
 ];

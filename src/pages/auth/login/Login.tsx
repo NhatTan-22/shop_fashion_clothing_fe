@@ -44,12 +44,12 @@ const Login = (props: Props) => {
         <div id='formLoginPage' className={cx('mainLogin')}>
             <form onSubmit={handleLogin}>
                 <div className={cx('headerFormLogin')}>
-                    <h1>{t('Log in to your account')}</h1>
-                    <p>{t('Welcome back! Please enter your details.')}</p>
+                    <h1>{t('login_title_header')}</h1>
+                    <p>{t('login_title_label')}</p>
                 </div>
                 <div className='mb-6'>
                     <label className={cx('labelLogin')} htmlFor='email-login'>
-                        <img src={icons.emailIcon} alt='' /> {t('Email')}
+                        <img src={icons.emailIcon} alt='' /> {t('login_email_label')}
                     </label>
                     <input
                         className={cx('inputFormLogin')}
@@ -57,13 +57,13 @@ const Login = (props: Props) => {
                         name='email'
                         type='email'
                         autoComplete='new-email'
-                        placeholder={t('Enter your email')}
+                        placeholder={t('login_email_placeholder')}
                         onChange={handleGetInput}
                     />
                 </div>
                 <div>
                     <label className={cx('labelLogin')} htmlFor='password-login'>
-                        <img src={icons.keyIcon} alt='' /> {t('Password')}
+                        <img src={icons.keyIcon} alt='' /> {t('login_password_label')}
                     </label>
                     <input
                         className={cx('inputFormLogin')}
@@ -71,20 +71,20 @@ const Login = (props: Props) => {
                         name='password'
                         autoComplete='new-password'
                         type='password'
-                        placeholder={t('********')}
+                        placeholder={t('login_password_placeholder')}
                         onChange={handleGetInput}
                     />
                 </div>
                 <div className={cx('textForgotPass')}>
                     <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                        <Link to='/auth/login'>{t('Forgot password')}</Link>
+                        <Link to='/auth/login'>{t('login_forgot_password')}</Link>
                     </BaseButton>
                 </div>
-                <BaseButton title={t('Button login')} nameButton={t('Login')} styleButton={ButtonStyleEnum.PRIMARY} />
+                <BaseButton title={t('common_button_login_title')} nameButton={t('common_login')} styleButton={ButtonStyleEnum.PRIMARY} />
                 <div className={cx('textRegister')}>
-                    {t('Don’t have an account?')}
+                    {t('login_not_account')}
                     <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                        <Link to='/auth/register'>{t('Register')}</Link>
+                        <Link to='/auth/register'>{t('common_register')}</Link>
                     </BaseButton>
                 </div>
             </form>

@@ -34,7 +34,7 @@ const Button = (props: Props) => {
         styleButton,
         onClick,
         width = '100%',
-        height = 44,
+        height = 40,
         disabled,
         type = 'button',
         children,

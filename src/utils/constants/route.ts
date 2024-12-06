@@ -1,5 +1,5 @@
 import { IRouteModel } from '../interfaces/common';
-import { AboutPage, Dashboard, HomePage, Inventory, Login, Register, Report } from '~/pages';
+import { AboutPage, Dashboard, HomePage, Inventory, Login, Register, Report, Supplier } from '~/pages';
 
 // Path Router
 export const authRoute = {
@@ -13,6 +13,10 @@ export const adminRoute = {
     dashboard: '/dash-board',
     inventory: '/inventory',
     reports: '/reports',
+    suppliers: '/suppliers',
+    orders: '/orders',
+    manageStore: '/manage-store',
+    settings: '/settings',
 };
 
 export const userRoute = {
@@ -49,6 +53,18 @@ export const privateAdminRoutes: IRouteModel[] = [
     },
     {
         path: `${adminRoute.base}${adminRoute.reports}`,
+        component: Report,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.suppliers}`,
+        component: Supplier,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.orders}`,
+        component: Report,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.manageStore}`,
         component: Report,
     },
 ];
