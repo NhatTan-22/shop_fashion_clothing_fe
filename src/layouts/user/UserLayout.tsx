@@ -1,6 +1,8 @@
 // Libs
 import classNames from 'classnames/bind';
+import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
+import { BaseButton } from '../../components';
 // Others
 // Styles, Images, icons
 import styles from './UserLayout.module.scss';
@@ -17,6 +19,7 @@ const UserLayout = (props: Props) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
+    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector

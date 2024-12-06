@@ -1,0 +1,25 @@
+.mainLogin {
+    @apply flex;
+    @media screen and (max-width: 768px) {
+        display: block;
+    }
+}
+
+.logoStoreLogin {
+    @apply min-w-[50%] h-screen object-fill;
+    @media screen and (max-width: 768px) {
+        width: 100vw;
+        height: 50%;
+        margin-bottom: 32px;
+    }
+}
+
+.formLogin {
+    @apply m-auto min-w-[400px] p-6 text-center;
+    @media screen and (max-width: 768px) {
+        text-align: center;
+        margin: auto;
+        min-width: 100px;
+        padding: 12px;
+    }
+}
