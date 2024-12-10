@@ -1,9 +1,9 @@
 .baseTable {
-    @apply h-screen w-full;
+    @apply w-full min-h-[200px] overflow-auto;
 }
 
 .baseTable thead tr th {
-    @apply bg-white sticky top-0 z-[5px];
+    @apply bg-white sticky top-[-3px] z-[5px] h-[50px];
 }
 
 .bodyBaseTable {
@@ -11,9 +11,27 @@
 }
 
 table {
-    @apply border-collapse w-full text-left;
-}           
+    @apply w-full text-left;
+}
 
-th, td {
+.baseTable tbody {
+    @apply max-h-[200px] border-collapse overflow-scroll;
+}
+
+.baseTable::-webkit-scrollbar {
+    width: 0;
+}
+
+.baseTable::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+
+th,
+td {
     @apply border border-slate-400 py-2 px-4;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

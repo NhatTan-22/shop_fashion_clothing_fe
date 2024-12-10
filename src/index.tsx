@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { LoadingProvider } from './context';
 import { GlobalStyles } from './components';
 import './assets/fonts/style.css';
-import '~/utils/i18n'; 
+import './utils/i18n'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

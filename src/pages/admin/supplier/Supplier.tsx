@@ -2,12 +2,14 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { Empty, Pagination } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, BaseTable } from '~/components';
 // Others
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { mockDataSupplier } from '~/utils/constants/mockData';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
 
@@ -30,7 +32,7 @@ const Supplier = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [data, setData] = useState<ISupplier[]>([]);
+    const [data, setData] = useState<ISupplier[]>(mockDataSupplier);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -40,7 +42,7 @@ const Supplier = (props: Props) => {
             title: 'Supplier Name',
             dataIndex: 'supplier_name',
             render: (text, _) => {
-                return <p>{text.supplier_name}</p>;
+                return <p>{`${text}`}</p>;
             },
         },
         {
@@ -48,7 +50,7 @@ const Supplier = (props: Props) => {
             title: 'Product',
             dataIndex: 'product',
             render: (text, _) => {
-                return <p>{text.product}</p>;
+                return <p>{`${text}`}</p>;
             },
         },
         {
@@ -56,7 +58,7 @@ const Supplier = (props: Props) => {
             title: 'Contact Number',
             dataIndex: 'contact_number',
             render: (text, _) => {
-                return <p>{text.contact_number}</p>;
+                return <p>{`${text}`}</p>;
             },
         },
         {
@@ -64,7 +66,7 @@ const Supplier = (props: Props) => {
             title: 'Email',
             dataIndex: 'email',
             render: (text, _) => {
-                return <p>{text.email}</p>;
+                return <p>{`${text}`}</p>;
             },
         },
         {
@@ -72,11 +74,11 @@ const Supplier = (props: Props) => {
             title: 'Type',
             dataIndex: 'type',
             render: (_, record) => {
-                return record.type?.map((type) => {
+                return record.type?.map((type, index) => {
                     if (type === 'Taking Return') {
-                        return <p>{type}</p>;
+                        return <p key={index}>{type}</p>;
                     } else {
-                        return <p>{type}</p>;
+                        return <p key={index}>{type}</p>;
                     }
                 });
             },
@@ -90,6 +92,9 @@ const Supplier = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
+    const handleRowClick = (row: DataType<ISupplier>) => {
+        console.log('Clicked row data:', row);
+    };
     //#endregion Handle Function
 
     return (
@@ -104,10 +109,31 @@ const Supplier = (props: Props) => {
                         title={t('common_add_product')}
                         styleButton={ButtonStyleEnum.PRIMARY}
                     />
-                    <BaseButton nameButton={t('common_filters')} title={t('common_filters')} styleButton={ButtonStyleEnum.PRIMARY} />
+                    <BaseButton
+                        nameButton={t('common_filters')}
+                        title={t('common_filters')}
+                        styleButton={ButtonStyleEnum.PRIMARY}
+                    />
                 </div>
             </div>
-            <BaseTable columns={columns} dataSource={data} />
+            <>
+                {data.length ? (
+                    <div className={cx('bodySupplier')}>
+                        <BaseTable columns={columns} dataSource={data} onClick={handleRowClick} />
+                        {/* <div className={cx('footerPagination')}> */}
+                        <Pagination
+                            className={cx('footerPagination')}
+                            align='center'
+                            defaultCurrent={1}
+                            total={100}
+                            showSizeChanger={false}
+                        />
+                        {/* </div> */}
+                    </div>
+                ) : (
+                    <Empty className={cx('bodyEmptySupplier')} />
+                )}
+            </>
         </div>
     );
 };
