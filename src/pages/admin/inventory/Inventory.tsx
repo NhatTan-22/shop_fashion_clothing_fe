@@ -8,8 +8,10 @@ import { BaseButton, BaseTable } from '~/components';
 import { IInventory } from '~/utils/interfaces/interfaceInventory';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { mockDataInventory } from '~/utils/constants/mockData';
 // Styles, Images, icons
 import styles from './Inventory.module.scss';
+import { Empty, Pagination } from 'antd';
 
 type Props = {
     content?: string;
@@ -30,7 +32,7 @@ const Inventory = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [data, setData] = useState<IInventory[]>([]);
+    const [data, setData] = useState<IInventory[]>(mockDataInventory);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -43,33 +45,61 @@ const Inventory = (props: Props) => {
             title: t('Products'),
             dataIndex: 'product_name',
             key: 'product_name',
+            render: (text, _) => {
+                return <p>{`${text}`}</p>;
+            },
         },
         {
             title: t('Buying Price'),
             dataIndex: 'buying_price',
             key: 'buying_price',
+            render: (text, _) => {
+                return <p>{`${text}`}</p>;
+            },
         },
         {
             title: t('Quantity'),
             dataIndex: 'quantity',
             key: 'quantity',
+            render: (text, _) => {
+                return <p>{`${text}`}</p>;
+            },
         },
         {
             title: t('Threshold Value'),
-            dataIndex: ' threshold_value',
-            key: ' threshold_value',
+            dataIndex: ' thresholdValue',
+            key: ' thresholdValue',
+            render: (_, record) => {
+                if (record) {
+                    return <p>{`${record.thresholdValue}`}</p>;
+                }
+            },
         },
         {
             title: t('Expiry Date'),
-            dataIndex: ' expiry_date',
-            key: ' expiry_date',
+            dataIndex: ' expiryDate',
+            key: ' expiryDate',
+            render: (_, record) => {
+                if (record) {
+                    return <p>{`${record.expiryDate}`}</p>;
+                }
+            },
         },
         {
             title: t('Availability'),
             dataIndex: ' availability',
             key: ' availability',
+            render: (_, record) => {
+                if (record) {
+                    return <p>{`${record.availability}`}</p>;
+                }
+            },
         },
     ];
+
+    const handleRowClick = (row: DataType<IInventory>) => {
+        console.log('Clicked row data:', row);
+    };
     //#endregion Handle Function
 
     return (
@@ -80,7 +110,7 @@ const Inventory = (props: Props) => {
                 </div>
                 <div>{/* Components Header Content */}</div>
             </div>
-            <div className={cx('bodyInventory')}>
+            <div className={cx('contentProductsInventory')}>
                 <div className={cx('headerInventory')}>
                     <div className={cx('headerTitle')}>
                         <h1>{t('admin_products_header')}</h1>
@@ -98,7 +128,19 @@ const Inventory = (props: Props) => {
                         />
                     </div>
                 </div>
-                <BaseTable columns={columns} dataSource={data} />
+
+                <>
+                    {data.length ? (
+                        <div className={cx('bodyInventory')}>
+                            <BaseTable columns={columns} dataSource={data} onClick={handleRowClick} />
+                            <div className={cx('footerPagination')}>
+                                <Pagination align='center' defaultCurrent={1} total={100} showSizeChanger={false} />
+                            </div>
+                        </div>
+                    ) : (
+                        <Empty className={cx('bodyEmptySupplier')} />
+                    )}
+                </>
             </div>
         </div>
     );

@@ -10,13 +10,14 @@ import styles from './BaseTable.module.scss';
 type Props<T extends object> = {
     columns: Columns<T, DataType<T>>[];
     dataSource: DataType<T>[];
+    onClick?: (row: DataType<T>) => void;
 };
 
 const cx = classNames.bind(styles);
 
 const BaseTable = <T extends object>(props: Props<T>) => {
     //#region Destructuring Props
-    const { columns, dataSource } = props;
+    const { columns, dataSource, onClick } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -33,6 +34,12 @@ const BaseTable = <T extends object>(props: Props<T>) => {
     //#endregion Implement Hook
 
     //#region Handle Function
+    const handleGetObject = (data: DataType<T>) => {
+        if (onClick) {
+            console.log(data)
+            onClick(data);
+        }
+    }
     //#endregion Handle Function
 
     return (
@@ -48,7 +55,7 @@ const BaseTable = <T extends object>(props: Props<T>) => {
                 <tbody className={cx('bodyBaseTable')}>
                     {source?.map((dataTable, index) => {
                         return (
-                            <tr key={`${dataTable.key}_${index}`}>
+                            <tr key={`${dataTable.key}_${index}`} onClick={() => handleGetObject(dataTable)}>
                                 {columns?.map((column, index) => {
                                     const value = dataTable[column.dataIndex as keyof typeof dataTable];
                                     return column.render ? (
