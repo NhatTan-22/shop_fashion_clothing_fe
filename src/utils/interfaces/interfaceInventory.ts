@@ -3,7 +3,7 @@ export interface IInventory {
     product_name?: string;
     buying_price?: number;
     quantity?: number;
-    threshold_value?: number;
-    expiry_date?: string;
+    thresholdValue?: number;
+    expiryDate?: string;
     availability?: string;
 }

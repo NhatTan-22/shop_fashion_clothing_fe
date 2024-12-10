@@ -1,9 +1,9 @@
 .mainSupplier {
-    @apply p-5 rounded bg-blue-chalk-100;
+    @apply h-full p-5 rounded bg-blue-chalk-100 flex flex-col flex-1;
 }
 
 .headerSupplier {
-    @apply flex justify-between mb-4;
+    @apply flex justify-between pb-4;
 }
 
 .headerTitle {
@@ -12,4 +12,12 @@
 
 .headerButtons {
     @apply flex gap-4;
+}
+
+.bodySupplier {
+    @apply flex flex-col flex-1 justify-between min-h-[80%];
+}
+
+.footerPagination {
+    @apply pt-8;
 }
