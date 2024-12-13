@@ -3,8 +3,7 @@ import React from 'react';
 import classNames from 'classnames/bind';
 // Components, Layouts, Pages
 // Others
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { TypeButton } from '~/utils/constants/common';
+import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './ButtonBase.module.scss';
 
@@ -12,7 +11,7 @@ type Props = {
     title?: string;
     nameButton?: string;
     label?: string;
-    type?: TypeButton;
+    type?: TypeButtonENum;
     styleButton?: ButtonStyleEnum;
     width?: string;
     height?: number;

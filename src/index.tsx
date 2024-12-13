@@ -4,17 +4,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { LoadingProvider } from './context';
 import { GlobalStyles } from './components';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import './assets/fonts/style.css';
-import './utils/i18n'; 
+import './utils/i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
-        <GlobalStyles>
-            <LoadingProvider>
-                <App />
-            </LoadingProvider>
-        </GlobalStyles>
+        <Provider store={store}>
+            <GlobalStyles>
+                <LoadingProvider>
+                    <App />
+                </LoadingProvider>
+            </GlobalStyles>
+        </Provider>
     </React.StrictMode>
 );
 
