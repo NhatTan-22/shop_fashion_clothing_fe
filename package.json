@@ -15,6 +15,7 @@
         "axios": "^1.7.7",
         "classnames": "^2.5.1",
         "css-loader": "^7.1.2",
+        "env-cmd": "^10.1.0",
         "i18next": "^24.0.0",
         "i18next-browser-languagedetector": "^8.0.0",
         "i18next-http-backend": "^3.0.1",
@@ -40,7 +41,7 @@
         "tsconfig-paths": "^4.2.0"
     },
     "scripts": {
-        "start": "react-app-rewired start",
+        "start": "env-cmd -f ./.env.dev react-app-rewired start",
         "build": "react-app-rewired build",
         "test": "react-app-rewired test",
         "eject": "react-app-rewired eject"

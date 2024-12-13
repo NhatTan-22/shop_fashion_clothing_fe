@@ -3,9 +3,6 @@ import { ISideBar } from "../interfaces/common";
 
 export const Languages = ['en', 'vi'];
 
-export type TypeButton = "submit" | "reset" | "button";
-
-
 export const sidebarItems: ISideBar[] = [
     {
         path: '/admin/dash-board',

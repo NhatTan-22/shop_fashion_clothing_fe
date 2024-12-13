@@ -1,0 +1,33 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+import { authLogin } from '~/thunks/auth/authThunk';
+import { StorageEnum } from '~/utils/constants/enum';
+
+export interface AuthState {
+    accessToken: string | null | undefined;
+}
+
+const initialState: AuthState = {
+    accessToken: localStorage.getItem(StorageEnum.ACCESS_TOKEN)! || null,
+};
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        handleLogout() {
+            localStorage.removeItem(StorageEnum.ACCESS_TOKEN);
+        },
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(authLogin.pending, (state, action) => {})
+            .addCase(authLogin.fulfilled, (state, action) => {})
+            .addCase(authLogin.rejected, (state, action) => {});
+    },
+});
+
+export const authActions = authSlice.actions;
+
+const authReducer = authSlice.reducer;
+export default authReducer;
