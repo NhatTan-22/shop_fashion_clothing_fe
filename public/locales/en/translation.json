@@ -17,6 +17,10 @@
     "login_forgot_password": "Forgot password",
     "login_not_account": "Don’t have an account?",
 
+    "login_success": "Login successfully.",
+    "login_error_not_exist": "Email/Password does not exist.",
+    "login_error_failed": "Login failed! Please check Email/Password and login again.",
+
     "_register": "Register",
     "register_title_header": "Create an account",
     "register_first_name_label": "First Name",
@@ -31,6 +35,12 @@
     "register_password_placeholder": "********",
     "register_have_account": "Already have an account?",
 
+    "register_phone_error_message": "Please input your Phone!",
+    "register_email_error_message": "Please input your Email!",
+    "register_password_error_message": "Please input your Password!",
+
+    "register_success": "Register successfully.",
+    "register_error_already_exist": "Email already exists.",
 
     "_admin": "Admin",
     "admin_dashBoard": "DashBoard",
