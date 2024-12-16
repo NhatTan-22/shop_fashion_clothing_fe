@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useContext, useState } from 'react';
+import { Form, Input, message } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton } from '~/components';
 // Others
@@ -10,11 +11,11 @@ import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { ILogin } from '~/utils/interfaces/auth';
 import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
+import { authLogin } from '~/thunks/auth/authThunk';
+import { userRoute } from '~/utils/constants/route';
 // Styles, Images, icons
 import styles from './Login.module.scss';
 import { icons } from '~/assets';
-import { authLogin } from '~/thunks/auth/authThunk';
-import { adminRoute, userRoute } from '~/utils/constants/route';
 
 type Props = {
     content?: string;
@@ -55,22 +56,24 @@ const Login = (props: Props) => {
         });
     };
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleLogin = async (e: React.FormEvent) => {
+        // e.preventDefault();
         loadingContext?.show();
         dispatch(authLogin(dataLogin))
+            .unwrap()
             .then((response) => {
-                if (response?.payload) {
-                    const role = response?.payload?.role;
-                    console.log(response);
-                    // if (role === 0) {
-                    //     navigate(`${adminRoute.base}${adminRoute.dashboard}`);
-                    // }
-                    // navigate(`${userRoute.base}`);
+                if (response?.data) {
+                    sessionStorage.setItem('data', JSON.stringify(response?.data));
+                    message.success(`${t('login_success')}`);
+                    navigate(`${userRoute.base}`);
                 }
             })
             .catch((error) => {
-                console.log(error.message);
+                if (error?.code === 1012) {
+                    message.warning(`${t('login_error_failed')}`);
+                } else {
+                    message.error(`${t('login_error_not_exist')}`);
+                }
             })
             .finally(() => {
                 loadingContext?.hide();
@@ -80,39 +83,52 @@ const Login = (props: Props) => {
 
     return (
         <div id='formLoginPage' className={cx('mainLogin')}>
-            <form onSubmit={handleLogin}>
+            <Form name='login' layout='vertical' onFinish={handleLogin}>
                 <div className={cx('headerFormLogin')}>
                     <h1>{t('login_title_header')}</h1>
                     <p>{t('login_title_label')}</p>
                 </div>
-                <div className='mb-6'>
-                    <label className={cx('labelLogin')} htmlFor='email-login'>
-                        <img src={icons.emailIcon} alt='' /> {t('login_email_label')}
-                    </label>
-                    <input
+                <Form.Item
+                    name='email'
+                    label={
+                        <label className={cx('labelLogin')} htmlFor='email-login'>
+                            <img src={icons.emailIcon} alt='' /> {t('login_email_label')}
+                        </label>
+                    }
+                    rules={[{ required: true, message: `${t('register_email_error_message')}` }]}
+                >
+                    <Input
                         className={cx('inputFormLogin')}
                         id='email-login'
                         name='email'
                         type='email'
+                        autoFocus
                         autoComplete='new-email'
                         placeholder={t('login_email_placeholder')}
+                        title={t('login_email_label')}
                         onChange={handleGetInput}
                     />
-                </div>
-                <div>
-                    <label className={cx('labelLogin')} htmlFor='password-login'>
-                        <img src={icons.keyIcon} alt='' /> {t('login_password_label')}
-                    </label>
-                    <input
+                </Form.Item>
+                <Form.Item
+                    name='password'
+                    label={
+                        <label className={cx('labelLogin')} htmlFor='password-login'>
+                            <img src={icons.keyIcon} alt='' /> {t('login_password_label')}
+                        </label>
+                    }
+                    rules={[{ required: true, message: `${t('register_password_error_message')}` }]}
+                >
+                    <Input.Password
                         className={cx('inputFormLogin')}
                         id='password-login'
                         name='password'
-                        autoComplete='new-password'
                         type='password'
+                        autoComplete='new-password'
                         placeholder={t('login_password_placeholder')}
+                        title={t('login_password_label')}
                         onChange={handleGetInput}
                     />
-                </div>
+                </Form.Item>
                 <div className={cx('textForgotPass')}>
                     <BaseButton styleButton={ButtonStyleEnum.TEXT}>
                         <Link to='/auth/login'>{t('login_forgot_password')}</Link>
@@ -130,7 +146,7 @@ const Login = (props: Props) => {
                         <Link to='/auth/register'>{t('common_register')}</Link>
                     </BaseButton>
                 </div>
-            </form>
+            </Form>
         </div>
     );
 };
