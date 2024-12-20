@@ -64,6 +64,7 @@ const Register = (props: Props) => {
         dispatch(authRegister(data))
             .unwrap()
             .then((response) => {
+                console.log(response)
                 message.success(`${t('register_success')}`);
             })
             .catch((error) => {

@@ -1,11 +1,12 @@
 export interface ISupplier {
     id: string;
     image?: string;
-    supplier_name?: string;
-    product?: string;
-    contact_number?: number;
-    email?: string;
-    type?: string[];
+    supplierName?: string;
+    supplierProduct?: string;
+    supplierPhone?: number;
+    supplierEmail?: string;
+    address?: string;
+    isTaking?: string[];
     on_the_way?: string;
 }
 
