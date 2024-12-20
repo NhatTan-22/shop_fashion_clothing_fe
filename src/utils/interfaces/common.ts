@@ -20,3 +20,12 @@ export interface ISideBar {
     label: string;
     images?: string;
 }
+
+export interface IPagination extends IParamsPagination {
+    lengthPage?: number;
+}
+
+export interface IParamsPagination {
+    currentPage: number;
+    limitPage?: number;
+}

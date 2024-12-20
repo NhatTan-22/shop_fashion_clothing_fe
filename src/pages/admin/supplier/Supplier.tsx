@@ -1,15 +1,19 @@
 // Libs
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { Empty, Pagination } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
+import { Empty, message, Pagination } from 'antd';
 // Components, Layouts, Pages
+import { useAppDispatch } from '~/redux/hooks';
 import { BaseButton, BaseTable } from '~/components';
 // Others
+import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { LoadingContext } from '~/context';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { mockDataSupplier } from '~/utils/constants/mockData';
+import { supplierThunk } from '~/thunks/supplier/supplierThunk';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
 
@@ -26,55 +30,50 @@ const Supplier = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    const [data, setData] = useState<ISupplier[]>(mockDataSupplier);
-    //#endregion Declare State
-
-    //#region Implement Hook
     const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
         {
-            key: 'supplier_name',
+            key: 'supplierName',
             title: 'Supplier Name',
-            dataIndex: 'supplier_name',
+            dataIndex: 'supplierName',
             render: (text, _) => {
                 return <p>{`${text}`}</p>;
             },
         },
         {
-            key: 'product',
-            title: 'Product',
-            dataIndex: 'product',
+            key: 'supplierProduct',
+            title: 'Code Product',
+            dataIndex: 'supplierProduct',
             render: (text, _) => {
                 return <p>{`${text}`}</p>;
             },
         },
         {
-            key: 'contact_number',
+            key: 'supplierPhone',
             title: 'Contact Number',
-            dataIndex: 'contact_number',
+            dataIndex: 'supplierPhone',
             render: (text, _) => {
                 return <p>{`${text}`}</p>;
             },
         },
         {
-            key: 'email',
+            key: 'supplierEmail',
             title: 'Email',
-            dataIndex: 'email',
+            dataIndex: 'supplierEmail',
             render: (text, _) => {
                 return <p>{`${text}`}</p>;
             },
         },
         {
-            key: 'type',
+            key: 'isTaking',
             title: 'Type',
-            dataIndex: 'type',
+            dataIndex: 'isTaking',
             render: (_, record) => {
-                return record.type?.map((type, index) => {
+                return record?.isTaking?.map((type, index) => {
                     if (type === 'Taking Return') {
                         return <p key={index}>{type}</p>;
                     } else {
@@ -89,11 +88,50 @@ const Supplier = (props: Props) => {
             dataIndex: 'on_the_way',
         },
     ];
+    //#endregion Selector
+
+    //#region Declare State
+    const [data, setData] = useState<ISupplier[]>([]);
+    const [currentPage, setCurrentPage] = useState<IPagination>({
+        lengthPage: 1,
+        currentPage: 1,
+    });
+    const [paramsPage, setParamsPage] = useState<IParamsPagination>({
+        currentPage: 1,
+        limitPage: 10,
+    });
+    //#endregion Declare State
+
+    //#region Implement Hook
+    useEffect(() => {
+        loadingContext?.show();
+        dispatch(supplierThunk(paramsPage))
+            .unwrap()
+            .then((response) => {
+                const suppliers = response?.data;
+                const pagination = suppliers?.pagination;
+                setCurrentPage({
+                    lengthPage: pagination.lengthPage,
+                    currentPage: pagination.currentPage,
+                });
+                setData(suppliers.data);
+            })
+            .catch((error) => {
+                message.error(error?.data);
+            })
+            .finally(() => {
+                loadingContext?.hide();
+            });
+    }, [paramsPage.currentPage]);
     //#endregion Implement Hook
 
     //#region Handle Function
     const handleRowClick = (row: DataType<ISupplier>) => {
         console.log('Clicked row data:', row);
+    };
+
+    const handleChangePage = (e: number) => {
+        setParamsPage({ ...paramsPage, currentPage: e });
     };
     //#endregion Handle Function
 
@@ -124,9 +162,10 @@ const Supplier = (props: Props) => {
                         <Pagination
                             className={cx('footerPagination')}
                             align='center'
-                            defaultCurrent={1}
-                            total={100}
+                            defaultCurrent={currentPage?.currentPage}
+                            total={currentPage.lengthPage}
                             showSizeChanger={false}
+                            onChange={handleChangePage}
                         />
                         {/* </div> */}
                     </div>

@@ -11,11 +11,11 @@ import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { ILogin } from '~/utils/interfaces/auth';
 import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
-import { authLogin } from '~/thunks/auth/authThunk';
-import { userRoute } from '~/utils/constants/route';
+import { authLoginThunk } from '~/thunks/auth/authThunk';
 // Styles, Images, icons
 import styles from './Login.module.scss';
 import { icons } from '~/assets';
+import { navigateLogin } from '~/utils/constants/helper';
 
 type Props = {
     content?: string;
@@ -59,13 +59,14 @@ const Login = (props: Props) => {
     const handleLogin = async (e: React.FormEvent) => {
         // e.preventDefault();
         loadingContext?.show();
-        dispatch(authLogin(dataLogin))
+        dispatch(authLoginThunk(dataLogin))
             .unwrap()
             .then((response) => {
                 if (response?.data) {
                     sessionStorage.setItem('data', JSON.stringify(response?.data));
+                    const router = navigateLogin(response?.data?.role);
+                    navigate(`${router}`);
                     message.success(`${t('login_success')}`);
-                    navigate(`${userRoute.base}`);
                 }
             })
             .catch((error) => {

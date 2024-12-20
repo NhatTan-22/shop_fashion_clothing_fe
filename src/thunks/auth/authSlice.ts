@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { authLogin, authRegister } from '~/thunks/auth/authThunk';
+import { authLoginThunk, authRegister } from '~/thunks/auth/authThunk';
 import { StorageEnum } from '~/utils/constants/enum';
 
 export interface AuthState {
@@ -30,9 +30,9 @@ const authSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(authLogin.pending, (state, action) => {})
-            .addCase(authLogin.fulfilled, (state, action) => {})
-            .addCase(authLogin.rejected, (state, action) => {});
+            .addCase(authLoginThunk.pending, (state, action) => {})
+            .addCase(authLoginThunk.fulfilled, (state, action) => {})
+            .addCase(authLoginThunk.rejected, (state, action) => {});
 
         builder
             .addCase(authRegister.pending, (state, action) => {})

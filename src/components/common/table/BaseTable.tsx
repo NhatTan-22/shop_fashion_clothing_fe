@@ -1,6 +1,6 @@
 // Libs
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // Components, Layouts, Pages
 // Others
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
@@ -21,7 +21,7 @@ const BaseTable = <T extends object>(props: Props<T>) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
-    const [source, setSource] = useState<DataType<T>[]>(dataSource ?? []);
+    const [source, setSource] = useState<DataType<T>[]>([]);
     //#endregion Declare Hook
 
     //#region Selector
@@ -31,15 +31,19 @@ const BaseTable = <T extends object>(props: Props<T>) => {
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {
+        if (dataSource.length) {
+            setSource(dataSource);
+        }
+    }, [dataSource]);
     //#endregion Implement Hook
 
     //#region Handle Function
     const handleGetObject = (data: DataType<T>) => {
         if (onClick) {
-            console.log(data)
             onClick(data);
         }
-    }
+    };
     //#endregion Handle Function
 
     return (
