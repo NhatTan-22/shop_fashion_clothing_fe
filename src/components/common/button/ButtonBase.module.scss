@@ -3,19 +3,27 @@
 }
 
 .defaultStyle {
-    @apply w-auto h-auto flex justify-center items-center px-4 py-2 rounded text-black border-gondola-900 border-2;
+    @apply w-auto h-auto flex justify-center items-center px-4 py-2 rounded text-black border-gondola-900 border-2 font-nunito;
 }
 
 .primaryStyle {
-    @apply flex justify-center items-center px-4 py-2 text-blue-chalk-100 bg-wisteria-600 rounded;
+    @apply flex justify-center items-center px-4 py-2 text-blue-chalk-100 bg-wisteria-600 rounded font-nunito;
 }
 
 .primaryStyle:hover {
     @apply opacity-85;
 }
 
+.primaryRedStyle {
+    @apply flex justify-center items-center px-4 py-2 text-red-600 bg-purple-400 rounded font-nunito;
+}
+
+.primaryRedStyle:hover {
+    @apply opacity-85;
+}
+
 .textStyle {
-    @apply items-center rounded text-black;
+    @apply items-center rounded text-black font-nunito;
 }
 
 .textStyle:hover {

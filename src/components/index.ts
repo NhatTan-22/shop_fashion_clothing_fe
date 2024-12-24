@@ -1,5 +1,6 @@
 //#region Specific Component
 export { default as SideBar } from './specific/sideBar/SideBar';
+export { default as DrawerDetail } from './specific/drawerDetail/DrawerDetail';
 //#endregion Specific Component
 
 //#region Common Component

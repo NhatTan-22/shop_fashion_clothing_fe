@@ -9,6 +9,7 @@ import styles from './ButtonBase.module.scss';
 
 type Props = {
     title?: string;
+    typeStyle?: string;
     nameButton?: string;
     label?: string;
     type?: TypeButtonENum;
@@ -21,6 +22,7 @@ type Props = {
     children?: React.ReactNode;
     prevIcon?: React.ReactNode;
     nextIcon?: React.ReactNode;
+    className?: string;
 };
 
 const cx = classNames.bind(styles);
@@ -29,6 +31,7 @@ const Button = (props: Props) => {
     //#region Destructuring Props
     const {
         title,
+        className,
         nameButton,
         styleButton,
         onClick,
@@ -59,7 +62,7 @@ const Button = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='baseButtonComponent' className={cx('baseButton')} style={{ height: `${height}px` }}>
+        <div id='baseButtonComponent' className={cx(`baseButton ${className}`)} style={{ height: `${height}px` }}>
             <button
                 className={cx(`${styleButton ? styleButton : 'defaultStyle'}`)}
                 type={type}
@@ -69,7 +72,7 @@ const Button = (props: Props) => {
                 title={title}
             >
                 {prevIcon && <img className={cx('iconButton')} src={`${prevIcon}`} alt='icon' />}
-                <span className={cx('titleButton')}>{nameButton}</span>
+                <span className={cx(`titleButton`)}>{nameButton}</span>
                 {children}
                 {nextIcon && <img className={cx('iconButton')} src={`${nextIcon}`} alt='icon' />}
             </button>

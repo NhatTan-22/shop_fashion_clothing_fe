@@ -4,10 +4,24 @@
 
 .sideBarAdminOpen {
     @apply w-[280px] h-full bg-blue-chalk-100 p-4 text-center;
+    transition: width 0.3s ease;
 }
 
 .sideBarAdminClose {
     @apply w-0;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .sideBarAdminOpen {
+        @apply w-0;
+    }
+}
+
+@media (max-width: 768px) {
+    .sideBarAdminOpen {
+        @apply w-[50%] h-full bg-blue-chalk-100 p-4 text-center;
+    }
 }
 
 .logoFashionStore {
@@ -48,5 +62,5 @@
 }
 
 .contentAdmin {
-    @apply  m-4  rounded overflow-hidden flex-1;
+    @apply m-4  rounded overflow-hidden flex-1;
 }

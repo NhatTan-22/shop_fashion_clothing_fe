@@ -11,6 +11,7 @@ import supplierIcon from '../icons/supplierIcon.svg';
 import orderIcon from '../icons/orderIcon.svg';
 import storeIcon from '../icons/storeIcon.svg';
 import listMenuIcon from '../icons/listMenuIcon.svg';
+import addressIcon from '../icons/addressIcon.svg';
 
 const icons = {
     homeIcon,
@@ -26,6 +27,7 @@ const icons = {
     orderIcon,
     storeIcon,
     listMenuIcon,
+    addressIcon,
 };
 
 export default icons;

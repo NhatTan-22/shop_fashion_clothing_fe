@@ -1,5 +1,5 @@
 .mainSupplier {
-    @apply h-full p-5 rounded bg-blue-chalk-100 flex flex-col flex-1;
+    @apply h-full p-5 rounded bg-blue-chalk-100 flex flex-col flex-1 font-nunito;
 }
 
 .headerSupplier {
@@ -19,5 +19,17 @@
 }
 
 .footerPagination {
-    @apply pt-8;
+    @apply pt-4;
+}
+
+.pending {
+    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-yellow-400;
+}
+
+.success {
+    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-green-500;
+}
+
+.waiting {
+    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-red-500;
 }

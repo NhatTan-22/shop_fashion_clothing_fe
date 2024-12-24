@@ -3,7 +3,7 @@
 }
 
 .baseTable thead tr th {
-    @apply bg-wisteria-600 sticky top-[-3px] z-[5px] min-h-[60px];
+    @apply bg-wisteria-600 text-blue-chalk-100 sticky top-[-3px] z-[5px] min-h-[60px];
 }
 
 .bodyBaseTable {
@@ -25,7 +25,6 @@ table {
 .baseTable::-webkit-scrollbar-thumb {
     background: transparent;
 }
-
 
 th,
 td {
