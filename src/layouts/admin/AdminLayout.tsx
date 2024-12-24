@@ -9,7 +9,7 @@ import { sidebarItems } from '~/utils/constants/common';
 // Styles, Images, icons
 import styles from './AdminLayout.module.scss';
 import { icons, images } from '~/assets';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
     content?: string;
@@ -34,9 +34,24 @@ const AdminLayout = (props: Props) => {
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     //#endregion Implement Hook
 
     //#region Handle Function
+    const handleResize = () => {
+        if (window.innerWidth <= 768) {
+            setIsOpenSidebar(false);
+        } else {
+            setIsOpenSidebar(true);
+        }
+    };
+
     const handleSideBar = () => {
         setIsOpenSidebar(!isOpenSideBae);
     };
@@ -51,7 +66,14 @@ const AdminLayout = (props: Props) => {
             </div>
             <div className={cx('wrapperAdmin')}>
                 <div className={cx('headerAdmin')}>
-                    <img className={cx('listMenu')} width={24} height={24} src={icons.listMenuIcon} alt='' onClick={handleSideBar} />
+                    <img
+                        className={cx('listMenu')}
+                        width={24}
+                        height={24}
+                        src={icons.listMenuIcon}
+                        alt=''
+                        onClick={handleSideBar}
+                    />
                     <div className={cx('searchAll')}>
                         <img src={icons.searchIcon} width={24} height={24} alt='' />
                         <input

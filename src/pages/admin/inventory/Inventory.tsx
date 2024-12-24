@@ -2,6 +2,7 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Empty, Pagination } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, BaseTable } from '~/components';
 // Others
@@ -9,9 +10,9 @@ import { IInventory } from '~/utils/interfaces/interfaceInventory';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { mockDataInventory } from '~/utils/constants/mockData';
+import { renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Inventory.module.scss';
-import { Empty, Pagination } from 'antd';
 
 type Props = {
     content?: string;
@@ -46,7 +47,7 @@ const Inventory = (props: Props) => {
             dataIndex: 'product_name',
             key: 'product_name',
             render: (text, _) => {
-                return <p>{`${text}`}</p>;
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
@@ -54,7 +55,7 @@ const Inventory = (props: Props) => {
             dataIndex: 'buying_price',
             key: 'buying_price',
             render: (text, _) => {
-                return <p>{`${text}`}</p>;
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
@@ -62,7 +63,7 @@ const Inventory = (props: Props) => {
             dataIndex: 'quantity',
             key: 'quantity',
             render: (text, _) => {
-                return <p>{`${text}`}</p>;
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
@@ -70,8 +71,8 @@ const Inventory = (props: Props) => {
             dataIndex: ' thresholdValue',
             key: ' thresholdValue',
             render: (_, record) => {
-                if (record) {
-                    return <p>{`${record.thresholdValue}`}</p>;
+                if (record?.thresholdValue) {
+                    return <p>{`${renderFormatValue(record.thresholdValue)}`}</p>;
                 }
             },
         },
@@ -80,8 +81,8 @@ const Inventory = (props: Props) => {
             dataIndex: ' expiryDate',
             key: ' expiryDate',
             render: (_, record) => {
-                if (record) {
-                    return <p>{`${record.expiryDate}`}</p>;
+                if (record?.expiryDate) {
+                    return <p>{`${renderFormatValue(record.expiryDate)}`}</p>;
                 }
             },
         },
@@ -90,8 +91,8 @@ const Inventory = (props: Props) => {
             dataIndex: ' availability',
             key: ' availability',
             render: (_, record) => {
-                if (record) {
-                    return <p>{`${record.availability}`}</p>;
+                if (record?.availability) {
+                    return <p>{`${renderFormatValue(record.availability)}`}</p>;
                 }
             },
         },

@@ -1,5 +1,6 @@
 export enum ButtonStyleEnum {
     PRIMARY = 'primaryStyle',
+    PRIMARY_RED = 'primaryRedStyle',
     TEXT = 'textStyle',
 }
 

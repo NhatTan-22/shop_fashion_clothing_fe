@@ -6,7 +6,7 @@ const supplierApi = {
     async getAllSupplier(params: IPagination) {
         const url = `${urlApiSupplier.getAllSupplier}`;
         const response = await axiosClient.get(url, { params });
-        return response;
+        return response.data;
     },
 };
 

@@ -8,7 +8,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'Arial', 'sans-serif'],
+                'nunito': ['Nunito', 'sans-serif'],
             },
             colors: {
                 'primary-500': '#1570ef',
@@ -22,6 +22,7 @@ export default {
                 'wisteria-600': '#a56abd',
                 'eminence-800': '#6e3482',
                 'bossa-nova-900': '#49225b',
+                'punch-600': '#e20c0c'
             },
             backgroundColor: {
                 'black': '#000',

@@ -6,6 +6,8 @@
     "common_button_register_title": "Button Register",
     "common_add_product": "Add Product",
     "common_filters": "Filters",
+    "common_delete": "Delete",
+    "common_edit": "Edit",
 
     "_login": "Login",
     "login_title_header": "Log in to your account",
@@ -49,8 +51,26 @@
     "admin_suppliers": "Suppliers",
 
     "admin_overall_inventory_header": "Overall Inventory",
+
     "admin_products_header": "Products",
+
     "admin_suppliers_header": "Suppliers",
+    "supplier_code_label_table": "Supplier Code",
+    "supplier_name_label_table": "Supplier Name",
+    "product_code_label_table": "Product Code",
+    "supplier_phone_label_table": "Contact Phone",
+    "supplier_type_label_table": "Type",
+    "supplier_type_waiting_label_table": "Waiting",
+    "supplier_type_pending_label_table": "Pending",
+    "supplier_type_success_label_table": "Success",
+    "supplier_quantity_imported_label_table": "Quantity Imported",
+
+    "supplier_email_label": "Email:",
+    "supplier_phone_label": "Phone:",
+    "supplier_code_product_label": "Code Product:",
+    "supplier_type_label": "Type:",
+    "supplier_address_label": "Address:",
+    "supplier_quantity_imported_label": "Quantity Imported",
 
     "_user": "User"
 }

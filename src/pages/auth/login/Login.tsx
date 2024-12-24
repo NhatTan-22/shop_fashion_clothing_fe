@@ -12,10 +12,10 @@ import { LoadingContext } from '~/context';
 import { ILogin } from '~/utils/interfaces/auth';
 import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
 import { authLoginThunk } from '~/thunks/auth/authThunk';
+import { navigateLogin } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Login.module.scss';
 import { icons } from '~/assets';
-import { navigateLogin } from '~/utils/constants/helper';
 
 type Props = {
     content?: string;
@@ -86,7 +86,9 @@ const Login = (props: Props) => {
         <div id='formLoginPage' className={cx('mainLogin')}>
             <Form name='login' layout='vertical' onFinish={handleLogin}>
                 <div className={cx('headerFormLogin')}>
-                    <h1>{t('login_title_header')}</h1>
+                    <h1 className={cx('titleHear')}>
+                        {t('login_title_header')}
+                    </h1>
                     <p>{t('login_title_label')}</p>
                 </div>
                 <Form.Item

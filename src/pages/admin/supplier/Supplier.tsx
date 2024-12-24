@@ -5,15 +5,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Empty, message, Pagination } from 'antd';
 // Components, Layouts, Pages
 import { useAppDispatch } from '~/redux/hooks';
-import { BaseButton, BaseTable } from '~/components';
+import { BaseButton, BaseTable, DrawerDetail } from '~/components';
 // Others
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { LoadingContext } from '~/context';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { mockDataSupplier } from '~/utils/constants/mockData';
 import { supplierThunk } from '~/thunks/supplier/supplierThunk';
+import { convertTypeSupplier, renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
 
@@ -37,61 +37,68 @@ const Supplier = (props: Props) => {
     //#region Selector
     const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
         {
+            key: 'supplierCode',
+            title: `${t('supplier_code_label_table')}`,
+            dataIndex: 'supplierCode',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
             key: 'supplierName',
-            title: 'Supplier Name',
+            title: `${t('supplier_name_label_table')}`,
             dataIndex: 'supplierName',
             render: (text, _) => {
-                return <p>{`${text}`}</p>;
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
-        {
-            key: 'supplierProduct',
-            title: 'Code Product',
-            dataIndex: 'supplierProduct',
-            render: (text, _) => {
-                return <p>{`${text}`}</p>;
-            },
-        },
+
         {
             key: 'supplierPhone',
-            title: 'Contact Number',
+            title: `${t('supplier_phone_label_table')}`,
             dataIndex: 'supplierPhone',
             render: (text, _) => {
-                return <p>{`${text}`}</p>;
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'supplierEmail',
-            title: 'Email',
-            dataIndex: 'supplierEmail',
+            key: 'productCode',
+            title: `${t('product_code_label_table')}`,
+            dataIndex: 'productCode',
             render: (text, _) => {
-                return <p>{`${text}`}</p>;
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
             key: 'isTaking',
-            title: 'Type',
+            title: `${t('supplier_type_label_table')}`,
             dataIndex: 'isTaking',
             render: (_, record) => {
                 return record?.isTaking?.map((type, index) => {
-                    if (type === 'Taking Return') {
-                        return <p key={index}>{type}</p>;
-                    } else {
-                        return <p key={index}>{type}</p>;
-                    }
+                    const typeData = convertTypeSupplier(type);
+                    return (
+                        <p key={index} className={cx(typeData?.className)}>
+                            {typeData?.text}
+                        </p>
+                    );
                 });
             },
         },
         {
-            key: 'on_the_way',
-            title: 'On The Way',
-            dataIndex: 'on_the_way',
+            key: 'quantityImported',
+            title: `${t('supplier_quantity_imported_label_table')}`,
+            dataIndex: 'quantityImported',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
         },
     ];
     //#endregion Selector
 
     //#region Declare State
+    const [open, setOpen] = useState<boolean>(false);
     const [data, setData] = useState<ISupplier[]>([]);
+    const [supplier, setSupplier] = useState<ISupplier>();
     const [currentPage, setCurrentPage] = useState<IPagination>({
         lengthPage: 1,
         currentPage: 1,
@@ -108,13 +115,12 @@ const Supplier = (props: Props) => {
         dispatch(supplierThunk(paramsPage))
             .unwrap()
             .then((response) => {
-                const suppliers = response?.data;
-                const pagination = suppliers?.pagination;
+                const pagination = response?.pagination;
+                setData(response?.data);
                 setCurrentPage({
                     lengthPage: pagination.lengthPage,
                     currentPage: pagination.currentPage,
                 });
-                setData(suppliers.data);
             })
             .catch((error) => {
                 message.error(error?.data);
@@ -127,7 +133,9 @@ const Supplier = (props: Props) => {
 
     //#region Handle Function
     const handleRowClick = (row: DataType<ISupplier>) => {
-        console.log('Clicked row data:', row);
+        // console.log('Clicked row data:', row);
+        setSupplier(row);
+        setOpen(true);
     };
 
     const handleChangePage = (e: number) => {
@@ -158,7 +166,6 @@ const Supplier = (props: Props) => {
                 {data.length ? (
                     <div className={cx('bodySupplier')}>
                         <BaseTable columns={columns} dataSource={data} onClick={handleRowClick} />
-                        {/* <div className={cx('footerPagination')}> */}
                         <Pagination
                             className={cx('footerPagination')}
                             align='center'
@@ -167,12 +174,12 @@ const Supplier = (props: Props) => {
                             showSizeChanger={false}
                             onChange={handleChangePage}
                         />
-                        {/* </div> */}
                     </div>
                 ) : (
                     <Empty className={cx('bodyEmptySupplier')} />
                 )}
             </>
+            {supplier && <DrawerDetail open={open} setOpen={setOpen} dataSupplier={supplier} />}
         </div>
     );
 };

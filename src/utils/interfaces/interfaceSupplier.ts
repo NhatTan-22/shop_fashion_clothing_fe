@@ -1,16 +1,17 @@
 export interface ISupplier {
     id: string;
-    image?: string;
+    supplierImage?: string;
     supplierName?: string;
-    supplierProduct?: string;
+    supplierCode: string;
     supplierPhone?: number;
     supplierEmail?: string;
-    address?: string;
-    isTaking?: string[];
-    on_the_way?: string;
+    supplierAddress?: string;
+    isTaking?: number[];
+    dateDriver: Date;
+    quantityImported?: number;
 }
 
 // export interface ITypeSupplier {
 //     id?: string;
-//     title: string; 
+//     title: string;
 // }
