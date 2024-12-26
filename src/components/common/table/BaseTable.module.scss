@@ -34,3 +34,8 @@ td {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+tr,
+td {
+    @apply cursor-pointer;
+}

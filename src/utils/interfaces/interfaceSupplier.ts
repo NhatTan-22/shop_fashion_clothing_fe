@@ -6,12 +6,7 @@ export interface ISupplier {
     supplierPhone?: number;
     supplierEmail?: string;
     supplierAddress?: string;
-    isTaking?: number[];
-    dateDriver: Date;
+    productCode?: string;
+    isTaking?: [number];
     quantityImported?: number;
 }
-
-// export interface ITypeSupplier {
-//     id?: string;
-//     title: string;
-// }

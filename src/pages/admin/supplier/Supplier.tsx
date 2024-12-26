@@ -25,7 +25,7 @@ const cx = classNames.bind(styles);
 
 const Supplier = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Supplier Component' } = props;
+    // const { content = 'Supplier Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -38,7 +38,7 @@ const Supplier = (props: Props) => {
     const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
         {
             key: 'supplierCode',
-            title: `${t('supplier_code_label_table')}`,
+            title: `${t('admin_supplier_code_label_table')}`,
             dataIndex: 'supplierCode',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
@@ -46,7 +46,7 @@ const Supplier = (props: Props) => {
         },
         {
             key: 'supplierName',
-            title: `${t('supplier_name_label_table')}`,
+            title: `${t('admin_supplier_name_label_table')}`,
             dataIndex: 'supplierName',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
@@ -55,7 +55,7 @@ const Supplier = (props: Props) => {
 
         {
             key: 'supplierPhone',
-            title: `${t('supplier_phone_label_table')}`,
+            title: `${t('admin_supplier_phone_label_table')}`,
             dataIndex: 'supplierPhone',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
@@ -63,7 +63,7 @@ const Supplier = (props: Props) => {
         },
         {
             key: 'productCode',
-            title: `${t('product_code_label_table')}`,
+            title: `${t('admin_products_code_label_table')}`,
             dataIndex: 'productCode',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
@@ -71,7 +71,7 @@ const Supplier = (props: Props) => {
         },
         {
             key: 'isTaking',
-            title: `${t('supplier_type_label_table')}`,
+            title: `${t('admin_supplier_type_label_table')}`,
             dataIndex: 'isTaking',
             render: (_, record) => {
                 return record?.isTaking?.map((type, index) => {
@@ -86,7 +86,7 @@ const Supplier = (props: Props) => {
         },
         {
             key: 'quantityImported',
-            title: `${t('supplier_quantity_imported_label_table')}`,
+            title: `${t('admin_supplier_quantity_imported_label_table')}`,
             dataIndex: 'quantityImported',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
@@ -100,7 +100,7 @@ const Supplier = (props: Props) => {
     const [data, setData] = useState<ISupplier[]>([]);
     const [supplier, setSupplier] = useState<ISupplier>();
     const [currentPage, setCurrentPage] = useState<IPagination>({
-        lengthPage: 1,
+        lengthPage: 0,
         currentPage: 1,
     });
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
@@ -151,8 +151,8 @@ const Supplier = (props: Props) => {
                 </div>
                 <div className={cx('headerButtons')}>
                     <BaseButton
-                        nameButton={t('common_add_product')}
-                        title={t('common_add_product')}
+                        nameButton={t('common_add_supplier')}
+                        title={t('common_add_supplier')}
                         styleButton={ButtonStyleEnum.PRIMARY}
                     />
                     <BaseButton
