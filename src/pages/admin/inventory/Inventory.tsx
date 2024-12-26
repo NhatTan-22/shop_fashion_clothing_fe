@@ -1,15 +1,18 @@
 // Libs
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Empty, Pagination } from 'antd';
+import { Avatar, Empty, message, Pagination, Tooltip } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, BaseTable } from '~/components';
+import { useAppDispatch } from '~/redux/hooks';
+import { LoadingContext } from '~/context';
 // Others
-import { IInventory } from '~/utils/interfaces/interfaceInventory';
+import { inventoryThunk } from '~/thunks/inventory/inventoryThunk';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
+import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { mockDataInventory } from '~/utils/constants/mockData';
 import { renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Inventory.module.scss';
@@ -22,83 +25,164 @@ const cx = classNames.bind(styles);
 
 const Inventory = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Inventory Component' } = props;
+    // const { content = 'Inventory Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    const [data, setData] = useState<IInventory[]>(mockDataInventory);
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
-
-    //#region Handle Function
-
-    const columns: Columns<IInventory, DataType<IInventory>>[] = [
+    const columns: Columns<IProduct, DataType<IProduct>>[] = [
         {
-            title: t('Products'),
-            dataIndex: 'product_name',
-            key: 'product_name',
+            title: t('admin_products_code_label_table'),
+            dataIndex: 'productCode',
+            key: 'productCode',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            title: t('Buying Price'),
-            dataIndex: 'buying_price',
-            key: 'buying_price',
+            title: t('admin_products_name_label_table'),
+            dataIndex: 'productName',
+            key: 'productName',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            title: t('Quantity'),
-            dataIndex: 'quantity',
-            key: 'quantity',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
-        {
-            title: t('Threshold Value'),
-            dataIndex: ' thresholdValue',
-            key: ' thresholdValue',
+            title: t('admin_products_image_label_table'),
+            dataIndex: 'image',
+            key: 'image',
             render: (_, record) => {
-                if (record?.thresholdValue) {
-                    return <p>{`${renderFormatValue(record.thresholdValue)}`}</p>;
+                return (
+                    <Avatar.Group
+                        shape='circle'
+                        max={{
+                            count: 2,
+                        }}
+                    >
+                        {record?.variants?.map((image, index) => {
+                            return (
+                                <>{image ? <Avatar key={index} src={`${image}`} /> : `${renderFormatValue(image)}`}</>
+                            );
+                        })}
+                    </Avatar.Group>
+                );
+            },
+        },
+        {
+            title: t('admin_supplier_code_label_table'),
+            dataIndex: 'supplierCode',
+            key: 'supplierCode',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            title: t('admin_products_categories_label_table'),
+            dataIndex: 'category',
+            key: 'category',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            title: t('admin_products_selling_price_label_table'),
+            dataIndex: 'sellingPrice',
+            key: 'sellingPrice',
+            render: (_, record) => {
+                if (record?.price?.sellingPrice) {
+                    return <p>{`${record.price.sellingPrice ?? renderFormatValue(record.price.sellingPrice)}`}</p>;
                 }
             },
         },
         {
-            title: t('Expiry Date'),
-            dataIndex: ' expiryDate',
-            key: ' expiryDate',
+            title: t('admin_products_import_price_label_table'),
+            dataIndex: 'importPrice',
+            key: 'importPrice',
             render: (_, record) => {
-                if (record?.expiryDate) {
-                    return <p>{`${renderFormatValue(record.expiryDate)}`}</p>;
+                if (record?.price?.importPrice) {
+                    return <p>{`${record.price.importPrice ?? renderFormatValue(record.price.importPrice)}`}</p>;
                 }
             },
         },
         {
-            title: t('Availability'),
-            dataIndex: ' availability',
-            key: ' availability',
+            title: t('admin_products_store_quantity_label_table'),
+            dataIndex: 'storeQuantity',
+            key: 'storeQuantity',
             render: (_, record) => {
-                if (record?.availability) {
-                    return <p>{`${renderFormatValue(record.availability)}`}</p>;
+                if (record?.variants) {
+                    const totalQuantity = record.variants.reduce((total, variant) => {
+                        return (
+                            total +
+                            variant.sizes.reduce((prevSize, currenSize) => {
+                                return prevSize + (currenSize.storeQuantity ?? 0);
+                            }, 0)
+                        );
+                    }, 0);
+
+                    return <p>{`${totalQuantity ?? renderFormatValue(totalQuantity)}`}</p>;
+                }
+            },
+        },
+        {
+            title: t('admin_products_status_label_table'),
+            dataIndex: 'status',
+            key: 'status',
+            render: (text, _) => {
+                if (text) {
+                    return <p className={cx('inStock')}>${t('admin_products_in_stock_status')}</p>;
+                } else {
+                    return <p className={cx('outOfStock')}>{t('admin_products_in_out_of_stock_status')}</p>;
                 }
             },
         },
     ];
+    //#endregion Selector
 
-    const handleRowClick = (row: DataType<IInventory>) => {
+    //#region Declare State
+    const [paramsPage, setParamsPage] = useState<IParamsPagination>({
+        currentPage: 1,
+        limitPage: 10,
+    });
+    const [data, setData] = useState<IProduct[]>([]);
+    const [currentPage, setCurrentPage] = useState<IPagination>({
+        lengthPage: 0,
+        currentPage: 1,
+    });
+    //#endregion Declare State
+
+    //#region Implement Hook
+    useEffect(() => {
+        loadingContext?.show();
+        dispatch(inventoryThunk(paramsPage))
+            .unwrap()
+            .then((response) => {
+                const pagination = response?.pagination;
+                setData(response?.data);
+                setCurrentPage({
+                    lengthPage: pagination.lengthPage,
+                    currentPage: pagination.currentPage,
+                });
+            })
+            .catch((error) => {
+                message.error(error?.data);
+            })
+            .finally(() => {
+                loadingContext?.hide();
+            });
+    }, [paramsPage.currentPage]);
+    //#endregion Implement Hook
+
+    //#region Handle Function
+    const handleChangePage = (e: number) => {
+        setParamsPage({ ...paramsPage, currentPage: e });
+    };
+
+    const handleRowClick = (row: DataType<IProduct>) => {
         console.log('Clicked row data:', row);
     };
     //#endregion Handle Function
@@ -135,7 +219,14 @@ const Inventory = (props: Props) => {
                         <div className={cx('bodyInventory')}>
                             <BaseTable columns={columns} dataSource={data} onClick={handleRowClick} />
                             <div className={cx('footerPagination')}>
-                                <Pagination align='center' defaultCurrent={1} total={100} showSizeChanger={false} />
+                                <Pagination
+                                    className={cx('footerPagination')}
+                                    align='center'
+                                    defaultCurrent={currentPage.currentPage}
+                                    total={currentPage.lengthPage}
+                                    showSizeChanger={false}
+                                    onChange={handleChangePage}
+                                />
                             </div>
                         </div>
                     ) : (

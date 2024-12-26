@@ -11,7 +11,7 @@
 }
 
 .bodyInventory {
-    @apply flex flex-col flex-1 justify-between min-h-[80%]
+    @apply flex flex-col flex-1 justify-between min-h-[80%];
 }
 
 .headerInventory {
@@ -27,5 +27,13 @@
 }
 
 .footerPagination {
-    @apply pt-8;
+    @apply pt-4;
+}
+
+.inStock {
+    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-green-500;
+}
+
+.outOfStock {
+    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-red-500;
 }
