@@ -12,6 +12,7 @@ import orderIcon from '../icons/orderIcon.svg';
 import storeIcon from '../icons/storeIcon.svg';
 import listMenuIcon from '../icons/listMenuIcon.svg';
 import addressIcon from '../icons/addressIcon.svg';
+import deleteIcon from '../icons/deleteIcon.svg';
 
 const icons = {
     homeIcon,
@@ -28,6 +29,7 @@ const icons = {
     storeIcon,
     listMenuIcon,
     addressIcon,
+    deleteIcon,
 };
 
 export default icons;

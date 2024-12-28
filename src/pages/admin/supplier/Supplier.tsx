@@ -16,6 +16,7 @@ import { supplierThunk } from '~/thunks/supplier/supplierThunk';
 import { convertTypeSupplier, renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
+import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
 
 type Props = {
     content?: string;
@@ -96,7 +97,8 @@ const Supplier = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [open, setOpen] = useState<boolean>(false);
+    const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
+    const [openModalAddSupplier, setOpenModalAddSupplier] = useState<boolean>(false);
     const [data, setData] = useState<ISupplier[]>([]);
     const [supplier, setSupplier] = useState<ISupplier>();
     const [currentPage, setCurrentPage] = useState<IPagination>({
@@ -135,7 +137,15 @@ const Supplier = (props: Props) => {
     const handleRowClick = (row: DataType<ISupplier>) => {
         // console.log('Clicked row data:', row);
         setSupplier(row);
-        setOpen(true);
+        setOpenDrawerDetail(true);
+    };
+
+    const handleAddSupplier = () => {
+        setOpenModalAddSupplier(true);
+    };
+
+    const handleCloseAddSupplier = () => {
+        setOpenModalAddSupplier(false);
     };
 
     const handleChangePage = (e: number) => {
@@ -154,6 +164,7 @@ const Supplier = (props: Props) => {
                         nameButton={t('common_add_supplier')}
                         title={t('common_add_supplier')}
                         styleButton={ButtonStyleEnum.PRIMARY}
+                        onClick={handleAddSupplier}
                     />
                     <BaseButton
                         nameButton={t('common_filters')}
@@ -179,7 +190,17 @@ const Supplier = (props: Props) => {
                     <Empty className={cx('bodyEmptySupplier')} />
                 )}
             </>
-            {supplier && <DrawerDetail open={open} setOpen={setOpen} dataSupplier={supplier} />}
+            <>
+                {supplier && (
+                    <DrawerDetail
+                        openDrawerDetail={openDrawerDetail}
+                        setOpenDrawerDetail={setOpenDrawerDetail}
+                        dataSupplier={supplier}
+                    />
+                )}
+            </>
+
+            <FormAddSupplier isShowModal={openModalAddSupplier} onCancel={handleCloseAddSupplier} />
         </div>
     );
 };

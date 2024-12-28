@@ -56,8 +56,7 @@ const Login = (props: Props) => {
         });
     };
 
-    const handleLogin = async (e: React.FormEvent) => {
-        // e.preventDefault();
+    const handleLogin = async () => {
         loadingContext?.show();
         dispatch(authLoginThunk(dataLogin))
             .unwrap()
@@ -86,9 +85,7 @@ const Login = (props: Props) => {
         <div id='formLoginPage' className={cx('mainLogin')}>
             <Form name='login' layout='vertical' onFinish={handleLogin}>
                 <div className={cx('headerFormLogin')}>
-                    <h1 className={cx('titleHear')}>
-                        {t('login_title_header')}
-                    </h1>
+                    <h1 className={cx('titleHear')}>{t('login_title_header')}</h1>
                     <p>{t('login_title_label')}</p>
                 </div>
                 <Form.Item
