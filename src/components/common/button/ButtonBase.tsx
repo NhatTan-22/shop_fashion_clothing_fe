@@ -9,7 +9,6 @@ import styles from './ButtonBase.module.scss';
 
 type Props = {
     title?: string;
-    typeStyle?: string;
     nameButton?: string;
     label?: string;
     type?: TypeButtonENum;

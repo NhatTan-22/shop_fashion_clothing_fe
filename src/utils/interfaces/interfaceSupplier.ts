@@ -1,8 +1,8 @@
 export interface ISupplier {
     id: string;
-    supplierImage?: string;
-    supplierName?: string;
     supplierCode: string;
+    supplierName?: string;
+    supplierImage?: string;
     supplierPhone?: number;
     supplierEmail?: string;
     supplierAddress?: string;

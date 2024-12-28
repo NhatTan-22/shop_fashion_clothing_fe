@@ -13,8 +13,8 @@ import { icons } from '~/assets';
 import styles from './DrawerDetail.module.scss';
 
 type Props = {
-    open?: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    openDrawerDetail?: boolean;
+    setOpenDrawerDetail: React.Dispatch<React.SetStateAction<boolean>>;
     dataSupplier?: ISupplier;
 };
 
@@ -22,7 +22,7 @@ const cx = classNames.bind(styles);
 
 const DrawerDetail = (props: Props) => {
     //#region Destructuring Props
-    const { open, setOpen, dataSupplier } = props;
+    const { openDrawerDetail, setOpenDrawerDetail, dataSupplier } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -45,8 +45,8 @@ const DrawerDetail = (props: Props) => {
     return (
         <div id='drawerDetailComponent' className={cx('mainDrawerDetail')}>
             <Drawer
-                onClose={() => setOpen(!open)}
-                open={open}
+                onClose={() => setOpenDrawerDetail(!openDrawerDetail)}
+                open={openDrawerDetail}
                 title={<div className={cx('titleDrawer')}>{dataSupplier?.supplierName ?? '--'}</div>}
                 width={400}
                 // Delete
@@ -55,7 +55,7 @@ const DrawerDetail = (props: Props) => {
                         styleButton={ButtonStyleEnum.PRIMARY_RED}
                         nameButton={t('common_delete')}
                         className={cx('styleButton')}
-                        prevIcon={icons.addressIcon}
+                        prevIcon={icons.deleteIcon}
                     />
                 }
             >
@@ -70,7 +70,7 @@ const DrawerDetail = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.emailIcon} alt='' /> {t('supplier_email_label')}
+                                <img src={icons.emailIcon} alt='' /> {t('admin_supplier_email_label')}
                             </span>
                             <span>{dataSupplier?.supplierEmail ?? '--'}</span>
                         </div>
@@ -78,7 +78,7 @@ const DrawerDetail = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.phoneIcon} alt='' /> {t('supplier_phone_label')}
+                                <img src={icons.phoneIcon} alt='' /> {t('admin_supplier_contact_phone_label')}
                             </span>
                             <span>{dataSupplier?.supplierPhone ?? '--'}</span>
                         </div>
@@ -86,14 +86,14 @@ const DrawerDetail = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.addressIcon} alt='' /> {t('supplier_address_label')}
+                                <img src={icons.addressIcon} alt='' /> {t('admin_supplier_address_label')}
                             </span>
                             <span>{dataSupplier?.supplierAddress ?? '--'}</span>
                         </div>
                     </li>
                     <li>
                         <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>{t('supplier_code_product_label')}</span>
+                            <span className={cx('titleItemDrawer')}>{t('admin_supplier_code_product_label')}</span>
                             <span>{dataSupplier?.supplierCode ?? '--'}</span>
                         </div>
                     </li>

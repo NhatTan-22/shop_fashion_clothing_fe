@@ -1,1 +1,1 @@
-export { default as FormSupplier } from './formSupplier/FormSupplier';
+export { default as FormSupplier } from './formSupplier/FormAddSupplier';

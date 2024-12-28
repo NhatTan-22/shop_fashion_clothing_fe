@@ -1,0 +1,15 @@
+.modalAddSupplier {
+    @apply min-w-[800px];
+}
+
+.modalTitle {
+    @apply border-b-2 pb-3 font-bold text-xl;
+}
+
+.formAddSupplier {
+    @apply mt-8 border-b-2 pb-3 gap-32;
+}
+
+.uploadFormAddSupplier {
+    @apply mb-3;
+}
