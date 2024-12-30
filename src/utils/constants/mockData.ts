@@ -2,7 +2,6 @@ import { IProduct } from '../interfaces/interfaceProduct';
 
 export const mockData: IProduct[] = [
     {
-        id: '1',
         productCode: 'P001',
         productName: 'T-shirt Basic',
         productImage: 'https://example.com/images/tshirt-basic.jpg',
@@ -73,7 +72,6 @@ export const mockData: IProduct[] = [
         category: 'Clothing',
     },
     {
-        id: '2',
         productCode: 'P002',
         productName: 'Running Shoes',
         productImage: 'https://example.com/images/running-shoes.jpg',

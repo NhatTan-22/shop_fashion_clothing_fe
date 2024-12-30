@@ -61,7 +61,7 @@ const AdminLayout = (props: Props) => {
     return (
         <div id='adminLayout' className={cx('mainAdminLayout')}>
             <div className={cx(`${isOpenSideBae ? 'sideBarAdminOpen' : 'sideBarAdminClose'}`)}>
-                <img className={cx('logoFashionStore')} src='' alt='' />
+                <img className={cx('logoFashionStore')} src={images.logoFashionStore} alt='' />
                 {isOpenSideBae && <SideBar items={sidebarItems} />}
             </div>
             <div className={cx('wrapperAdmin')}>

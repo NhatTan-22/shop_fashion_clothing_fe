@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { supplierThunk } from './supplierThunk';
+import { addSupplierThunk, getSupplierThunk } from './supplierThunk';
 
 export interface ISupplier {
     supplierImage?: string;
@@ -29,9 +29,14 @@ const supplierSlice = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder
-            .addCase(supplierThunk.pending, (state, action) => {})
-            .addCase(supplierThunk.fulfilled, (state, action) => {})
-            .addCase(supplierThunk.rejected, (state, action) => {});
+            .addCase(getSupplierThunk.pending, (state, action) => {})
+            .addCase(getSupplierThunk.fulfilled, (state, action) => {})
+            .addCase(getSupplierThunk.rejected, (state, action) => {});
+
+        builder
+            .addCase(addSupplierThunk.pending, (state, action) => {})
+            .addCase(addSupplierThunk.fulfilled, (state, action) => {})
+            .addCase(addSupplierThunk.rejected, (state, action) => {});
     },
 });
 

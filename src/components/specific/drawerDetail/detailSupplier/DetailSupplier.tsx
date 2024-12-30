@@ -10,7 +10,8 @@ import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { convertTypeSupplier } from '~/utils/constants/helper';
 // Styles, Images, icons
 import { icons } from '~/assets';
-import styles from './DrawerDetail.module.scss';
+import styles from './DetailSupplier.module.scss';
+import { baseURL } from '~/utils/constants/env';
 
 type Props = {
     openDrawerDetail?: boolean;
@@ -20,7 +21,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const DrawerDetail = (props: Props) => {
+const DetailSupplier = (props: Props) => {
     //#region Destructuring Props
     const { openDrawerDetail, setOpenDrawerDetail, dataSupplier } = props;
     //#endregion Destructuring Props
@@ -62,8 +63,8 @@ const DrawerDetail = (props: Props) => {
                 <ul>
                     <li>
                         <img
-                            src={dataSupplier?.supplierImage}
-                            alt={`${dataSupplier?.supplierName}`}
+                            src={`${baseURL}/${dataSupplier?.supplierImage}`}
+                            alt={dataSupplier?.supplierName}
                             className={cx('imageDrawer')}
                         />
                     </li>
@@ -115,4 +116,4 @@ const DrawerDetail = (props: Props) => {
     );
 };
 
-export default DrawerDetail;
+export default DetailSupplier;

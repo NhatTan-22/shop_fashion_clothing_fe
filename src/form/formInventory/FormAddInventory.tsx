@@ -1,18 +1,13 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Col, Form, GetProp, Input, message, Modal, Row, Select, Upload, UploadFile, UploadProps } from 'antd';
+import { Col, Form, GetProp, Input, Modal, Row, Select, Upload, UploadFile, UploadProps } from 'antd';
 import { useTranslation } from 'react-i18next';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 // Components, Layouts, Pages
 // Others
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
-import { baseURL } from '~/utils/constants/env';
-import { urlApiSupplier } from '~/utils/constants/actionType';
 // Styles, Images, icons
-import styles from './FormAddSupplier.module.scss';
-import { useAppDispatch } from '~/redux/hooks';
-import { LoadingContext } from '~/context';
-import { addSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import styles from './FormAddInventory.module.scss';
 
 type Props = {
     isShowModal?: boolean;
@@ -33,25 +28,17 @@ const FormAddSupplier = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
     //#endregion Selector
 
     //#region Declare State
-    const [supplier, setSupplier] = useState<ISupplier>({
-        supplierCode: '',
-        supplierName: '',
-        supplierImage: null,
-        supplierPhone: 0,
-        supplierEmail: '',
-        supplierAddress: '',
-        productCode: '',
-        isTaking: [],
-        quantityImported: 0,
-    });
+    const [supplier, setSupplier] = useState<ISupplier>();
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [countryCode, setCountryCode] = useState('+84');
+
+    const [fileList, setFileList] = useState<UploadFile>();
     //#endregion Declare State
 
     //#region Implement Hook
@@ -59,46 +46,12 @@ const FormAddSupplier = (props: Props) => {
 
     //#region Handle Function
     const handleGetInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setSupplier((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
     };
+
+    const handleAddSupplier = async () => {};
 
     const onChange: UploadProps['onChange'] = ({ file: newFile }) => {
-        if (newFile.status === 'done') {
-            setSupplier({
-                ...supplier,
-                supplierImage: newFile.originFileObj || null,
-            });
-        }
-    };
-
-    const handleAddSupplier = async () => {
-        const formData = new FormData();
-        Object.entries(supplier).forEach(([key, value]) => {
-            if (key === 'isTaking') {
-                formData.append(key, JSON.stringify(value));
-            } else if (key === 'supplierImage' && value) {
-                formData.append(key, value);
-            } else if (value !== undefined && value !== null) {
-                formData.append(key, value.toString());
-            }
-        });
-
-        loadingContext?.show();
-        dispatch(addSupplierThunk(formData))
-            .unwrap()
-            .then((response) => {
-                message.success(response.message);
-            })
-            .catch((error) => {
-                message.error(error.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                onCancel();
-            });
+        setFileList(newFile);
     };
 
     const onPreview = async (file: UploadFile) => {
@@ -184,18 +137,14 @@ const FormAddSupplier = (props: Props) => {
                             ]}
                         >
                             <Input
-                                // addonBefore={
-                                //     <Select
-                                //         defaultValue='+84'
-                                //         style={{ width: 70 }}
-                                //         onSelect={(e) => setCountryCode(e)}
-                                //     >
-                                //         <Option value='+1'>+1</Option>
-                                //         <Option value='+44'>+44</Option>
-                                //         <Option value='+91'>+91</Option>
-                                //         <Option value='+84'>+84</Option>
-                                //     </Select>
-                                // }
+                                addonBefore={
+                                    <Select defaultValue='+84' style={{ width: 70 }}>
+                                        <Option value='+1'>+1</Option>
+                                        <Option value='+44'>+44</Option>
+                                        <Option value='+91'>+91</Option>
+                                        <Option value='+84'>+84</Option>
+                                    </Select>
+                                }
                                 className={cx('inputFormAddSupplier')}
                                 id='supplierPhone'
                                 name='supplierPhone'
@@ -255,10 +204,8 @@ const FormAddSupplier = (props: Props) => {
                         <Upload
                             name='supplierImage'
                             className={cx('uploadFormAddSupplier')}
+                            action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
                             listType='picture-card'
-                            customRequest={(options: any) => {
-                                options.onSuccess?.({}, options.file);
-                            }}
                             onChange={onChange}
                             onPreview={onPreview}
                             maxCount={1}
@@ -281,7 +228,7 @@ const FormAddSupplier = (props: Props) => {
                                 className={cx('inputFormAddSupplier')}
                                 id='productCode'
                                 name='productCode'
-                                type='text'
+                                type='number'
                                 placeholder={t('admin_add_supplier_product_code_placeholder')}
                                 title={t('admin_supplier_product_code_label')}
                                 onChange={handleGetInput}
