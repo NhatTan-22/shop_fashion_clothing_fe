@@ -15,6 +15,7 @@ export const urlApiAuth = {
 
 export const urlApiSupplier = {
     getAllSupplier: '/admin/suppliers',
+    addSupplier: '/admin/suppliers/new-add',
 };
 
 export const urlApiInventory = {

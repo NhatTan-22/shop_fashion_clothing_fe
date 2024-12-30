@@ -5,18 +5,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Empty, message, Pagination } from 'antd';
 // Components, Layouts, Pages
 import { useAppDispatch } from '~/redux/hooks';
-import { BaseButton, BaseTable, DrawerDetail } from '~/components';
+import { BaseButton, BaseTable, DetailSupplier } from '~/components';
+import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
 // Others
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { LoadingContext } from '~/context';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { supplierThunk } from '~/thunks/supplier/supplierThunk';
+import { getSupplierThunk } from '~/thunks/supplier/supplierThunk';
 import { convertTypeSupplier, renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
-import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
 
 type Props = {
     content?: string;
@@ -114,7 +114,7 @@ const Supplier = (props: Props) => {
     //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
-        dispatch(supplierThunk(paramsPage))
+        dispatch(getSupplierThunk(paramsPage))
             .unwrap()
             .then((response) => {
                 const pagination = response?.pagination;
@@ -130,7 +130,7 @@ const Supplier = (props: Props) => {
             .finally(() => {
                 loadingContext?.hide();
             });
-    }, [paramsPage.currentPage]);
+    }, [paramsPage.currentPage, data.length]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -192,7 +192,7 @@ const Supplier = (props: Props) => {
             </>
             <>
                 {supplier && (
-                    <DrawerDetail
+                    <DetailSupplier
                         openDrawerDetail={openDrawerDetail}
                         setOpenDrawerDetail={setOpenDrawerDetail}
                         dataSupplier={supplier}

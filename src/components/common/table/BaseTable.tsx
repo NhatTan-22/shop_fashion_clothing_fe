@@ -35,6 +35,7 @@ const BaseTable = <T extends object>(props: Props<T>) => {
         if (dataSource.length) {
             setSource(dataSource);
         }
+        setSource(dataSource);
     }, [dataSource]);
     //#endregion Implement Hook
 
