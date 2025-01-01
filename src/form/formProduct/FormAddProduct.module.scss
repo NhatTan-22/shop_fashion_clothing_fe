@@ -1,0 +1,27 @@
+.modalAddProduct {
+    @apply min-w-[50%];
+}
+
+.modalTitle {
+    @apply border-b-2 pb-3 font-bold text-xl;
+}
+
+.formAddProduct {
+    @apply mt-8 border-b-2 pb-3 gap-32;
+}
+
+.uploadFormAddProduct {
+    @apply mb-3;
+}
+
+.labelProduct {
+    @apply text-base font-bold;
+}
+
+.styleButton {
+    @apply ml-2 mt-10;
+}
+
+.form {
+    @apply flex-1;
+}
