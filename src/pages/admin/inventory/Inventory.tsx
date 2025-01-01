@@ -2,11 +2,12 @@
 import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Empty, message, Pagination, Tooltip } from 'antd';
+import { Avatar, Empty, message, Pagination } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, BaseTable } from '~/components';
 import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
+import { FormAddProduct } from '~/form';
 // Others
 import { inventoryThunk } from '~/thunks/inventory/inventoryThunk';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
@@ -144,6 +145,8 @@ const Inventory = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
+    const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
+    const [openModalAddProduct, setOpenModalAddProduct] = useState<boolean>(false);
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
         currentPage: 1,
         limitPage: 10,
@@ -182,8 +185,18 @@ const Inventory = (props: Props) => {
         setParamsPage({ ...paramsPage, currentPage: e });
     };
 
+    const handleAddProduct = () => {
+        setOpenModalAddProduct(true);
+    };
+
+    const handleCloseAddProduct = () => {
+        setOpenModalAddProduct(false);
+    };
+
     const handleRowClick = (row: DataType<IProduct>) => {
+        // Component detail Inventory
         console.log('Clicked row data:', row);
+        setOpenDrawerDetail(true);
     };
     //#endregion Handle Function
 
@@ -205,6 +218,7 @@ const Inventory = (props: Props) => {
                             nameButton={t('common_add_product')}
                             title={t('common_add_product')}
                             styleButton={ButtonStyleEnum.PRIMARY}
+                            onClick={handleAddProduct}
                         />
                         <BaseButton
                             nameButton={t('common_filters')}
@@ -234,6 +248,10 @@ const Inventory = (props: Props) => {
                     )}
                 </>
             </div>
+
+            <>
+                <FormAddProduct isShowModal={openModalAddProduct} onCancel={handleCloseAddProduct} />
+            </>
         </div>
     );
 };
