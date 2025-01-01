@@ -119,7 +119,7 @@ const FormAddSupplier = (props: Props) => {
 
     return (
         <Modal
-            title={<div className={cx('modalTitle')}>{t('admin_supplier_add_supplier_title')}</div>}
+            title={<div className={cx('modalTitle')}>{t('admin_supplier_new_supplier_title')}</div>}
             centered
             className={cx('modalAddSupplier')}
             open={isShowModal}
@@ -133,7 +133,7 @@ const FormAddSupplier = (props: Props) => {
                             name='supplierCode'
                             label={
                                 <label className={cx('labelAddSupplier')} htmlFor='supplierCode'>
-                                    {t('admin_supplier_code_label')}
+                                    {t('admin_supplier_code_label_input')}
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_code_required')}` }]}
@@ -145,7 +145,7 @@ const FormAddSupplier = (props: Props) => {
                                 type='text'
                                 autoFocus
                                 placeholder={t('admin_add_supplier_code_placeholder')}
-                                title={t('admin_supplier_code_label')}
+                                title={t('admin_supplier_code_label_input')}
                                 onChange={handleGetInput}
                             />
                         </Form.Item>
@@ -153,7 +153,7 @@ const FormAddSupplier = (props: Props) => {
                             name='supplierName'
                             label={
                                 <label className={cx('labelAddSupplier')} htmlFor='supplierName'>
-                                    {t('admin_supplier_name_label')}
+                                    {t('admin_supplier_name_label_input')}
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_name_required')}` }]}
@@ -164,7 +164,7 @@ const FormAddSupplier = (props: Props) => {
                                 name='supplierName'
                                 type='text'
                                 placeholder={t('admin_add_supplier_name_placeholder')}
-                                title={t('admin_supplier_name_label')}
+                                title={t('admin_supplier_name_label_input')}
                                 onChange={handleGetInput}
                             />
                         </Form.Item>
@@ -172,7 +172,7 @@ const FormAddSupplier = (props: Props) => {
                             name='supplierPhone'
                             label={
                                 <label className={cx('labelAddSupplier')} htmlFor='supplierPhone'>
-                                    {t('admin_supplier_contact_phone_label')}
+                                    {t('admin_supplier_contact_phone_label_input')}
                                 </label>
                             }
                             rules={[
@@ -201,7 +201,7 @@ const FormAddSupplier = (props: Props) => {
                                 name='supplierPhone'
                                 type='tel'
                                 placeholder={t('admin_add_supplier_phone_placeholder')}
-                                title={t('admin_supplier_contact_phone_label')}
+                                title={t('admin_supplier_contact_phone_label_input')}
                                 onChange={handleGetInput}
                             />
                         </Form.Item>
@@ -255,7 +255,7 @@ const FormAddSupplier = (props: Props) => {
                         <Upload
                             name='supplierImage'
                             className={cx('uploadFormAddSupplier')}
-                            listType='picture-card'
+                            listType='picture-circle'
                             customRequest={(options: any) => {
                                 options.onSuccess?.({}, options.file);
                             }}
@@ -267,12 +267,11 @@ const FormAddSupplier = (props: Props) => {
                                 <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
                             </button>
                         </Upload>
-
                         <Form.Item
                             name='productCode'
                             label={
                                 <label className={cx('labelAddSupplier')} htmlFor='productCode'>
-                                    {t('admin_supplier_product_code_label')}
+                                    {t('admin_supplier_product_code_label_input')}
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_product_code_required')}` }]}
@@ -283,16 +282,15 @@ const FormAddSupplier = (props: Props) => {
                                 name='productCode'
                                 type='text'
                                 placeholder={t('admin_add_supplier_product_code_placeholder')}
-                                title={t('admin_supplier_product_code_label')}
+                                title={t('admin_supplier_product_code_label_input')}
                                 onChange={handleGetInput}
                             />
                         </Form.Item>
-
                         <Form.Item
                             name='quantityImported'
                             label={
                                 <label className={cx('labelAddSupplier')} htmlFor='quantityImported'>
-                                    {t('admin_supplier_quantity_imported_label')}
+                                    {t('admin_supplier_quantity_imported_label_input')}
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_quantity_import_required')}` }]}
@@ -303,7 +301,7 @@ const FormAddSupplier = (props: Props) => {
                                 name='quantityImported'
                                 type='number'
                                 placeholder={t('admin_add_supplier_quantity_import_placeholder')}
-                                title={t('admin_supplier_quantity_imported_label')}
+                                title={t('admin_supplier_quantity_imported_label_input')}
                                 onChange={handleGetInput}
                             />
                         </Form.Item>

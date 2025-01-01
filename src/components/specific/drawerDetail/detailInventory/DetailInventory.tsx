@@ -84,7 +84,7 @@ const DetailInventory = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.phoneIcon} alt='' /> {t('admin_supplier_contact_phone_label')}
+                                <img src={icons.phoneIcon} alt='' /> {t('admin_supplier_contact_phone_label_input')}
                             </span>
                             <span>{dataSupplier?.supplierPhone ?? '--'}</span>
                         </div>

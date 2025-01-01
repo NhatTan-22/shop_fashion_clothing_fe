@@ -135,7 +135,6 @@ const Supplier = (props: Props) => {
 
     //#region Handle Function
     const handleRowClick = (row: DataType<ISupplier>) => {
-        // console.log('Clicked row data:', row);
         setSupplier(row);
         setOpenDrawerDetail(true);
     };
