@@ -108,6 +108,11 @@
     "admin_supplier_address_label": "Address:",
     "supplier_quantity_imported_label": "Quantity Imported:",
 
+    "admin_inventory_categories_title": "Categories",
+    "admin_inventory_total_products_title": "Total Products",
+    "admin_inventory_top_selling_title": "Top Selling",
+    "admin_inventory_low_stocks_title": "Low Stocks",
+
     "admin_product_new_product_title": "New Product",
     "admin_product_code_label_input": "Product Code",
     "admin_product_name_label_input": "Product Name",
