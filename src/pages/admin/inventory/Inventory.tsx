@@ -206,7 +206,52 @@ const Inventory = (props: Props) => {
                 <div className={cx('headerTitle')}>
                     <h1>{t('admin_overall_inventory_header')}</h1>
                 </div>
-                <div>{/* Components Header Content */}</div>
+                <div className={cx('bodyOverall')}>
+                    <div className={cx('columnsBodyOverall')}>
+                        <div className={cx('titleCategories')}>{t('admin_inventory_categories_title')}</div>
+                        <h3>14</h3>
+                        <div className='text-gray-400'>Last 7 days</div>
+                    </div>
+                    <div className={cx('columnsBodyOverall')}>
+                        <div className={cx('titleTotalProduct')}>{t('admin_inventory_total_products_title')}</div>
+                        <div className={cx('columnOverall')}>
+                            <div className={cx('description')}>
+                                <h3>868</h3>
+                                <span>Last 7 days</span>
+                            </div>
+                            <div className={cx('description')}>
+                                <h3>$25000</h3>
+                                <span>Revenue</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={cx('columnsBodyOverall')}>
+                        <div className={cx('titleTopSelling')}>{t('admin_inventory_top_selling_title')}</div>
+                        <div className={cx('columnOverall')}>
+                            <div className={cx('description')}>
+                                <h3>5</h3>
+                                <span>Last 7 days</span>
+                            </div>
+                            <div className={cx('description')}>
+                                <h3>$2500</h3>
+                                <span>Cost</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={cx('columnsBodyOverall')}>
+                        <div className={cx('titleLowStocks')}>{t('admin_inventory_low_stocks_title')}</div>
+                        <div className={cx('columnOverall')}>
+                            <div className={cx('description')}>
+                                <h3>12</h3>
+                                <span>Ordered</span>
+                            </div>
+                            <div className={cx('description')}>
+                                <h3>2</h3>
+                                <span>Not in stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className={cx('contentProductsInventory')}>
                 <div className={cx('headerInventory')}>

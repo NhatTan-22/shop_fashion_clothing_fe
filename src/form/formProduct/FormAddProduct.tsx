@@ -9,7 +9,7 @@ import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 // Styles, Images, icons
 import styles from './FormAddProduct.module.scss';
 import { BaseButton } from '~/components';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
 import { icons } from '~/assets';
 
 type Props = {
@@ -37,8 +37,6 @@ const FormAddProduct = (props: Props) => {
 
     //#region Declare State
     const [supplier, setSupplier] = useState<ISupplier>();
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [countryCode, setCountryCode] = useState('+84');
 
     const [fileList, setFileList] = useState<UploadFile>();
     //#endregion Declare State
@@ -48,6 +46,8 @@ const FormAddProduct = (props: Props) => {
 
     //#region Handle Function
     const handleGetInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {};
+
+    const handleClear = async () => {};
 
     const handleAddProduct = async () => {};
 
@@ -78,7 +78,18 @@ const FormAddProduct = (props: Props) => {
             className={cx('modalAddProduct')}
             open={isShowModal}
             onCancel={onCancel}
+            okText='Add Product'
             onOk={handleAddProduct}
+            footer={
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                    <BaseButton key='clear' onClick={handleClear}>
+                        Clear
+                    </BaseButton>
+                    <BaseButton styleButton={ButtonStyleEnum.PRIMARY} onClick={handleAddProduct}>
+                        Add Product
+                    </BaseButton>
+                </div>
+            }
         >
             <Form name='addProduct' className={cx('formAddProduct')} onFinish={handleAddProduct}>
                 <Row justify='space-between'>
