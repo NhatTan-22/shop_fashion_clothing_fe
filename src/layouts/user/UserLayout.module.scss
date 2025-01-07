@@ -1,0 +1,45 @@
+.mainUserLayout {
+    @apply h-screen w-screen font-nunito overflow-auto;
+    scrollbar-width: none;
+}
+
+.header {
+    @apply fixed top-0 left-0 right-0 z-10 shadow-lg bg-white;
+}
+
+.titleHeaderTop {
+    @apply flex py-2 justify-between opacity-50 mx-6 relative;
+}
+
+.titleHeaderTop::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-px bg-gray-400;
+}
+
+.titleRightHeaderTop {
+    @apply flex items-center;
+}
+
+.titleRightHeaderTopLocation {
+    @apply inline-flex items-center px-3 mx-3 border-2 border-t-transparent border-b-transparent border-r-black border-l-black;
+}
+
+.titleRightHeaderTop span {
+    @apply ml-1;
+}
+
+.navigateHeader {
+    @apply mx-auto max-w-screen-2xl items-center flex justify-between my-1;
+}
+
+.inputSearch {
+    @apply h-6 w-64 py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl focus:border-red-500;
+}
+
+.actionUser {
+    @apply items-center grid grid-flow-col gap-4 w-full text-center;
+}
+
+.wrapperBody {
+    @apply mx-auto max-w-screen-2xl mt-44;
+}

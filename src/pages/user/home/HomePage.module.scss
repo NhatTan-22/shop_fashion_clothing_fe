@@ -1,0 +1,11 @@
+.mainHomePage {
+    @apply font-nunito text-base grid grid-flow-row gap-5;
+}
+
+.headerPopularProducts {
+    @apply flex justify-between;
+}
+
+.headerPopularProductsRight {
+    @apply flex;
+}

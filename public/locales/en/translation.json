@@ -143,5 +143,8 @@
     "admin_add_product_selling_quantity_required": "Please input your Selling Quantity!",
     "admin_add_product_selling_quantity_placeholder": "Enter your Selling Quantity",
 
-    "_user": "User"
+    "_user": "User",
+    "user_title_header_top": "We are open with limited hours and staff.",
+    "user_name_store_header_top": "SHOP FASHION CLOTHING",
+    "user_phone_header_top": "(+84) 868342028"
 }

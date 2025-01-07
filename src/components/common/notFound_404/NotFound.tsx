@@ -9,6 +9,7 @@ import { BaseButton } from '~/components';
 import styles from './NotFound.module.scss';
 import { useTranslation } from 'react-i18next';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { images } from '~/assets';
 
 type Props = {
     content?: string;
@@ -43,7 +44,7 @@ const NotFoundPage = (props: Props) => {
                 {/* <img className='h-screen w-screen object-contain' alt='NotFound_404' src='' /> */}
             </div>
             <div className='absolute top-56 text-center text-base w-full text-orange-500'>
-                {/* <img className="w-1/2 h-1/2 rounded-full" alt="" src="/images/LogoTS.png" /> */}
+                {/* <img alt='' src={images.fashionStore} /> */}
                 <h1 className='text-5xl font-bold'>{t('No content found')}</h1>
                 <ul className='mt-4 flex flex-col gap-2 text-base'>
                     <li>
@@ -54,10 +55,13 @@ const NotFoundPage = (props: Props) => {
                         {t('If you')} <strong>{t('saving this URL')}</strong>,{t('try it')}{' '}
                         <strong>{t('re-access from home page')} </strong> {t('instead of using the saved URL.')}
                     </li>
+                    <li>
+                        <Link to='/'>
+                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton={t('Visit home page')} />
+                        </Link>
+                    </li>
                 </ul>
-                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                    <Link to='/'>{t('Visit home page')}</Link>
-                </BaseButton>
+
                 <div className={cx('orToProduct')}>
                     👉 hoặc đi tới
                     <BaseButton styleButton={ButtonStyleEnum.TEXT}>

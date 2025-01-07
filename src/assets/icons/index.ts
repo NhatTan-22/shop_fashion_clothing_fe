@@ -13,6 +13,9 @@ import storeIcon from '../icons/storeIcon.svg';
 import listMenuIcon from '../icons/listMenuIcon.svg';
 import addressIcon from '../icons/addressIcon.svg';
 import deleteIcon from '../icons/deleteIcon.svg';
+import heartIcon from '../icons/heartIcon.svg';
+import cartIcon from '../icons/cartIcon.svg';
+import arrowRightIcon from '../icons/arrowRightIcon.svg';
 
 const icons = {
     homeIcon,
@@ -30,6 +33,9 @@ const icons = {
     listMenuIcon,
     addressIcon,
     deleteIcon,
+    heartIcon,
+    cartIcon,
+    arrowRightIcon,
 };
 
 export default icons;
