@@ -1,9 +1,11 @@
 // Libs
 import classNames from 'classnames/bind';
+import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
+import { Slider } from '~/components';
 // Others
 // Styles, Images, icons
-import styles from './Example.module.scss';
+import styles from './ProductsPage.module.scss';
 
 type Props = {
     content?: string;
@@ -11,12 +13,13 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const DialogDefault = (props: Props) => {
+const ProductsPage = (props: Props) => {
     //#region Destructuring Props
     const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
+    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
@@ -31,7 +34,11 @@ const DialogDefault = (props: Props) => {
     //#region Handle Function
     //#endregion Handle Function
 
-    return <>{content}</>;
+    return (
+        <div id='productsPage' className={cx('mainProductsPage')}>
+            <div>{content}</div>
+        </div>
+    );
 };
 
-export default DialogDefault;
+export default ProductsPage;

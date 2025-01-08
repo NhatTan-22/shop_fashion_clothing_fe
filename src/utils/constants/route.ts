@@ -1,5 +1,5 @@
 import { IRouteModel } from '../interfaces/common';
-import { AboutPage, Dashboard, HomePage, Inventory, Login, Register, Report, Supplier } from '~/pages';
+import { ContactPage, Dashboard, HomePage, Inventory, Login, ProductsPage, Register, Report, Supplier } from '~/pages';
 
 // Path Router
 export const authRoute = {
@@ -24,7 +24,7 @@ export const userRoute = {
     home: '/home',
     products: '/products',
     cart: '/cart',
-    about: '/about',
+    contact: '/contact',
 };
 
 //#region Auth Routes
@@ -77,8 +77,12 @@ export const publicUserRoutes: IRouteModel[] = [
         component: HomePage,
     },
     {
-        path: userRoute.about,
-        component: AboutPage,
+        path: userRoute.products,
+        component: ProductsPage,
+    },
+    {
+        path: userRoute.contact,
+        component: ContactPage,
     },
 ];
 

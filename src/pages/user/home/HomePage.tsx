@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, Slider } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
@@ -42,43 +42,46 @@ const HomePage = (props: Props) => {
 
     return (
         <div id='homePage' className={cx('mainHomePage')}>
-            <div className={cx('headerPopularProducts')}>
-                <div>
-                    <h1 className='leading-9 text-3xl font-semibold'>Popular products</h1>
+            <Slider />
+            <div className={cx('swapper')}>
+                <div className={cx('headerPopularProducts')}>
+                    <div>
+                        <h1 className='leading-9 text-3xl font-semibold'>Popular products</h1>
+                    </div>
+                    <div className={cx('headerPopularProductsRight')}>
+                        <Link to='/products'>
+                            <BaseButton
+                                styleButton={ButtonStyleEnum.TEXT}
+                                nextIcon={`${icons.arrowRightIcon}`}
+                                nameButton='View products'
+                            />
+                        </Link>
+                    </div>
                 </div>
-                <div className={cx('headerPopularProductsRight')}>
-                    <Link to='/products/all'>
-                        <BaseButton
-                            styleButton={ButtonStyleEnum.TEXT}
-                            nextIcon={`${icons.arrowRightIcon}`}
-                            nameButton='View all products'
-                        />
-                    </Link>
-                </div>
-            </div>
-            <div className='mb-24'>
-                {data?.map((product, index) => {
-                    return (
-                        <div className='flex justify-center text-center' key={index}>
-                            <div className='h-auto w-56 rounded-md bg-gray-100 shadow-xl mx-4'>
-                                <div className='text-base mb-8 pb-5'>
-                                    <Link to={`/products/details/{id}`}>
-                                        <BaseButton>
-                                            <img className='w-40 h-40 my-8' src={`${baseURL}/${''}`} alt={''} />
-                                        </BaseButton>
-                                        <div className='hover:text-red-600 my-4'>
+                <div className='mb-24'>
+                    {data?.map((product, index) => {
+                        return (
+                            <div className='flex justify-center text-center' key={index}>
+                                <div className='h-auto w-56 rounded-md bg-gray-100 shadow-xl mx-4'>
+                                    <div className='text-base mb-8 pb-5'>
+                                        <Link to={`/products/details/{id}`}>
                                             <BaseButton>
-                                                <h1 className='h-12 mx-4 line-clamp-2'>{''}</h1>
+                                                <img className='w-40 h-40 my-8' src={`${baseURL}/${''}`} alt={''} />
                                             </BaseButton>
-                                        </div>
-                                    </Link>
-                                    <div className='text-center'>{/* <Star stars={product.rating.rate} /> */}</div>
-                                    {/* <Price price={Math.ceil(product.price)} /> */}
+                                            <div className='hover:text-red-600 my-4'>
+                                                <BaseButton>
+                                                    <h1 className='h-12 mx-4 line-clamp-2'>{''}</h1>
+                                                </BaseButton>
+                                            </div>
+                                        </Link>
+                                        <div className='text-center'>{/* <Star stars={product.rating.rate} /> */}</div>
+                                        {/* <Price price={Math.ceil(product.price)} /> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

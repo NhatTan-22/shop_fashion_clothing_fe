@@ -1,17 +1,15 @@
 // Libs
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
-// Components, Layouts, Pages
-// Others
-// Styles, Images, icons
-import styles from './UserLayout.module.scss';
-import { Link, Outlet } from 'react-router-dom';
-import { BaseButton } from '~/components';
-import MenuItem from 'antd/es/menu/MenuItem';
-import { Menu } from 'antd';
 import { useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
+// Components, Layouts, Pages
+import { BaseButton } from '~/components';
+// Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+// Styles, Images, icons
 import { icons, images } from '~/assets';
+import styles from './UserLayout.module.scss';
 
 type Props = {
     content?: string;
@@ -40,19 +38,19 @@ const UserLayout = (props: Props) => {
     //#region Implement Hook
     const listHeader = [
         {
-            title: 'Sản phẩm',
+            title: 'user_title_products_navigation',
             //   icon: <FaAngleDown className="inline-flex mx-1" />,
             path: '/products',
         },
         {
-            title: 'Bài viết',
+            title: 'user_title_blog_navigation',
             //   icon: <FaAngleDown className="inline-flex mx-1" />,
             path: '/blog',
         },
         {
-            title: 'Liên hệ',
+            title: 'user_title_contact_navigation',
             icon: '',
-            path: '/about',
+            path: '/contact',
         },
     ];
     //#endregion Implement Hook
@@ -103,7 +101,7 @@ const UserLayout = (props: Props) => {
                                 <Link key={header.path} to={header.path}>
                                     <li className='mr-8 pb-0 hover:text-red-600 '>
                                         <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                                            <span>{header.title}</span>
+                                            <span>{t(`${header.title}`)}</span>
                                             {header.icon}
                                         </BaseButton>
                                     </li>
@@ -119,7 +117,7 @@ const UserLayout = (props: Props) => {
                                 type='text'
                                 placeholder='Search our store...'
                             />
-                            <div className='absolute top-0 right-10'>
+                            <div className='absolute top-0 right-6'>
                                 <BaseButton
                                     styleButton={ButtonStyleEnum.TEXT}
                                     nextIcon={`${icons.searchIcon}`}
@@ -132,16 +130,16 @@ const UserLayout = (props: Props) => {
                                 <img src={icons.heartIcon} alt='' />
                             </Link>
                         </BaseButton>
-                        <div className='relative'>
-                            <BaseButton styleButton={ButtonStyleEnum.TEXT}>
+                        <BaseButton styleButton={ButtonStyleEnum.TEXT}>
+                            <div className='relative'>
                                 <Link to='order'>
                                     <img src={icons.cartIcon} alt='' />
-                                    <div className='absolute top-4 left-6 rounded-full bg-wisteria-600'>
+                                    <div className='absolute top-2 left-3 rounded-full bg-wisteria-600'>
                                         <span className='px-2 text-white'>0</span>
                                     </div>
                                 </Link>
-                            </BaseButton>
-                        </div>
+                            </div>
+                        </BaseButton>
                         {/* <BaseButton styleButton={ButtonStyleEnum.TEXT}>
                             <img
                                 className='w-10 h-10 rounded-full'

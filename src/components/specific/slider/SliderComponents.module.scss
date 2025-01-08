@@ -1,0 +1,31 @@
+.mainSliderComponent {
+    @apply font-nunito;
+}
+
+.mainSliderComponent img {
+    @apply h-[800px] w-full object-cover;
+}
+
+.itemSlider {
+    @apply relative text-wisteria-600;
+}
+
+.contentItemSlider {
+    @apply absolute top-1/2 left-[15%] z-20;
+}
+
+.contentItemSlider .label {
+    @apply text-xl;
+}
+
+.contentItemSlider h1 {
+    @apply text-5xl font-semibold my-6;
+}
+
+.discount {
+    @apply text-red-600 text-3xl;
+}
+
+.button {
+    @apply w-[150px];
+}

@@ -120,3 +120,26 @@ export const mockData: IProduct[] = [
         category: 'Footwear',
     },
 ];
+
+export const discountContent = [
+    {
+        label: 'Classic Exclusive',
+        title: "Women's Collection",
+        discount: 'UPTO 40% OFF',
+    },
+    {
+        label: 'Summer Special',
+        title: "Men's Summer Collection",
+        discount: 'UPTO 50% OFF',
+    },
+    {
+        label: 'Festive Sale',
+        title: "Kids' Wear",
+        discount: 'Flat 30% OFF',
+    },
+    {
+        label: 'Winter Deals',
+        title: 'Outerwear & Jackets',
+        discount: 'UPTO 60% OFF',
+    },
+];

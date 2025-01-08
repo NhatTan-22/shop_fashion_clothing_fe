@@ -29,11 +29,11 @@
 }
 
 .navigateHeader {
-    @apply mx-auto max-w-screen-2xl items-center flex justify-between my-1;
+    @apply mx-auto max-w-[85%] items-center flex justify-between my-1;
 }
 
 .inputSearch {
-    @apply h-6 w-64 py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl focus:border-red-500;
+    @apply h-6 w-64 py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl focus:border-wisteria-600;
 }
 
 .actionUser {
@@ -41,5 +41,5 @@
 }
 
 .wrapperBody {
-    @apply mx-auto max-w-screen-2xl mt-44;
+    @apply mt-40;
 }
