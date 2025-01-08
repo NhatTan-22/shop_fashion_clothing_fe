@@ -3,7 +3,15 @@
 }
 
 .defaultStyle {
+<<<<<<< HEAD
     @apply w-auto h-auto flex justify-center items-center px-4 py-1 rounded text-black border-gondola-900 border font-nunito;
+=======
+    @apply min-w-[80px] h-auto flex justify-center items-center px-4 py-1 rounded text-black border-gondola-900 border font-nunito;
+}
+
+.defaultStyle:hover {
+    @apply text-black bg-snuff-200;
+>>>>>>> dev
 }
 
 .primaryStyle {
@@ -23,11 +31,11 @@
 }
 
 .textStyle {
-    @apply items-center rounded text-black font-nunito;
+    @apply flex items-center text-center justify-center rounded text-black font-nunito;
 }
 
 .textStyle:hover {
-    @apply text-primary-500;
+    @apply text-wisteria-600;
 }
 
 .childrenButton {
@@ -35,5 +43,5 @@
 }
 
 .iconButton {
-    @apply w-5 h-5 !important;
+    @apply w-6 h-6 !important;
 }

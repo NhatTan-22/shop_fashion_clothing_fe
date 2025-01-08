@@ -1,0 +1,15 @@
+.mainHomePage {
+    @apply font-nunito text-base flex flex-col gap-20;
+}
+
+.swapper {
+    @apply mx-auto max-w-[85%] w-screen;
+}
+
+.headerPopularProducts {
+    @apply flex justify-between;
+}
+
+.headerPopularProductsRight {
+    @apply flex;
+}

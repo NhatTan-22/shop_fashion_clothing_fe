@@ -13,5 +13,6 @@ export { default as Supplier } from './admin/supplier/Supplier';
 //#region User Page
 // export { default as LoginUser } from './user/login/Login';
 export { default as HomePage } from './user/home/HomePage';
-export { default as AboutPage } from './user/about/AboutPage';
+export { default as ProductsPage } from './user/product/ProductsPage';
+export { default as ContactPage } from './user/contact/ContactPagePage';
 //#endregion User Page
