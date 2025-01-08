@@ -146,5 +146,24 @@
     "_user": "User",
     "user_title_header_top": "We are open with limited hours and staff.",
     "user_name_store_header_top": "SHOP FASHION CLOTHING",
-    "user_phone_header_top": "(+84) 868342028"
+    "user_phone_header_top": "(+84) 868342028",
+
+    "user_title_products_navigation": "Products",
+    "user_title_blog_navigation": "Blog",
+    "user_title_contact_navigation": "Contact",
+
+    "user_label_classic_exclusive_slider": "Classic Exclusive",
+    "user_title_women_collection_slider": "Women's Collection",
+    "user_discount_40_slider": "UPTO 40% OFF",
+    "user_label_summer_special_slider": "Summer Special",
+    "user_title_men_summer_collection_slider": "Men's Summer Collection",
+    "user_discount_50_slider": "UPTO 50% OFF",
+    "user_label_festive_sale_slider": "Festive Sale",
+    "user_title_kids_wear_slider": "Kid's Wear",
+    "user_discount_30_slider": "FLAT 30% OFF",
+    "user_label_winter_deals_slider": "Winter Deals",
+    "user_title_outerwear_jackets_slider": "Outerwear & Jackets",
+    "user_discount_60_slider": "UPTO 60% OFF",
+    "user_title_button_slider": "Shop Now"
+    
 }

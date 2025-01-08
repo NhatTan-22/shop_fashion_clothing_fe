@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
-import styles from './Example.module.scss';
+import styles from './DialogDefault.module.scss';
 
 type Props = {
     content?: string;
@@ -11,7 +11,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const Dialog = (props: Props) => {
+const DialogDefault = (props: Props) => {
     //#region Destructuring Props
     const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
@@ -34,4 +34,4 @@ const Dialog = (props: Props) => {
     return <>{content}</>;
 };
 
-export default Dialog;
+export default DialogDefault;

@@ -3,9 +3,9 @@ import classNames from 'classnames/bind';
 // Components, Layouts, Pages
 import { BaseButton } from '~/components';
 // Others
-// Styles, Images, icons
-import styles from './AboutPage.module.scss';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+// Styles, Images, icons
+import styles from './ContactPage.module.scss';
 
 type Props = {
     content?: string;
@@ -13,7 +13,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const AboutPage = (props: Props) => {
+const ContactPage = (props: Props) => {
     //#region Destructuring Props
     const { content = 'AboutPage' } = props;
     //#endregion Destructuring Props
@@ -153,4 +153,4 @@ const AboutPage = (props: Props) => {
     );
 };
 
-export default AboutPage;
+export default ContactPage;
