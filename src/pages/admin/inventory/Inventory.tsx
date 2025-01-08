@@ -5,15 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, Empty, message, Pagination } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, BaseTable } from '~/components';
-<<<<<<< HEAD
 import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
-=======
->>>>>>> dev
 import { FormAddProduct } from '~/form';
 // Others
-import { LoadingContext } from '~/context';
-import { useAppDispatch } from '~/redux/hooks';
 import { inventoryThunk } from '~/thunks/inventory/inventoryThunk';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
@@ -150,11 +145,7 @@ const Inventory = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-<<<<<<< HEAD
-    const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
-=======
     // const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
->>>>>>> dev
     const [openModalAddProduct, setOpenModalAddProduct] = useState<boolean>(false);
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
         currentPage: 1,
@@ -205,11 +196,7 @@ const Inventory = (props: Props) => {
     const handleRowClick = (row: DataType<IProduct>) => {
         // Component detail Inventory
         console.log('Clicked row data:', row);
-<<<<<<< HEAD
-        setOpenDrawerDetail(true);
-=======
         // setOpenDrawerDetail(true);
->>>>>>> dev
     };
     //#endregion Handle Function
 

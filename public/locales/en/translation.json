@@ -18,7 +18,7 @@
     "login_password_label": "Password",
     "login_password_placeholder": "********",
     "login_forgot_password": "Forgot password",
-    "login_not_account": "Don’t have an account?",
+    "login_not_account": "Don't have an account?",
 
     "login_success": "Login successfully.",
     "login_error_not_exist": "Email/Password does not exist.",
@@ -143,9 +143,6 @@
     "admin_add_product_selling_quantity_required": "Please input your Selling Quantity!",
     "admin_add_product_selling_quantity_placeholder": "Enter your Selling Quantity",
 
-<<<<<<< HEAD
-    "_user": "User"
-=======
     "_user": "User",
     "user_title_header_top": "We are open with limited hours and staff.",
     "user_name_store_header_top": "SHOP FASHION CLOTHING",
@@ -168,6 +165,4 @@
     "user_title_outerwear_jackets_slider": "Outerwear & Jackets",
     "user_discount_60_slider": "UPTO 60% OFF",
     "user_title_button_slider": "Shop Now"
-    
->>>>>>> dev
 }
