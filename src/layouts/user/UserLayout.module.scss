@@ -32,6 +32,10 @@
     @apply mx-auto max-w-[85%] items-center flex justify-between my-1;
 }
 
+.navigate {
+    @apply flex w-full;
+}
+
 .inputSearch {
     @apply h-6 w-64 py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl focus:border-wisteria-600;
 }
@@ -42,4 +46,23 @@
 
 .wrapperBody {
     @apply mt-40;
+}
+
+.footer {
+    @apply w-full py-16 bg-bossa-nova-900 text-white;
+}
+
+.contentFooter {
+    @apply grid grid-cols-4 gap-6 max-w-[85%] mx-auto h-44;
+}
+
+@media screen and (min-width: 320px) and (max-width: 786px) {
+    .titleHeaderTop,
+    .actionUser {
+        display: none;
+    }
+
+    .contentFooter {
+        @apply grid grid-cols-2 gap-8 h-full;
+    }
 }

@@ -3,13 +3,100 @@
 }
 
 .swapper {
-    @apply mx-auto max-w-[85%] w-screen;
+    @apply mx-auto max-w-[85%] w-screen h-full;
 }
 
 .headerPopularProducts {
-    @apply flex justify-between;
+    @apply flex justify-between leading-9 pb-6;
+}
+
+.headerPopularProducts h1 {
+    @apply text-3xl font-semibold;
 }
 
 .headerPopularProductsRight {
     @apply flex;
+}
+
+.contentPopularProduct {
+    @apply mb-24 grid grid-cols-4 gap-5;
+}
+
+.itemPopularProduct {
+    @apply rounded-md bg-snuff-200 shadow-xl;
+}
+
+.itemPopularProduct:hover img {
+    @apply opacity-70;
+}
+
+.boxImage {
+    @apply relative;
+}
+
+.imagePopular {
+    @apply cursor-pointer;
+}
+
+.imagePopular img {
+    @apply w-full h-[200px];
+}
+
+.description {
+    @apply grid grid-flow-row gap-1 m-3 p-2;
+}
+
+.namePopular {
+    @apply font-bold text-base;
+}
+
+.namePopular,
+.tilePopular {
+    @apply line-clamp-2;
+}
+
+.priceProduct {
+    @apply flex gap-4;
+}
+
+.pricePopular {
+    @apply line-through opacity-50;
+}
+
+.buttons {
+    @apply hidden;
+}
+
+.boxImage:hover .buttons {
+    @apply block;
+}
+
+.optionButtons {
+    @apply absolute top-0 right-[5%];
+}
+
+.buttonAddCart {
+    @apply w-[80%] absolute bottom-[5%] right-[10%] left-[10%];
+}
+
+.subBanner {
+    @apply flex gap-9 relative;
+}
+
+@media screen and (min-width: 320px) and (max-width: 786px) {
+    .headerPopularProducts {
+        @apply leading-6 pb-3;
+    }
+
+    .headerPopularProducts h1 {
+        @apply text-2xl;
+    }
+
+    .contentPopularProduct {
+        @apply grid grid-cols-2 h-[580px] overflow-y-auto;
+    }
+
+    .contentPopularProduct::-webkit-scrollbar {
+        @apply hidden;
+    }
 }

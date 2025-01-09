@@ -144,6 +144,7 @@
     "admin_add_product_selling_quantity_placeholder": "Enter your Selling Quantity",
 
     "_user": "User",
+    "_user_layout_home": "layout_home",
     "user_title_header_top": "We are open with limited hours and staff.",
     "user_name_store_header_top": "SHOP FASHION CLOTHING",
     "user_phone_header_top": "(+84) 868342028",
@@ -164,5 +165,10 @@
     "user_label_winter_deals_slider": "Winter Deals",
     "user_title_outerwear_jackets_slider": "Outerwear & Jackets",
     "user_discount_60_slider": "UPTO 60% OFF",
-    "user_title_button_slider": "Shop Now"
+    "user_title_button_slider": "Shop Now",
+    
+    "user_popular_products_tile": "Popular products",
+    "user_view_products_label": "View products",
+
+    "user_title_button_sub_banner": "Shop Now"
 }
