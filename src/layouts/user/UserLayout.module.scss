@@ -53,7 +53,15 @@
 }
 
 .contentFooter {
-    @apply grid grid-cols-4 gap-6 max-w-[85%] mx-auto h-44;
+    @apply grid grid-cols-4 gap-6 max-w-[85%] mx-auto h-auto overflow-hidden;
+}
+
+.contentFooter h1 {
+    @apply font-semibold text-2xl mb-4;
+}
+
+.titleFooter {
+    @apply flex items-center;
 }
 
 @media screen and (min-width: 320px) and (max-width: 786px) {

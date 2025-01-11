@@ -147,7 +147,22 @@
     "_user_layout_home": "layout_home",
     "user_title_header_top": "We are open with limited hours and staff.",
     "user_name_store_header_top": "SHOP FASHION CLOTHING",
-    "user_phone_header_top": "(+84) 868342028",
+    "user_phone_text": "(+84) 868342028",
+
+    "user_footer_brand": "©2024 Nhat Tan | Built with by Nhat Tan.",
+    "user_footer_contact_title": "CONTACT",
+    "user_footer_phone_title": "Phone:",
+    "user_footer_website_title": "Website:",
+    "user_footer_email_title": "Email:",
+    "user_footer_address_title": "Address:",
+
+    "user_footer_customer_support_title": "CUSTOMER SUPPORT",
+    "user_footer_guarantee": "Return and warranty policy.",
+    "user_footer_security": "Privacy Policy.",
+    "user_footer_payment": "Payment policy.",
+
+    "user_footer_information_title": "Information.",
+    "user_footer_information_description": "Download our App and get an extra 15% off your first order..!.",
 
     "user_title_products_navigation": "Products",
     "user_title_blog_navigation": "Blog",
@@ -166,7 +181,7 @@
     "user_title_outerwear_jackets_slider": "Outerwear & Jackets",
     "user_discount_60_slider": "UPTO 60% OFF",
     "user_title_button_slider": "Shop Now",
-    
+
     "user_popular_products_tile": "Popular products",
     "user_view_products_label": "View products",
 

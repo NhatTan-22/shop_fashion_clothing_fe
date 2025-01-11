@@ -51,7 +51,7 @@ const HomePage = (props: Props) => {
                         <Link to='/products'>
                             <BaseButton
                                 styleButton={ButtonStyleEnum.TEXT}
-                                nextIcon={`${icons.arrowRightIcon}`}
+                                nextIcon={icons.arrowRightIcon}
                                 nameButton={t('user_view_products_label')}
                             />
                         </Link>
@@ -72,7 +72,7 @@ const HomePage = (props: Props) => {
                                     <div className={cx('buttons')}>
                                         <div className={cx('optionButtons')}>
                                             <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.heartIcon} />
-                                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.heartIcon} />
+                                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.eyeIcon} />
                                         </div>
                                         <BaseButton
                                             className={cx('buttonAddCart')}
@@ -103,7 +103,6 @@ const HomePage = (props: Props) => {
                             <div key={i}>
                                 <img className='' src={`${baseURL}`} alt={''} />
                                 <div className='w-full absolute top-24 text-center'>
-                                    <span>{''}</span>
                                     <h1 className='my-4 text-3xl font-semibold'>{''}</h1>
                                     <BaseButton nameButton={t('user_title_button_sub_banner')} />
                                 </div>

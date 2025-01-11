@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
@@ -98,13 +98,12 @@ const UserLayout = (props: Props) => {
                             {/* <FaAngleDown /> */}
                         </span>
                         <span className={cx('titleRightHeaderTopLocation')}>
-                            {/* <FaLocationDot /> */}
-                            <img src={icons.addressIcon} alt={t('user_name_store_header_top')} />
+                            <IconSVG IconComponent={icons.addressIcon} />
                             <span>{t('user_name_store_header_top')}</span>
                         </span>
                         <span className={cx('titleRightHeaderTop')}>
-                            {/* <FaPhoneFlip /> */}
-                            <span>{t('user_phone_header_top')}</span>
+                            <IconSVG IconComponent={icons.phoneIcon} />
+                            <span>{t('user_phone_text')}</span>
                         </span>
                     </div>
                 </div>
@@ -142,20 +141,20 @@ const UserLayout = (props: Props) => {
                                     <div className='absolute top-0 right-6'>
                                         <BaseButton
                                             styleButton={ButtonStyleEnum.TEXT}
-                                            nextIcon={`${icons.searchIcon}`}
+                                            nextIcon={icons.searchIcon}
                                             className='focus:text-blue-500'
                                         />
                                     </div>
                                 </form>
                                 <BaseButton styleButton={ButtonStyleEnum.TEXT}>
                                     <Link to='/wishlist'>
-                                        <img src={icons.heartIcon} alt='' />
+                                        <IconSVG IconComponent={icons.heartIcon} />
                                     </Link>
                                 </BaseButton>
                                 <BaseButton styleButton={ButtonStyleEnum.TEXT}>
                                     <div className='relative'>
                                         <Link to='order'>
-                                            <img src={icons.cartIcon} alt='' />
+                                            <IconSVG IconComponent={icons.cartIcon} />
                                             <div className='absolute top-2 left-3 rounded-full bg-wisteria-600'>
                                                 <span className='px-2 text-white'>0</span>
                                             </div>
@@ -192,14 +191,15 @@ const UserLayout = (props: Props) => {
                             </div>
                         </>
                     ) : (
-                        <img
-                            className={cx('listMenu')}
-                            width={24}
-                            height={24}
-                            src={icons.listMenuIcon}
-                            alt=''
-                            onClick={handleSideBar}
-                        />
+                        <IconSVG IconComponent={icons.listMenuIcon} />
+                        // <img
+                        //     className={cx('listMenu')}
+                        //     width={24}
+                        //     height={24}
+                        //     src={icons.listMenuIcon}
+                        //     alt=''
+                        //     onClick={handleSideBar}
+                        // />
                     )}
                 </div>
             </div>
@@ -212,50 +212,40 @@ const UserLayout = (props: Props) => {
                 <div className={cx('contentFooter')}>
                     <div>
                         <img className='w-32 h-32 p-6 rounded-full' alt='LOGO_SHOP' src={images.fashionStore} />
-                        <p>©2024 Nhat Tan | Built with by Nhat Tan.</p>
+                        <p>{t('user_footer_brand')}</p>
                     </div>
                     <div>
-                        <h1 className='font-semibold text-2xl mb-4'>LIÊN HỆ</h1>
+                        <h1>{t('user_footer_contact_title')}</h1>
                         <ul>
-                            <li className='flex items-center'>
-                                <b>Hotline:</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    09655664487
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_phone_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton={t('user_phone_text')} />
                             </li>
-                            <li className='flex items-center'>
-                                <b>Trang Web :</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    pntShop.com
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_website_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='pntShop.com' />
                             </li>
-                            <li className='flex items-center'>
-                                <b>Email :</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    pntShop@gamil.com
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_email_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='pntShop@gamil.com' />
                             </li>
-                            <li className='flex items-center'>
-                                <b>Địa Chỉ :</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    Quảng Ninh
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_address_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='Quảng Ninh' />
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <h1 className='font-semibold text-2xl mb-4'>HỖ TRỢ KHÁCH HÀNG</h1>
+                        <h1>{t('user_footer_customer_support_title')}</h1>
                         <ul>
-                            <li>Chính sách đổi trả và bảo hành</li>
-                            <li>Chính sách bảo mật</li>
-                            <li>Chính sách thanh toán</li>
+                            <li>{t('user_footer_guarantee')}</li>
+                            <li>{t('user_footer_security')}</li>
+                            <li>{t('user_footer_payment')}</li>
                         </ul>
                     </div>
                     <div>
-                        <h1 className='font-semibold text-2xl mb-4'>THÔNG TIN</h1>
-                        <p>
-                            Tải xuống Ứng dụng của chúng tôi và được giảm giá thêm 15% cho đơn hàng đầu tiên của bạn..!
-                        </p>
+                        <h1>{t('user_footer_information_title')}</h1>
+                        <p>{t('user_footer_information_description')}</p>
                         <div className='flex gap-2 mt-5'>
                             <BaseButton>
                                 <img

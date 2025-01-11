@@ -1,13 +1,14 @@
 // Libs
 import classNames from 'classnames/bind';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
+import IconSVG from '~/components/common/icon/IconSVG';
 // Others
 import { ISideBar } from '~/utils/interfaces/common';
 // Styles, Images, icons
 import styles from './SideBar.module.scss';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
     items?: ISideBar[];
@@ -53,7 +54,7 @@ const SideBar = (props: Props) => {
                         <div key={index} className={cx(`${isActive ? 'highLightItem' : ''}`)}>
                             <Link to={`${item.path}`} onClick={() => handleItemClick(item.path)}>
                                 <div className={cx('itemSideBar')}>
-                                    <img src={item.images} alt={item.label} />
+                                    <IconSVG IconComponent={item.icon} />
                                     {t(`${item.label}`)}
                                 </div>
                             </Link>

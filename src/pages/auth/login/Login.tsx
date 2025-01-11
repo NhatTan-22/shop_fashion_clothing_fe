@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useContext, useState } from 'react';
 import { Form, Input, message } from 'antd';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
 import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
@@ -25,7 +25,6 @@ const cx = classNames.bind(styles);
 
 const Login = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -92,7 +91,7 @@ const Login = (props: Props) => {
                     name='email'
                     label={
                         <label className={cx('labelLogin')} htmlFor='email-login'>
-                            <img src={icons.emailIcon} alt='' /> {t('login_email_label')}
+                            <IconSVG IconComponent={icons.emailIcon} /> {t('login_email_label')}
                         </label>
                     }
                     rules={[{ required: true, message: `${t('register_email_error_message')}` }]}
@@ -113,7 +112,7 @@ const Login = (props: Props) => {
                     name='password'
                     label={
                         <label className={cx('labelLogin')} htmlFor='password-login'>
-                            <img src={icons.keyIcon} alt='' /> {t('login_password_label')}
+                            <IconSVG IconComponent={icons.keyIcon} /> {t('login_password_label')}
                         </label>
                     }
                     rules={[{ required: true, message: `${t('register_password_error_message')}` }]}

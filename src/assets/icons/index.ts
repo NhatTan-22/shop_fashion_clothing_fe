@@ -1,41 +1,45 @@
-import homeIcon from '../icons/homeIcon.svg';
-import notification from '../icons/notification.svg';
-import searchIcon from '../icons/searchIcon.svg';
-import userIcon from '../icons/userIcon.svg';
-import emailIcon from '../icons/emailIcon.svg';
-import keyIcon from '../icons/keyIcon.svg';
-import phoneIcon from '../icons/phoneIcon.svg';
-import inventoryIcon from '../icons/inventoryIcon.svg';
-import reportIcon from '../icons/reportIcon.svg';
-import supplierIcon from '../icons/supplierIcon.svg';
-import orderIcon from '../icons/orderIcon.svg';
-import storeIcon from '../icons/storeIcon.svg';
-import listMenuIcon from '../icons/listMenuIcon.svg';
-import addressIcon from '../icons/addressIcon.svg';
-import deleteIcon from '../icons/deleteIcon.svg';
-import heartIcon from '../icons/heartIcon.svg';
-import cartIcon from '../icons/cartIcon.svg';
-import arrowRightIcon from '../icons/arrowRightIcon.svg';
+import { ReactComponent as HomeIcon } from '../icons/homeIcon.svg';
+import { ReactComponent as Notification } from '../icons/notification.svg';
+import { ReactComponent as SearchIcon } from '../icons/searchIcon.svg';
+import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
+import { ReactComponent as EmailIcon } from '../icons/emailIcon.svg';
+import { ReactComponent as KeyIcon } from '../icons/keyIcon.svg';
+import { ReactComponent as PhoneIcon } from '../icons/phoneIcon.svg';
+import { ReactComponent as InventoryIcon } from '../icons/inventoryIcon.svg';
+import { ReactComponent as ReportIcon } from '../icons/reportIcon.svg';
+import { ReactComponent as SupplierIcon } from '../icons/supplierIcon.svg';
+import { ReactComponent as OrderIcon } from '../icons/orderIcon.svg';
+import { ReactComponent as StoreIcon } from '../icons/storeIcon.svg';
+import { ReactComponent as ListMenuIcon } from '../icons/listMenuIcon.svg';
+import { ReactComponent as AddressIcon } from '../icons/addressIcon.svg';
+import { ReactComponent as DeleteIcon } from '../icons/deleteIcon.svg';
+import { ReactComponent as HeartIcon } from '../icons/heartIcon.svg';
+import { ReactComponent as CartIcon } from '../icons/cartIcon.svg';
+import { ReactComponent as ArrowRightIcon } from '../icons/arrowRightIcon.svg';
+import { ReactComponent as ArrowLeftIcon } from '../icons/arrowLeftIcon.svg';
+import { ReactComponent as EyeIcon } from '../icons/eyeIcon.svg';
 
 const icons = {
-    homeIcon,
-    notification,
-    searchIcon,
-    userIcon,
-    emailIcon,
-    keyIcon,
-    phoneIcon,
-    inventoryIcon,
-    reportIcon,
-    supplierIcon,
-    orderIcon,
-    storeIcon,
-    listMenuIcon,
-    addressIcon,
-    deleteIcon,
-    heartIcon,
-    cartIcon,
-    arrowRightIcon,
+    homeIcon: HomeIcon,
+    notification: Notification,
+    searchIcon: SearchIcon,
+    userIcon: UserIcon,
+    emailIcon: EmailIcon,
+    keyIcon: KeyIcon,
+    phoneIcon: PhoneIcon,
+    inventoryIcon: InventoryIcon,
+    reportIcon: ReportIcon,
+    supplierIcon: SupplierIcon,
+    orderIcon: OrderIcon,
+    storeIcon: StoreIcon,
+    listMenuIcon: ListMenuIcon,
+    addressIcon: AddressIcon,
+    deleteIcon: DeleteIcon,
+    heartIcon: HeartIcon,
+    cartIcon: CartIcon,
+    arrowRightIcon: ArrowRightIcon,
+    arrowLeftIcon: ArrowLeftIcon,
+    eyeIcon: EyeIcon,
 };
 
 export default icons;
