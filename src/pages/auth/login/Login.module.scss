@@ -8,7 +8,7 @@
 
 .headerFormLogin h1 {
     @apply font-bold text-4xl leading-10 mb-3;
-    @media screen and (max-width: 768px) {
+    @media screen and (min-width: 320px) and (max-width: 768px) {
         font-size: 25px;
         line-height: 29px;
     }

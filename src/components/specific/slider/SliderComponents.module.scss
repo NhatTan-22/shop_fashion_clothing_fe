@@ -7,7 +7,7 @@
 }
 
 .itemSlider {
-    @apply relative text-wisteria-600;
+    @apply relative text-eminence-800;
 }
 
 .contentItemSlider {
@@ -23,9 +23,35 @@
 }
 
 .discount {
-    @apply text-red-600 text-3xl;
+    @apply text-punch-600 text-3xl;
 }
 
 .button {
     @apply w-[150px];
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+    .mainSliderComponent img {
+        @apply h-auto w-screen object-contain;
+    }
+
+    .contentItemSlider {
+        @apply absolute top-[30%] left-[15%] z-20;
+    }
+
+    .contentItemSlider .label {
+        @apply text-lg;
+    }
+
+    .contentItemSlider h1 {
+        @apply text-4xl font-semibold my-2;
+    }
+
+    .discount {
+        @apply text-punch-600 text-2xl;
+    }
+
+    .button {
+        @apply w-[120px] text-sm;
+    }
 }

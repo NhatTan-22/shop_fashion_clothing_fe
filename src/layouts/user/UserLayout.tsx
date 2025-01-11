@@ -1,10 +1,10 @@
 // Libs
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
@@ -32,7 +32,7 @@ const UserLayout = (props: Props) => {
     //#region Declare State
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-
+    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -53,9 +53,29 @@ const UserLayout = (props: Props) => {
             path: '/contact',
         },
     ];
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     //#endregion Implement Hook
 
     //#region Handle Function
+    const handleResize = () => {
+        if (window.innerWidth <= 1023) {
+            setIsOpenSidebar(false);
+        } else {
+            setIsOpenSidebar(true);
+        }
+    };
+
+    const handleSideBar = () => {
+        setIsOpenSidebar(!isOpenSideBae);
+    };
+
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
@@ -78,96 +98,109 @@ const UserLayout = (props: Props) => {
                             {/* <FaAngleDown /> */}
                         </span>
                         <span className={cx('titleRightHeaderTopLocation')}>
-                            {/* <FaLocationDot /> */}
-                            <img src={icons.addressIcon} alt={t('user_name_store_header_top')} />
+                            <IconSVG IconComponent={icons.addressIcon} />
                             <span>{t('user_name_store_header_top')}</span>
                         </span>
                         <span className={cx('titleRightHeaderTop')}>
-                            {/* <FaPhoneFlip /> */}
-                            <span>{t('user_phone_header_top')}</span>
+                            <IconSVG IconComponent={icons.phoneIcon} />
+                            <span>{t('user_phone_text')}</span>
                         </span>
                     </div>
                 </div>
 
                 <div className={cx('navigateHeader')}>
                     <Link to='/'>
-                        <div className='w-72'>
+                        <div className='w-[200px] mr-6'>
                             <img className='w-24 h-24 object-fill' alt='LOGO_SHOP' src={images.logoFashionStore} />
                         </div>
                     </Link>
-                    <div className='flex w-full'>
-                        <ul className='flex justify-between items-center '>
-                            {listHeader.map((header) => (
-                                <Link key={header.path} to={header.path}>
-                                    <li className='mr-8 pb-0 hover:text-red-600 '>
-                                        <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                                            <span>{t(`${header.title}`)}</span>
-                                            {header.icon}
-                                        </BaseButton>
-                                    </li>
-                                </Link>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className={cx('actionUser')}>
-                        <form action='/' className='relative'>
-                            <input
-                                // onChange=""
-                                className={cx('inputSearch')}
-                                type='text'
-                                placeholder='Search our store...'
-                            />
-                            <div className='absolute top-0 right-6'>
-                                <BaseButton
-                                    styleButton={ButtonStyleEnum.TEXT}
-                                    nextIcon={`${icons.searchIcon}`}
-                                    className='focus:text-blue-500'
-                                />
+                    {isOpenSideBae ? (
+                        <>
+                            <div className={cx('navigate')}>
+                                <ul className='flex justify-between items-center '>
+                                    {listHeader.map((header) => (
+                                        <Link key={header.path} to={header.path}>
+                                            <li className='mr-8 pb-0 hover:text-red-600 '>
+                                                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
+                                                    <span>{t(`${header.title}`)}</span>
+                                                    {header.icon}
+                                                </BaseButton>
+                                            </li>
+                                        </Link>
+                                    ))}
+                                </ul>
                             </div>
-                        </form>
-                        <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                            <Link to='/wishlist'>
-                                <img src={icons.heartIcon} alt='' />
-                            </Link>
-                        </BaseButton>
-                        <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                            <div className='relative'>
-                                <Link to='order'>
-                                    <img src={icons.cartIcon} alt='' />
-                                    <div className='absolute top-2 left-3 rounded-full bg-wisteria-600'>
-                                        <span className='px-2 text-white'>0</span>
+                            <div className={cx('actionUser')}>
+                                <form action='/' className='relative'>
+                                    <input
+                                        // onChange=""
+                                        className={cx('inputSearch')}
+                                        type='text'
+                                        placeholder='Search our store...'
+                                    />
+                                    <div className='absolute top-0 right-6'>
+                                        <BaseButton
+                                            styleButton={ButtonStyleEnum.TEXT}
+                                            nextIcon={icons.searchIcon}
+                                            className='focus:text-blue-500'
+                                        />
                                     </div>
+                                </form>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
+                                    <Link to='/wishlist'>
+                                        <IconSVG IconComponent={icons.heartIcon} />
+                                    </Link>
+                                </BaseButton>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
+                                    <div className='relative'>
+                                        <Link to='order'>
+                                            <IconSVG IconComponent={icons.cartIcon} />
+                                            <div className='absolute top-2 left-3 rounded-full bg-wisteria-600'>
+                                                <span className='px-2 text-white'>0</span>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </BaseButton>
+                                {/* <BaseButton styleButton={ButtonStyleEnum.TEXT}>
+                                <img
+                                    className='w-10 h-10 rounded-full'
+                                    src='https://th.bing.com/th/id/OIP.Gg0lRdcH7S-EO2NWbRzCMQAAAA?pid=ImgDet&w=167&h=183&c=7&dpr=1.3'
+                                    alt=''
+                                />
+                                    </BaseButton> */}
+                                <Link to='/auth/login'>
+                                    <BaseButton nameButton='Login' />
                                 </Link>
+                                <Link to='/auth/register'>
+                                    <BaseButton nameButton='Register' />
+                                </Link>
+                                {/* <Menu
+                                    id='basic-menu'
+                                    // anchorEl={anchorEl}
+                                    // open={open}
+                                    // onClose={handleClose}
+                                    // MenuListProps={{
+                                    //     'aria-labelledby': 'basic-button',
+                                    // }}
+                                >
+                                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                                    <Link to='/auth/login'>
+                                        <MenuItem>Logout</MenuItem>
+                                    </Link>
+                                </Menu> */}
                             </div>
-                        </BaseButton>
-                        {/* <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                            <img
-                                className='w-10 h-10 rounded-full'
-                                src='https://th.bing.com/th/id/OIP.Gg0lRdcH7S-EO2NWbRzCMQAAAA?pid=ImgDet&w=167&h=183&c=7&dpr=1.3'
-                                alt=''
-                            />
-                        </BaseButton> */}
-                        <Link to='/auth/login'>
-                            <BaseButton nameButton='Login' />
-                        </Link>
-                        <Link to='/auth/register'>
-                            <BaseButton nameButton='Register' />
-                        </Link>
-                        {/* <Menu
-                        id='basic-menu'
-                        // anchorEl={anchorEl}
-                        // open={open}
-                        // onClose={handleClose}
-                        // MenuListProps={{
-                        //     'aria-labelledby': 'basic-button',
-                        // }}
-                    >
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <Link to='/auth/login'>
-                            <MenuItem>Logout</MenuItem>
-                        </Link>
-                    </Menu> */}
-                    </div>
+                        </>
+                    ) : (
+                        <IconSVG IconComponent={icons.listMenuIcon} />
+                        // <img
+                        //     className={cx('listMenu')}
+                        //     width={24}
+                        //     height={24}
+                        //     src={icons.listMenuIcon}
+                        //     alt=''
+                        //     onClick={handleSideBar}
+                        // />
+                    )}
                 </div>
             </div>
 
@@ -175,54 +208,44 @@ const UserLayout = (props: Props) => {
                 <Outlet />
             </div>
 
-            <div className='w-full py-16 bg-bossa-nova-900 text-white'>
-                <div className='grid grid-flow-col gap-28 max-w-screen-2xl mx-auto h-44'>
+            <div className={cx('footer')}>
+                <div className={cx('contentFooter')}>
                     <div>
                         <img className='w-32 h-32 p-6 rounded-full' alt='LOGO_SHOP' src={images.fashionStore} />
-                        <p>©2024 Nhat Tan | Built with by Nhat Tan.</p>
+                        <p>{t('user_footer_brand')}</p>
                     </div>
                     <div>
-                        <h1 className='font-semibold text-2xl mb-4'>LIÊN HỆ</h1>
+                        <h1>{t('user_footer_contact_title')}</h1>
                         <ul>
-                            <li className='flex items-center'>
-                                <b>Hotline:</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    09655664487
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_phone_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton={t('user_phone_text')} />
                             </li>
-                            <li className='flex items-center'>
-                                <b>Trang Web :</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    pntShop.com
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_website_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='pntShop.com' />
                             </li>
-                            <li className='flex items-center'>
-                                <b>Email :</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    pntShop@gamil.com
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_email_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='pntShop@gamil.com' />
                             </li>
-                            <li className='flex items-center'>
-                                <b>Địa Chỉ :</b>{' '}
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} className='hover:text-red-500'>
-                                    Quảng Ninh
-                                </BaseButton>
+                            <li className={cx('titleFooter')}>
+                                <b>{t('user_footer_address_title')}</b>
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='Quảng Ninh' />
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <h1 className='font-semibold text-2xl mb-4'>HỖ TRỢ KHÁCH HÀNG</h1>
+                        <h1>{t('user_footer_customer_support_title')}</h1>
                         <ul>
-                            <li>Chính sách đổi trả và bảo hành</li>
-                            <li>Chính sách bảo mật</li>
-                            <li>Chính sách thanh toán</li>
+                            <li>{t('user_footer_guarantee')}</li>
+                            <li>{t('user_footer_security')}</li>
+                            <li>{t('user_footer_payment')}</li>
                         </ul>
                     </div>
                     <div>
-                        <h1 className='font-semibold text-2xl mb-4'>THÔNG TIN</h1>
-                        <p>
-                            Tải xuống Ứng dụng của chúng tôi và được giảm giá thêm 15% cho đơn hàng đầu tiên của bạn..!
-                        </p>
+                        <h1>{t('user_footer_information_title')}</h1>
+                        <p>{t('user_footer_information_description')}</p>
                         <div className='flex gap-2 mt-5'>
                             <BaseButton>
                                 <img

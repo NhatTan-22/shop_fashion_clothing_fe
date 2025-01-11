@@ -10,7 +10,8 @@ import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
 import styles from './HomePage.module.scss';
-import { icons } from '~/assets';
+import { icons, images } from '~/assets';
+import { subBanners } from '~/utils/constants/mockData';
 
 type Props = {
     content?: string;
@@ -45,38 +46,65 @@ const HomePage = (props: Props) => {
             <Slider />
             <div className={cx('swapper')}>
                 <div className={cx('headerPopularProducts')}>
-                    <div>
-                        <h1 className='leading-9 text-3xl font-semibold'>Popular products</h1>
-                    </div>
+                    <h1>{t('user_popular_products_tile')}</h1>
                     <div className={cx('headerPopularProductsRight')}>
                         <Link to='/products'>
                             <BaseButton
                                 styleButton={ButtonStyleEnum.TEXT}
-                                nextIcon={`${icons.arrowRightIcon}`}
-                                nameButton='View products'
+                                nextIcon={icons.arrowRightIcon}
+                                nameButton={t('user_view_products_label')}
                             />
                         </Link>
                     </div>
                 </div>
-                <div className='mb-24'>
-                    {data?.map((product, index) => {
+                <div className={cx('contentPopularProduct')}>
+                    {subBanners?.map((product, index) => {
                         return (
-                            <div className='flex justify-center text-center' key={index}>
-                                <div className='h-auto w-56 rounded-md bg-gray-100 shadow-xl mx-4'>
-                                    <div className='text-base mb-8 pb-5'>
-                                        <Link to={`/products/details/{id}`}>
-                                            <BaseButton>
-                                                <img className='w-40 h-40 my-8' src={`${baseURL}/${''}`} alt={''} />
-                                            </BaseButton>
-                                            <div className='hover:text-red-600 my-4'>
-                                                <BaseButton>
-                                                    <h1 className='h-12 mx-4 line-clamp-2'>{''}</h1>
-                                                </BaseButton>
-                                            </div>
-                                        </Link>
-                                        <div className='text-center'>{/* <Star stars={product.rating.rate} /> */}</div>
-                                        {/* <Price price={Math.ceil(product.price)} /> */}
+                            <div className={cx('itemPopularProduct')} key={index}>
+                                <div className={cx('boxImage')}>
+                                    <div className={cx('imagePopular')}>
+                                        <img
+                                            // src={`${baseURL}/${product.image}`}
+                                            src={images.slider_0}
+                                            alt={product.title}
+                                        />
                                     </div>
+                                    <div className={cx('buttons')}>
+                                        <div className={cx('optionButtons')}>
+                                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.heartIcon} />
+                                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.eyeIcon} />
+                                        </div>
+                                        <BaseButton
+                                            className={cx('buttonAddCart')}
+                                            styleButton={ButtonStyleEnum.PRIMARY}
+                                            nameButton='Add To Cart'
+                                        />
+                                    </div>
+                                </div>
+                                <Link to={`/products/details/${index}`}>
+                                    <div className={cx('description')}>
+                                        <h1 className={cx('namePopular')}>{product.name}</h1>
+                                        <h3 className={cx('tilePopular')}>{product.title}</h3>
+                                        <div className={cx('priceProduct')}>
+                                            <h4
+                                                className={cx('discountPricePopular')}
+                                            >{`$${product.discountPrice}`}</h4>
+                                            <h4 className={cx('pricePopular')}>{`$${product.price}`}</h4>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className={cx('subBanner')}>
+                    {data?.map((subBanner, i) => {
+                        return (
+                            <div key={i}>
+                                <img className='' src={`${baseURL}`} alt={''} />
+                                <div className='w-full absolute top-24 text-center'>
+                                    <h1 className='my-4 text-3xl font-semibold'>{''}</h1>
+                                    <BaseButton nameButton={t('user_title_button_sub_banner')} />
                                 </div>
                             </div>
                         );

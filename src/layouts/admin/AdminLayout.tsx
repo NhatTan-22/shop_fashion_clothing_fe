@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
-import { SideBar } from '~/components';
+import { IconSVG, SideBar } from '~/components';
 // Others
 import { sidebarItems } from '~/utils/constants/common';
 // Styles, Images, icons
@@ -19,7 +19,6 @@ const cx = classNames.bind(styles);
 
 const AdminLayout = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'AdminLayout' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -66,16 +65,9 @@ const AdminLayout = (props: Props) => {
             </div>
             <div className={cx('wrapperAdmin')}>
                 <div className={cx('headerAdmin')}>
-                    <img
-                        className={cx('listMenu')}
-                        width={24}
-                        height={24}
-                        src={icons.listMenuIcon}
-                        alt=''
-                        onClick={handleSideBar}
-                    />
+                    <IconSVG IconComponent={icons.listMenuIcon} onClick={handleSideBar} />
                     <div className={cx('searchAll')}>
-                        <img src={icons.searchIcon} width={24} height={24} alt='' />
+                        <IconSVG IconComponent={icons.searchIcon} />
                         <input
                             type='text'
                             className={cx('inputSearchAll')}
@@ -83,7 +75,7 @@ const AdminLayout = (props: Props) => {
                         />
                     </div>
                     <div className={cx('information')}>
-                        <img className={cx('iconNotification')} src={icons.notification} alt='' />
+                        <IconSVG IconComponent={icons.notification} width={40} height={40} />
                         <img
                             className={cx('imageAvatar')}
                             src={images.fashionStore}

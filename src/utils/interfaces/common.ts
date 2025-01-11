@@ -18,7 +18,7 @@ export interface IChildRouteModel {
 export interface ISideBar {
     path: string;
     label: string;
-    images?: string;
+    icon: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
 export interface IPagination extends IParamsPagination {

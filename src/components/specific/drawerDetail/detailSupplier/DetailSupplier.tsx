@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { Drawer } from 'antd';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
@@ -71,7 +71,7 @@ const DetailSupplier = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.emailIcon} alt='' /> {t('admin_supplier_email_label')}
+                                <IconSVG IconComponent={icons.emailIcon} /> {t('admin_supplier_email_label')}
                             </span>
                             <span>{dataSupplier?.supplierEmail ?? '--'}</span>
                         </div>
@@ -79,7 +79,7 @@ const DetailSupplier = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.phoneIcon} alt='' /> {t('admin_supplier_contact_phone_label')}
+                                <IconSVG IconComponent={icons.phoneIcon} /> {t('admin_supplier_contact_phone_label')}
                             </span>
                             <span>{dataSupplier?.supplierPhone ?? '--'}</span>
                         </div>
@@ -87,7 +87,7 @@ const DetailSupplier = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>
-                                <img src={icons.addressIcon} alt='' /> {t('admin_supplier_address_label')}
+                                <IconSVG IconComponent={icons.addressIcon} /> {t('admin_supplier_address_label')}
                             </span>
                             <span>{dataSupplier?.supplierAddress ?? '--'}</span>
                         </div>

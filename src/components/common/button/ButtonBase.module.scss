@@ -11,7 +11,7 @@
 }
 
 .primaryStyle {
-    @apply flex justify-center items-center px-4 py-2 text-blue-chalk-100 bg-wisteria-600 rounded font-nunito;
+    @apply min-w-[80px] flex justify-center items-center px-4 py-2 text-blue-chalk-100 bg-wisteria-600 rounded font-nunito;
 }
 
 .primaryStyle:hover {
@@ -19,7 +19,7 @@
 }
 
 .primaryRedStyle {
-    @apply flex justify-center items-center px-4 py-2 text-red-600 bg-purple-400 rounded font-nunito;
+    @apply min-w-[80px] flex justify-center items-center px-4 py-2 text-red-600 bg-purple-400 rounded font-nunito;
 }
 
 .primaryRedStyle:hover {
@@ -27,7 +27,7 @@
 }
 
 .textStyle {
-    @apply flex items-center text-center justify-center rounded text-black font-nunito;
+    @apply min-w-[25px] flex items-center text-center justify-center rounded text-black font-nunito;
 }
 
 .textStyle:hover {
@@ -39,5 +39,5 @@
 }
 
 .iconButton {
-    @apply w-6 h-6 !important;
+    @apply min-w-6 min-h-6;
 }

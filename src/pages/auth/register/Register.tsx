@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Form, Input, message } from 'antd';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
 import { useAppDispatch } from '~/redux/hooks';
 import { authRegister } from '~/thunks/auth/authThunk';
@@ -25,7 +25,6 @@ const cx = classNames.bind(styles);
 
 const Register = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -64,7 +63,7 @@ const Register = (props: Props) => {
         dispatch(authRegister(data))
             .unwrap()
             .then((response) => {
-                console.log(response)
+                console.log(response);
                 message.success(`${t('register_success')}`);
             })
             .catch((error) => {
@@ -91,7 +90,7 @@ const Register = (props: Props) => {
                 <div className={cx('fullName')}>
                     <div>
                         <label className={cx('labelRegister')} htmlFor='firstName-register'>
-                            <img src={icons.userIcon} alt='' /> {t('register_first_name_label')}
+                            <IconSVG IconComponent={icons.userIcon} /> {t('register_first_name_label')}
                         </label>
                         <Input
                             className={cx('inputFormRegister')}
@@ -108,7 +107,7 @@ const Register = (props: Props) => {
 
                     <div>
                         <label className={cx('labelRegister')} htmlFor='lastName-register'>
-                            <img src={icons.userIcon} alt='' /> {t('register_last_name_label')}
+                            <IconSVG IconComponent={icons.userIcon} /> {t('register_last_name_label')}
                         </label>
                         <Input
                             className={cx('inputFormRegister')}
@@ -126,7 +125,7 @@ const Register = (props: Props) => {
                     name='phone'
                     label={
                         <label className={cx('labelRegister')} htmlFor='phone-register'>
-                            <img src={icons.phoneIcon} alt='' /> {t('register_phone_label')}
+                            <IconSVG IconComponent={icons.phoneIcon} /> {t('register_phone_label')}
                         </label>
                     }
                     rules={[{ required: true, message: `${t('register_phone_error_message')}` }]}
@@ -146,7 +145,7 @@ const Register = (props: Props) => {
                     name='email'
                     label={
                         <label className={cx('labelRegister')} htmlFor='email-register'>
-                            <img src={icons.emailIcon} alt='' />
+                            <IconSVG IconComponent={icons.emailIcon} />
                             {t('register_email_label')}
                         </label>
                     }
@@ -167,7 +166,7 @@ const Register = (props: Props) => {
                     name='password'
                     label={
                         <label className={cx('labelRegister')} htmlFor='password-register'>
-                            <img src={icons.keyIcon} alt='' /> {t('register_password_label')}
+                            <IconSVG IconComponent={icons.keyIcon} /> {t('register_password_label')}
                         </label>
                     }
                     rules={[{ required: true, message: `${t('register_password_error_message')}` }]}

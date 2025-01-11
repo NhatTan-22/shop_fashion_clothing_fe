@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './ButtonBase.module.scss';
+import IconSVG from '../icon/IconSVG';
 
 type Props = {
     title?: string;
@@ -19,8 +20,8 @@ type Props = {
     disabled?: boolean;
     onClick?: () => void;
     children?: React.ReactNode;
-    prevIcon?: React.ReactNode;
-    nextIcon?: React.ReactNode;
+    prevIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
+    nextIcon?: React.FC<React.SVGProps<SVGSVGElement>>;
     className?: string;
 };
 
@@ -70,10 +71,10 @@ const Button = (props: Props) => {
                 style={{ width: width, height: `${height}px` }}
                 title={title}
             >
-                {prevIcon && <img className={cx('iconButton')} src={`${prevIcon}`} alt='icon' />}
+                {prevIcon && <IconSVG IconComponent={prevIcon} />}
                 <span className={cx(`titleButton`)}>{nameButton}</span>
                 {children}
-                {nextIcon && <img className={cx('iconButton')} src={`${nextIcon}`} alt='icon' />}
+                {nextIcon && <IconSVG IconComponent={nextIcon} />}
             </button>
         </div>
     );
