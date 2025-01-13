@@ -14,5 +14,6 @@ export { default as Supplier } from './admin/supplier/Supplier';
 // export { default as LoginUser } from './user/login/Login';
 export { default as HomePage } from './user/home/HomePage';
 export { default as ProductsPage } from './user/product/ProductsPage';
-export { default as ContactPage } from './user/contact/ContactPagePage';
+export { default as BlogPage } from './user/blog/BlogPage';
+export { default as ContactPage } from './user/contact/ContactPage';
 //#endregion User Page

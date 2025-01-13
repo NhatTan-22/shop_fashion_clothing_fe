@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 // Components, Layouts, Pages
-import { BaseButton, Slider } from '~/components';
+import { BaseButton, IconSVG, Slider } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
@@ -85,11 +85,15 @@ const HomePage = (props: Props) => {
                                     <div className={cx('description')}>
                                         <h1 className={cx('namePopular')}>{product.name}</h1>
                                         <h3 className={cx('tilePopular')}>{product.title}</h3>
-                                        <div className={cx('priceProduct')}>
-                                            <h4
-                                                className={cx('discountPricePopular')}
-                                            >{`$${product.discountPrice}`}</h4>
-                                            <h4 className={cx('pricePopular')}>{`$${product.price}`}</h4>
+                                        <div className={cx('price')}>
+                                            <h4 className={cx('discountPriceProduct')}>
+                                                <IconSVG IconComponent={icons.dollarIcon} />
+                                                {`${product.discountPrice}`}
+                                            </h4>
+                                            <h4 className={cx('priceProduct')}>
+                                                <IconSVG IconComponent={icons.dollarIcon} />
+                                                {`${product.price}`}
+                                            </h4>
                                         </div>
                                     </div>
                                 </Link>

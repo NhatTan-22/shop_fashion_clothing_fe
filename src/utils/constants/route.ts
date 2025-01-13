@@ -1,5 +1,16 @@
 import { IRouteModel } from '../interfaces/common';
-import { ContactPage, Dashboard, HomePage, Inventory, Login, ProductsPage, Register, Report, Supplier } from '~/pages';
+import {
+    BlogPage,
+    ContactPage,
+    Dashboard,
+    HomePage,
+    Inventory,
+    Login,
+    ProductsPage,
+    Register,
+    Report,
+    Supplier,
+} from '~/pages';
 
 // Path Router
 export const authRoute = {
@@ -23,6 +34,7 @@ export const userRoute = {
     base: '/',
     home: '/home',
     products: '/products',
+    blog: '/blog',
     cart: '/cart',
     contact: '/contact',
 };
@@ -79,6 +91,10 @@ export const publicUserRoutes: IRouteModel[] = [
     {
         path: userRoute.products,
         component: ProductsPage,
+    },
+    {
+        path: userRoute.blog,
+        component: BlogPage,
     },
     {
         path: userRoute.contact,

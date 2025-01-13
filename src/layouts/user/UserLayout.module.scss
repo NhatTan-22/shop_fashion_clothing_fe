@@ -36,12 +36,24 @@
     @apply flex w-full;
 }
 
+.formSearch {
+    @apply relative;
+}
+
 .inputSearch {
-    @apply h-6 w-64 py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl focus:border-wisteria-600;
+    @apply h-6 w-auto py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl;
+}
+
+.inputSearch:focus {
+    @apply focus:border-wisteria-600;
+}
+
+.iconSearch {
+    @apply absolute top-[15%] right-[5%];
 }
 
 .actionUser {
-    @apply items-center grid grid-flow-col gap-4 w-full text-center;
+    @apply items-center grid grid-flow-col gap-8 text-center;
 }
 
 .wrapperBody {
@@ -49,7 +61,7 @@
 }
 
 .footer {
-    @apply w-full py-16 bg-bossa-nova-900 text-white;
+    @apply w-full py-16 bg-bossa-nova-900 text-white mt-10;
 }
 
 .contentFooter {

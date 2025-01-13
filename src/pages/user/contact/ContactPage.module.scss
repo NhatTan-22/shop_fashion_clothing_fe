@@ -1,3 +1,36 @@
 .mainAboutPage {
-    @apply mx-auto max-w-screen-xl;
+    @apply font-nunito;
+}
+
+.swapperContact {
+    @apply mx-auto max-w-[80%];
+}
+
+.headerContact {
+    @apply text-center grid gap-2 mb-12;
+}
+
+.titleForm,
+.headerContact h1 {
+    @apply text-4xl font-medium;
+}
+
+.contentContact {
+    @apply text-center mx-auto max-w-[70%] flex justify-between mb-12;
+}
+
+.itemContact {
+    @apply grid gap-2;
+}
+
+.descriptionContact {
+    @apply flex items-center gap-1;
+}
+
+.titleContact {
+    @apply text-2xl;
+}
+
+.formMessageContact {
+    @apply mx-auto max-w-[65%] text-center grid grid-flow-row gap-8;
 }

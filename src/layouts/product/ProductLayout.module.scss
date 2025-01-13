@@ -1,0 +1,8 @@
+.mainProductLayout {
+    @apply h-screen w-screen font-nunito overflow-auto;
+    scrollbar-width: none;
+}
+
+.wrapperBody {
+    @apply mt-40;
+}

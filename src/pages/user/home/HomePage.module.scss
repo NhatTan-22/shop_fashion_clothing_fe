@@ -55,11 +55,20 @@
     @apply line-clamp-2;
 }
 
-.priceProduct {
+.price {
     @apply flex gap-4;
 }
 
-.pricePopular {
+.discountPriceProduct,
+.priceProduct {
+    @apply flex items-center;
+}
+
+.discountPriceProduct {
+    @apply text-punch-600;
+}
+
+.priceProduct {
     @apply line-through opacity-50;
 }
 
