@@ -1,32 +1,29 @@
 // Libs
 import classNames from 'classnames/bind';
-import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
-import { Breadcrumb, Slider } from '~/components';
 // Others
 // Styles, Images, icons
-import styles from './ProductsPage.module.scss';
+import styles from './BlogPage.module.scss';
+import { Breadcrumb } from '~/components';
 
 type Props = {
     content?: string;
 };
 
 const cx = classNames.bind(styles);
-
-const productBreadcrumbs = [
+const blogBreadcrumbs = [
     {
-        to: '/products',
-        title: 'user_title_products_navigation',
+        to: '/blog',
+        title: 'user_title_blog_navigation',
     },
 ];
 
-const ProductsPage = (props: Props) => {
+const BlogPage = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
+    const { content = 'BlogPage Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
-    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
@@ -42,10 +39,10 @@ const ProductsPage = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='productsPage' className={cx('mainProductsPage')}>
-            <Breadcrumb breadcrumbs={productBreadcrumbs} />
+        <div>
+            <Breadcrumb breadcrumbs={blogBreadcrumbs} />
         </div>
     );
 };
 
-export default ProductsPage;
+export default BlogPage;

@@ -18,6 +18,8 @@ import { ReactComponent as CartIcon } from '../icons/cartIcon.svg';
 import { ReactComponent as ArrowRightIcon } from '../icons/arrowRightIcon.svg';
 import { ReactComponent as ArrowLeftIcon } from '../icons/arrowLeftIcon.svg';
 import { ReactComponent as EyeIcon } from '../icons/eyeIcon.svg';
+import { ReactComponent as DollarIcon } from '../icons/dollarIcon.svg';
+import { ReactComponent as SlashIcon } from '../icons/slashIcon.svg';
 
 const icons = {
     homeIcon: HomeIcon,
@@ -40,6 +42,8 @@ const icons = {
     arrowRightIcon: ArrowRightIcon,
     arrowLeftIcon: ArrowLeftIcon,
     eyeIcon: EyeIcon,
+    dollarIcon: DollarIcon,
+    slashIcon: SlashIcon,
 };
 
 export default icons;

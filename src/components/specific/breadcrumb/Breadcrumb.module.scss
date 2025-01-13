@@ -1,0 +1,7 @@
+.mainBreadcrumb {
+    @apply w-full h-12 bg-gray-200 font-nunito mb-8;
+}
+
+.contentBreadcrumb {
+    @apply flex h-12 items-center mx-auto max-w-[80%];
+}

@@ -21,6 +21,11 @@ export interface ISideBar {
     icon: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
+export interface IBreadcrumb {
+    to: string;
+    title: string;
+}
+
 export interface IPagination extends IParamsPagination {
     lengthPage?: number;
 }

@@ -2,15 +2,14 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import Slider from 'react-slick';
+import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
+import { BaseButton } from '~/components';
 // Others
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './SliderComponents.module.scss';
 import { images } from '~/assets';
-import { BaseButton } from '~/components';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { t } from 'i18next';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
     content?: string;

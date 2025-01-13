@@ -7,6 +7,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { BaseButton, IconSVG } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { listHeader } from '~/utils/constants/common';
 // Styles, Images, icons
 import { icons, images } from '~/assets';
 import styles from './UserLayout.module.scss';
@@ -36,24 +37,6 @@ const UserLayout = (props: Props) => {
     //#endregion Declare State
 
     //#region Implement Hook
-    const listHeader = [
-        {
-            title: 'user_title_products_navigation',
-            //   icon: <FaAngleDown className="inline-flex mx-1" />,
-            path: '/products',
-        },
-        {
-            title: 'user_title_blog_navigation',
-            //   icon: <FaAngleDown className="inline-flex mx-1" />,
-            path: '/blog',
-        },
-        {
-            title: 'user_title_contact_navigation',
-            icon: '',
-            path: '/contact',
-        },
-    ];
-
     useEffect(() => {
         window.addEventListener('resize', handleResize);
 
@@ -121,46 +104,38 @@ const UserLayout = (props: Props) => {
                                     {listHeader.map((header) => (
                                         <Link key={header.path} to={header.path}>
                                             <li className='mr-8 pb-0 hover:text-red-600 '>
-                                                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                                                    <span>{t(`${header.title}`)}</span>
-                                                    {header.icon}
-                                                </BaseButton>
+                                                <BaseButton
+                                                    styleButton={ButtonStyleEnum.TEXT}
+                                                    nameButton={t(`${header.title}`)}
+                                                />
                                             </li>
                                         </Link>
                                     ))}
                                 </ul>
                             </div>
                             <div className={cx('actionUser')}>
-                                <form action='/' className='relative'>
+                                <form action='/' className={cx('formSearch')}>
                                     <input
                                         // onChange=""
                                         className={cx('inputSearch')}
                                         type='text'
                                         placeholder='Search our store...'
                                     />
-                                    <div className='absolute top-0 right-6'>
-                                        <BaseButton
-                                            styleButton={ButtonStyleEnum.TEXT}
-                                            nextIcon={icons.searchIcon}
-                                            className='focus:text-blue-500'
-                                        />
+                                    <div className={cx('iconSearch')}>
+                                        <IconSVG IconComponent={icons.searchIcon} />
                                     </div>
                                 </form>
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                                    <Link to='/wishlist'>
-                                        <IconSVG IconComponent={icons.heartIcon} />
+                                <Link to='/wishlist'>
+                                    <IconSVG IconComponent={icons.heartIcon} />
+                                </Link>
+                                <div className='relative'>
+                                    <Link to='order'>
+                                        <IconSVG IconComponent={icons.cartIcon} />
+                                        <div className='absolute top-2 left-4 rounded-full bg-wisteria-600'>
+                                            <span className='px-2 text-white'>0</span>
+                                        </div>
                                     </Link>
-                                </BaseButton>
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                                    <div className='relative'>
-                                        <Link to='order'>
-                                            <IconSVG IconComponent={icons.cartIcon} />
-                                            <div className='absolute top-2 left-3 rounded-full bg-wisteria-600'>
-                                                <span className='px-2 text-white'>0</span>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                </BaseButton>
+                                </div>
                                 {/* <BaseButton styleButton={ButtonStyleEnum.TEXT}>
                                 <img
                                     className='w-10 h-10 rounded-full'
@@ -171,35 +146,10 @@ const UserLayout = (props: Props) => {
                                 <Link to='/auth/login'>
                                     <BaseButton nameButton='Login' />
                                 </Link>
-                                <Link to='/auth/register'>
-                                    <BaseButton nameButton='Register' />
-                                </Link>
-                                {/* <Menu
-                                    id='basic-menu'
-                                    // anchorEl={anchorEl}
-                                    // open={open}
-                                    // onClose={handleClose}
-                                    // MenuListProps={{
-                                    //     'aria-labelledby': 'basic-button',
-                                    // }}
-                                >
-                                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                                    <Link to='/auth/login'>
-                                        <MenuItem>Logout</MenuItem>
-                                    </Link>
-                                </Menu> */}
                             </div>
                         </>
                     ) : (
-                        <IconSVG IconComponent={icons.listMenuIcon} />
-                        // <img
-                        //     className={cx('listMenu')}
-                        //     width={24}
-                        //     height={24}
-                        //     src={icons.listMenuIcon}
-                        //     alt=''
-                        //     onClick={handleSideBar}
-                        // />
+                        <IconSVG IconComponent={icons.listMenuIcon} onClick={handleSideBar} />
                     )}
                 </div>
             </div>
@@ -223,11 +173,14 @@ const UserLayout = (props: Props) => {
                             </li>
                             <li className={cx('titleFooter')}>
                                 <b>{t('user_footer_website_title')}</b>
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='pntShop.com' />
+                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='ShopFashionClothing.com' />
                             </li>
                             <li className={cx('titleFooter')}>
                                 <b>{t('user_footer_email_title')}</b>
-                                <BaseButton styleButton={ButtonStyleEnum.TEXT} nameButton='pntShop@gamil.com' />
+                                <BaseButton
+                                    styleButton={ButtonStyleEnum.TEXT}
+                                    nameButton='ShopFashionClothing@gamil.com'
+                                />
                             </li>
                             <li className={cx('titleFooter')}>
                                 <b>{t('user_footer_address_title')}</b>
