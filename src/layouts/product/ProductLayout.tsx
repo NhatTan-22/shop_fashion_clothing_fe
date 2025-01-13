@@ -1,11 +1,16 @@
 // Libs
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 // Components, Layouts, Pages
-import { Breadcrumb, Slider } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
+import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { listHeader } from '~/utils/constants/common';
 // Styles, Images, icons
-import styles from './ProductsPage.module.scss';
+import { icons, images } from '~/assets';
+import styles from './UserLayout.module.scss';
 
 type Props = {
     content?: string;
@@ -13,14 +18,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const productBreadcrumbs = [
-    {
-        to: '/products',
-        title: 'user_title_products_navigation',
-    },
-];
-
-const ProductsPage = (props: Props) => {
+const ProductLayout = (props: Props) => {
     //#region Destructuring Props
     const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
@@ -42,10 +40,12 @@ const ProductsPage = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='productsPage' className={cx('mainProductsPage')}>
-            <Breadcrumb breadcrumbs={productBreadcrumbs} />
+        <div id='productLayout' className={cx('mainProductLayout')}>
+            <div className={cx('wrapperBody')}>
+                <Outlet />
+            </div>
         </div>
     );
 };
 
-export default ProductsPage;
+export default ProductLayout;

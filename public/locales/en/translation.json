@@ -155,15 +155,14 @@
     "user_footer_website_title": "Website:",
     "user_footer_email_title": "Email:",
     "user_footer_address_title": "Address:",
-
     "user_footer_customer_support_title": "CUSTOMER SUPPORT",
     "user_footer_guarantee": "Return and warranty policy.",
     "user_footer_security": "Privacy Policy.",
     "user_footer_payment": "Payment policy.",
-
     "user_footer_information_title": "Information.",
     "user_footer_information_description": "Download our App and get an extra 15% off your first order..!.",
 
+    "user_title_home_navigation": "Home",
     "user_title_products_navigation": "Products",
     "user_title_blog_navigation": "Blog",
     "user_title_contact_navigation": "Contact",
@@ -184,6 +183,23 @@
 
     "user_popular_products_tile": "Popular products",
     "user_view_products_label": "View products",
+    "user_title_button_sub_banner": "Shop Now",
 
-    "user_title_button_sub_banner": "Shop Now"
+    "_user_contact": "Contact",
+    "user_title_contact": "We always look forward to hearing from you!",
+    "user_title_address_contact": "ADDRESS",
+    "user_title_contact_contact": "CONTACT",
+    "user_title_office_hours_contact": "OFFICE HOURS",
+    "user_title_form_contact": "Ask us anything here!",
+    "user_label_description_contact": "You can call us during business hours or visit our office. All messages will receive a response within 24 hours. Love to hear from you!",
+    "user_label_address_content_contact": "Quảng Ninh - Việt Nam",
+    "user_label_phone_contact": "Phone:",
+    "user_label_email_contact": "Email:",
+    "user_label_monday_one_contact": "Monday – Friday:",
+    "user_label_monday_one_content_contact": "09:00 – 20:00",
+    "user_label_monday_two_contact": "Saturday & Sunday:",
+    "user_label_monday_two_content_contact": "10:30 – 22:00",
+    "user_label_email_content_contact": "tan2002@gmail.com",
+
+    "user_title_button_send_message": "Send Message"
 }
