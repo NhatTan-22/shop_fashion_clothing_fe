@@ -1,0 +1,57 @@
+.mainOrderPage {
+    @apply mx-auto max-w-[85%] w-screen h-full font-nunito;
+}
+
+.headerOrder {
+    @apply text-3xl font-semibold mb-6 pt-4;
+}
+
+.contentOrder {
+    @apply grid grid-flow-col col-span-2 gap-6;
+}
+
+.columnsProduct {
+    @apply flex gap-6;
+}
+
+.columnsProduct img {
+    @apply w-[50px] h-[50px] object-cover object-center rounded-xl;
+}
+
+.typeProduct {
+    @apply flex gap-6;
+}
+
+.buttonCount {
+    @apply flex justify-between border rounded-lg p-2;
+}
+
+.colTotalBill {
+    @apply max-h-max border rounded-md p-5;
+}
+
+.rowTotalBill {
+    @apply grid grid-flow-row gap-6;
+}
+
+.labelItem {
+    @apply flex justify-between;
+}
+
+.labelItem {
+    @apply font-bold;
+}
+
+.contentTotalBill {
+    @apply border-y-2 my-6 py-6 grid grid-flow-row gap-5;
+}
+
+@media screen and (max-width: 768px) {
+    .tableOrderProduct {
+        @apply overflow-auto;
+    }
+
+    .contentOrder {
+        @apply grid grid-flow-row;
+    }
+}

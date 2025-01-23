@@ -1,4 +1,5 @@
 export interface IProduct {
+    _id?: Object;
     productCode?: string;
     productName?: string;
     productImage?: string;
@@ -17,14 +18,10 @@ export interface IPrice {
 }
 
 export interface IVariant {
-    image: [string];
-    color: string;
-    sizes: ISizeQuantity[];
-}
-
-export interface ISizeQuantity {
-    size: string;
-    storeQuantity?: number;
-    importQuantity?: number;
-    sellingQuantity?: number;
+    image: string;
+    productColor: string;
+    productSize: string;
+    storeQuantity: number;
+    importQuantity: number;
+    sellingQuantity: number;
 }

@@ -9,6 +9,7 @@
     "common_filters": "Filters",
     "common_delete": "Delete",
     "common_edit": "Edit",
+    "common_apply": "Apply",
 
     "_login": "Login",
     "login_title_header": "Log in to your account",
@@ -200,6 +201,21 @@
     "user_label_monday_two_contact": "Saturday & Sunday:",
     "user_label_monday_two_content_contact": "10:30 – 22:00",
     "user_label_email_content_contact": "tan2002@gmail.com",
+
+    "_user_order": "Order",
+    "user_order_checkout_tile": "Checkout",
+    "user_products_code_label_table": "Product",
+    "user_order_type_size_products_label": "Size: ",
+    "user_order_type_color_products_label": "Color: ",
+    "user_products_price_label_table": "Price",
+    "user_products_quantity_label_table": "Quantity",
+    "user_products_subtotal_label_table": "Subtotal",
+
+    "user_products_subtotal_label": "Subtotal",
+    "user_products_enter_discount_code_label": "Enter Discount Code",
+    "user_products_delivery_charge_label": "Delivery Charge",
+    "user_products_grand_total_label": "Grand Total",
+    "user_products_proceed_to_checkout_label_button": "Proceed To Checkout",
 
     "user_title_button_send_message": "Send Message"
 }

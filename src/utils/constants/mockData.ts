@@ -1,123 +1,155 @@
+import { IOrder } from '../interfaces/interfaceOrder';
 import { IProduct } from '../interfaces/interfaceProduct';
 
-export const mockData: IProduct[] = [
+const products: IProduct[] = [
     {
+        _id: '63e4a1c9f5a10a0012aabc01',
         productCode: 'P001',
-        productName: 'T-shirt Basic',
-        productImage: 'https://example.com/images/tshirt-basic.jpg',
-        description: 'A basic and comfortable T-shirt for everyday use.',
+        productName: 'Áo Thun Nam',
+        productImage: 'https://example.com/product1.jpg',
+        description: 'Áo thun nam chất liệu cotton thoáng mát, phù hợp cho mùa hè.',
         supplierCode: 'SUP001',
         status: true,
         price: {
-            sellingPrice: 20,
-            importPrice: 10,
-            promotionPrice: 18,
+            sellingPrice: 200000,
+            importPrice: 150000,
+            promotionPrice: 180000,
         },
         variants: [
             {
-                image: [''],
-                color: 'White',
-                sizes: [
-                    { size: 'S', storeQuantity: 50, importQuantity: 100, sellingQuantity: 20 },
-                    { size: 'M', storeQuantity: 30, importQuantity: 80, sellingQuantity: 15 },
-                    { size: 'L', storeQuantity: 20, importQuantity: 70, sellingQuantity: 10 },
-                ],
+                image: 'https://example.com/variant1_1.jpg',
+                productColor: 'Blue',
+                productSize: 'M',
+                storeQuantity: 20,
+                importQuantity: 50,
+                sellingQuantity: 15,
             },
             {
-                image: [''],
-                color: 'Black',
-                sizes: [
-                    { size: 'S', storeQuantity: 60, importQuantity: 120, sellingQuantity: 25 },
-                    { size: 'M', storeQuantity: 40, importQuantity: 90, sellingQuantity: 20 },
-                    { size: 'L', storeQuantity: 30, importQuantity: 60, sellingQuantity: 15 },
-                ],
-            },
-            {
-                image: [''],
-                color: 'White',
-                sizes: [
-                    { size: 'S', storeQuantity: 50, importQuantity: 100, sellingQuantity: 20 },
-                    { size: 'M', storeQuantity: 30, importQuantity: 80, sellingQuantity: 15 },
-                    { size: 'L', storeQuantity: 20, importQuantity: 70, sellingQuantity: 10 },
-                ],
-            },
-            {
-                image: [''],
-                color: 'Black',
-                sizes: [
-                    { size: 'S', storeQuantity: 60, importQuantity: 120, sellingQuantity: 25 },
-                    { size: 'M', storeQuantity: 40, importQuantity: 90, sellingQuantity: 20 },
-                    { size: 'L', storeQuantity: 30, importQuantity: 60, sellingQuantity: 15 },
-                ],
-            },
-            {
-                image: [''],
-                color: 'White',
-                sizes: [
-                    { size: 'S', storeQuantity: 50, importQuantity: 100, sellingQuantity: 20 },
-                    { size: 'M', storeQuantity: 30, importQuantity: 80, sellingQuantity: 15 },
-                    { size: 'L', storeQuantity: 20, importQuantity: 70, sellingQuantity: 10 },
-                ],
-            },
-            {
-                image: [''],
-                color: 'Black',
-                sizes: [
-                    { size: 'S', storeQuantity: 60, importQuantity: 120, sellingQuantity: 25 },
-                    { size: 'M', storeQuantity: 40, importQuantity: 90, sellingQuantity: 20 },
-                    { size: 'L', storeQuantity: 30, importQuantity: 60, sellingQuantity: 15 },
-                ],
+                image: 'https://example.com/variant1_2.jpg',
+                productColor: 'Blue',
+                productSize: 'L',
+                storeQuantity: 10,
+                importQuantity: 30,
+                sellingQuantity: 8,
             },
         ],
-        category: 'Clothing',
+        category: 'Thời trang nam',
     },
     {
+        _id: '63e4a1c9f5a10a0012aabc02',
         productCode: 'P002',
-        productName: 'Running Shoes',
-        productImage: 'https://example.com/images/running-shoes.jpg',
-        description: 'Lightweight and durable running shoes for all terrains.',
+        productName: 'Quần Jeans Nữ',
+        productImage: 'https://example.com/product2.jpg',
+        description: 'Quần jeans nữ co giãn, thiết kế thời trang phù hợp cho nhiều dịp.',
         supplierCode: 'SUP002',
-        status: false,
+        status: true,
         price: {
-            sellingPrice: 50,
-            importPrice: 30,
-            promotionPrice: 45,
+            sellingPrice: 350000,
+            importPrice: 250000,
+            promotionPrice: 320000,
         },
         variants: [
             {
-                image: [''],
-                color: 'Blue',
-                sizes: [
-                    { size: '8', storeQuantity: 20, importQuantity: 50, sellingQuantity: 10 },
-                    { size: '9', storeQuantity: 15, importQuantity: 40, sellingQuantity: 8 },
-                ],
+                image: 'https://example.com/variant2_1.jpg',
+                productColor: 'Black',
+                productSize: 'S',
+                storeQuantity: 15,
+                importQuantity: 40,
+                sellingQuantity: 12,
             },
             {
-                image: [''],
-                color: 'Red',
-                sizes: [
-                    { size: '8', storeQuantity: 25, importQuantity: 60, sellingQuantity: 12 },
-                    { size: '9', storeQuantity: 20, importQuantity: 50, sellingQuantity: 10 },
-                ],
-            },
-            {
-                image: [''],
-                color: 'Blue',
-                sizes: [
-                    { size: '8', storeQuantity: 20, importQuantity: 50, sellingQuantity: 10 },
-                    { size: '9', storeQuantity: 15, importQuantity: 40, sellingQuantity: 8 },
-                ],
-            },
-            {
-                image: [''],
-                color: 'Red',
-                sizes: [
-                    { size: '8', storeQuantity: 25, importQuantity: 60, sellingQuantity: 12 },
-                    { size: '9', storeQuantity: 20, importQuantity: 50, sellingQuantity: 10 },
-                ],
+                image: 'https://example.com/variant2_2.jpg',
+                productColor: 'Black',
+                productSize: 'M',
+                storeQuantity: 25,
+                importQuantity: 60,
+                sellingQuantity: 20,
             },
         ],
-        category: 'Footwear',
+        category: 'Thời trang nữ',
+    },
+    {
+        _id: '63e4a1c9f5a10a0012aabc03',
+        productCode: 'P003',
+        productName: 'Giày Thể Thao',
+        productImage: 'https://example.com/product3.jpg',
+        description: 'Giày thể thao nhẹ nhàng, phù hợp cho các hoạt động ngoài trời.',
+        supplierCode: 'SUP003',
+        status: true,
+        price: {
+            sellingPrice: 500000,
+            importPrice: 400000,
+            promotionPrice: 450000,
+        },
+        variants: [
+            {
+                image: 'https://example.com/variant3_1.jpg',
+                productColor: 'White',
+                productSize: '41',
+                storeQuantity: 30,
+                importQuantity: 70,
+                sellingQuantity: 25,
+            },
+            {
+                image: 'https://example.com/variant3_2.jpg',
+                productColor: 'White',
+                productSize: '42',
+                storeQuantity: 40,
+                importQuantity: 100,
+                sellingQuantity: 35,
+            },
+        ],
+        category: 'Giày dép',
+    },
+    {
+        _id: '63e4a1c9f5a10a0012aabc04',
+        productCode: 'P004',
+        productName: 'Túi Xách Tay',
+        productImage: 'https://example.com/product4.jpg',
+        description: 'Túi xách tay thời trang, chất liệu cao cấp, phù hợp cho các bữa tiệc.',
+        supplierCode: 'SUP004',
+        status: true,
+        price: {
+            sellingPrice: 700000,
+            importPrice: 550000,
+            promotionPrice: 650000,
+        },
+        variants: [
+            {
+                image: 'https://example.com/variant4_1.jpg',
+                productColor: 'Pink',
+                productSize: 'One Size',
+                storeQuantity: 25,
+                importQuantity: 50,
+                sellingQuantity: 20,
+            },
+        ],
+        category: 'Phụ kiện',
+    },
+    {
+        _id: '63e4a1c9f5a10a0012aabc05',
+        productCode: 'P005',
+        productName: 'Áo Khoác Dù',
+        productImage: 'https://example.com/product5.jpg',
+        description: 'Áo khoác dù chống nước, phù hợp cho các chuyến đi phượt.',
+        supplierCode: 'SUP005',
+        status: true,
+        price: {
+            sellingPrice: 450000,
+            importPrice: 350000,
+            promotionPrice: 420000,
+        },
+        variants: [
+            {
+                image: 'https://example.com/variant5_1.jpg',
+                productColor: 'Gray',
+                productSize: 'L',
+                storeQuantity: 35,
+                importQuantity: 70,
+                sellingQuantity: 30,
+            },
+        ],
+        category: 'Thời trang nam',
     },
 ];
 
@@ -179,3 +211,57 @@ export const subBanners = [
         discountPrice: 59.99,
     },
 ];
+
+export const orders: IOrder[] = [
+    {
+      _id: "63e4b1c9f5a10a0012aabc01",
+      _idProduct: "63e4a1c9f5a10a0012aabc01",
+      productImage: "https://example.com/images/banner1.jpg",
+      productName: "Áo Thun Nam",
+      productColor: "Blue",
+      productSize: "M",
+      sellingPrice: 200000,
+      quantity: 2
+    },
+    {
+      _id: "63e4b1c9f5a10a0012aabc02",
+      _idProduct: "63e4a1c9f5a10a0012aabc02",
+      productImage: "https://images.unsplash.com/photo-1544957992-20514f595d6f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGZhc2hpb258ZW58MHx8MHx8fDA%3D",
+      productName: "Quần Jeans Nữ",
+      productColor: "Black",
+      productSize: "L",
+      sellingPrice: 350000,
+      quantity: 1
+    },
+    {
+      _id: "63e4b1c9f5a10a0012aabc03",
+      _idProduct: "63e4a1c9f5a10a0012aabc03",
+      productImage: "https://example.com/product3.jpg",
+      productName: "Giày Thể Thao",
+      productColor: "White",
+      productSize: "42",
+      sellingPrice: 500000,
+      quantity: 3
+    },
+    {
+      _id: "63e4b1c9f5a10a0012aabc04",
+      _idProduct: "63e4a1c9f5a10a0012aabc04",
+      productImage: "https://example.com/product4.jpg",
+      productName: "Túi Xách Tay",
+      productColor: "Pink",
+      productSize: "One Size",
+      sellingPrice: 700000,
+      quantity: 1
+    },
+    {
+      _id: "63e4b1c9f5a10a0012aabc05",
+      _idProduct: "63e4a1c9f5a10a0012aabc05",
+      productImage: "https://example.com/product5.jpg",
+      productName: "Áo Khoác Dù",
+      productColor: "Gray",
+      productSize: "L",
+      sellingPrice: 450000,
+      quantity: 2
+    }
+  ];
+  

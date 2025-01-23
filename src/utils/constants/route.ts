@@ -6,6 +6,7 @@ import {
     HomePage,
     Inventory,
     Login,
+    OrderPage,
     ProductsPage,
     Register,
     Report,
@@ -36,6 +37,7 @@ export const userRoute = {
     products: '/products',
     blog: '/blog',
     cart: '/cart',
+    order: '/order',
     contact: '/contact',
 };
 
@@ -103,10 +105,10 @@ export const publicUserRoutes: IRouteModel[] = [
 ];
 
 export const privateUserRoutes: IRouteModel[] = [
-    // {
-    //   path: `${userRoute.products}${userRoute.cart}`,
-    //   component: HomeUser,
-    // },
+    {
+        path: `${userRoute.products}${userRoute.order}`,
+        component: OrderPage,
+    },
 ];
 //#endregion Patient Routes
 
