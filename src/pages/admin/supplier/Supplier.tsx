@@ -117,15 +117,18 @@ const Supplier = (props: Props) => {
         dispatch(getSupplierThunk(paramsPage))
             .unwrap()
             .then((response) => {
-                const pagination = response?.pagination;
-                setData(response?.data);
-                setCurrentPage({
-                    lengthPage: pagination.lengthPage,
-                    currentPage: pagination.currentPage,
-                });
+                if (response) {
+                    const pagination = response?.pagination;
+                    setData(response?.data);
+                    setCurrentPage({
+                        lengthPage: pagination.lengthPage,
+                        currentPage: pagination.currentPage,
+                    });
+                }
             })
             .catch((error) => {
-                message.error(error?.data);
+                console.log('error: ', error);
+                message.error(error?.message);
             })
             .finally(() => {
                 loadingContext?.hide();

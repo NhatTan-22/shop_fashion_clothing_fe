@@ -61,7 +61,6 @@ const Login = (props: Props) => {
             .unwrap()
             .then((response) => {
                 if (response?.data) {
-                    sessionStorage.setItem('data', JSON.stringify(response?.data));
                     const router = navigateLogin(response?.data?.role);
                     navigate(`${router}`);
                     message.success(`${t('login_success')}`);

@@ -56,6 +56,10 @@
     @apply items-center grid grid-flow-col gap-8 text-center;
 }
 
+.identityUser {
+    @apply grid grid-flow-col gap-3;
+}
+
 .wrapperBody {
     @apply mt-40;
 }
