@@ -3,7 +3,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AdminLayout, AuthLayout, UserLayout } from './layouts';
 import {
     privateAdminRoutes,
-    privateRoutes,
     privateUserRoutes,
     publicAuthRoutes,
     publicUserRoutes,
@@ -19,7 +18,7 @@ const App = () => {
 
                 <Route element={<AuthLayout />}>
                     {publicAuthRoutes.map((route, index) => {
-                        const Page = route.component || '';
+                        const Page = route.component || <NotFoundPage />;
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
                                 {route.children &&
@@ -42,12 +41,14 @@ const App = () => {
 
                 <Route element={<UserLayout />}>
                     {publicUserRoutes.map((route, index) => {
-                        const Page = route.component || '';
+                        const Page = route.component || <NotFoundPage />;
+
+                        const children = route.children ?? [];
+
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
-                                {route.children &&
-                                    route.children.length > 0 &&
-                                    route.children.map((childRoute, index) => {
+                                {children.length > 0 &&
+                                    children.map((childRoute, index) => {
                                         const ChildComponent = childRoute.component;
                                         return (
                                             <Route
@@ -72,7 +73,7 @@ const App = () => {
                     }
                 >
                     {privateUserRoutes.map((route, index) => {
-                        const Page = route.component || '';
+                        const Page = route.component || <NotFoundPage />;
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
                                 {route.children &&
@@ -102,7 +103,7 @@ const App = () => {
                     }
                 >
                     {privateAdminRoutes.map((route, index) => {
-                        const Page = route.component || '';
+                        const Page = route.component || <NotFoundPage />;
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
                                 {route.children &&

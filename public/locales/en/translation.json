@@ -202,6 +202,19 @@
     "user_label_monday_two_content_contact": "10:30 – 22:00",
     "user_label_email_content_contact": "tan2002@gmail.com",
 
+    "_user_product": "Product",
+    "_user_short_product": "Short",
+    "user_short_title_product": "Short by latest",
+    "user_short_asc_abc_product": "Sort from A-Z",
+    "user_short_desc_abc_product": "Sort from Z-A",
+    "user_short_asc_price_product": "Sort price ascending",
+    "user_short_desc_price_product": "Sort by price descending",
+    "_user_sidebar_product": "SideBar",
+    "user_sidebar_category_label_product": "Product Categories",
+    "user_sidebar_price_label_product": "Filter By Price",
+    "user_sidebar_color_label_product": "Filter By Color",
+    "user_sidebar_size_label_product": "Filter By Size",
+
     "_user_order": "Order",
     "user_order_checkout_tile": "Checkout",
     "user_products_code_label_table": "Product",
@@ -210,6 +223,9 @@
     "user_products_price_label_table": "Price",
     "user_products_quantity_label_table": "Quantity",
     "user_products_subtotal_label_table": "Subtotal",
+
+    "user_description_empty": "You have no items in your shopping cart.",
+    "user_name_button_empty": "Continue shopping",
 
     "user_products_subtotal_label": "Subtotal",
     "user_products_enter_discount_code_label": "Enter Discount Code",
