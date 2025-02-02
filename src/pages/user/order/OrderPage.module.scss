@@ -46,6 +46,10 @@
     @apply border-y-2 my-6 py-6 grid grid-flow-row gap-5;
 }
 
+.emptyOrder img {
+    @apply flex mx-auto;
+}
+
 @media screen and (max-width: 768px) {
     .tableOrderProduct {
         @apply overflow-auto;

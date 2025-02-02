@@ -1,3 +1,4 @@
+import { GridProduct, ListProduct } from '~/components';
 import { IRouteModel } from '../interfaces/common';
 import {
     BlogPage,
@@ -35,6 +36,7 @@ export const userRoute = {
     base: '/',
     home: '/home',
     products: '/products',
+    list: '/list',
     blog: '/blog',
     cart: '/cart',
     order: '/order',
@@ -93,6 +95,16 @@ export const publicUserRoutes: IRouteModel[] = [
     {
         path: userRoute.products,
         component: ProductsPage,
+        children: [
+            {
+                index: true,
+                component: GridProduct,
+            },
+            {
+                path: `${userRoute.products}${userRoute.list}`,
+                component: ListProduct,
+            },
+        ],
     },
     {
         path: userRoute.blog,
@@ -112,6 +124,6 @@ export const privateUserRoutes: IRouteModel[] = [
 ];
 //#endregion Patient Routes
 
-export const publicRoutes = [...publicAuthRoutes];
+export const publicRoutes = [...publicUserRoutes];
 
 export const privateRoutes = [...privateAdminRoutes, ...privateUserRoutes];

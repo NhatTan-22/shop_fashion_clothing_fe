@@ -14,7 +14,8 @@ import { orders } from '~/utils/constants/mockData';
 import styles from './OrderPage.module.scss';
 import { icons } from '~/assets';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { Input, Space } from 'antd';
+import { Empty, Input, Space, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
 type Props = {
     content?: string;
@@ -25,7 +26,7 @@ const cx = classNames.bind(styles);
 // const contactBreadcrumbs = [
 //     {
 //         to: '/orders',
-//         title: 'Giỏ hàng của bạn',
+//         title: 'Your cart',
 //     },
 // ];
 
@@ -122,7 +123,7 @@ const OrderPage = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [order, setOrder] = useState(orders || []);
+    const [order, setOrder] = useState([]);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -142,19 +143,21 @@ const OrderPage = (props: Props) => {
                     {order.length ? (
                         <BaseTable columns={columns} dataSource={order} />
                     ) : (
-                        <div className='text-base text-center'>
-                            {/* <h1 className='text-4xl font-bold'>GIỎ HÀNG TRỐNG.</h1>
-                    <img
-                        className='w-36 h-36 m-auto my-8'
-                        src='https://cdn.shopify.com/s/files/1/0132/3116/1408/files/cart.png?13612'
-                        alt='Giỏ hàng trống'
-                    />
-                    <span className='text-xl'>Bạn không có mặt hàng nào trong giỏ hàng của mình.</span>
-                    <Link to='/products/all'>
-                        <BaseButton nameButton='Tiếp tục mua sắm' />
-                        <MdOutlineNavigateBefore className='w-6 h-6 mx-1' />
-                    </Link> */}
-                        </div>
+                        <Empty
+                            image='https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg'
+                            className={cx('emptyOrder')}
+                            description={
+                                <Typography.Text>
+                                    <span>{t('user_description_empty')}</span>{' '}
+                                    <Link to='/products'>
+                                        <BaseButton
+                                            styleButton={ButtonStyleEnum.TEXT}
+                                            nameButton={t('user_name_button_empty')}
+                                        />
+                                    </Link>
+                                </Typography.Text>
+                            }
+                        />
                     )}
                 </div>
                 <div className={cx('colTotalBill')}>

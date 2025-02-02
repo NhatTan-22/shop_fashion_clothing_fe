@@ -1,0 +1,65 @@
+.itemProduct {
+    @apply rounded-md bg-snuff-200 shadow-xl;
+}
+
+.itemProduct:hover img {
+    @apply opacity-70;
+}
+
+.boxImage {
+    @apply relative;
+}
+
+.imageProduct {
+    @apply cursor-pointer;
+}
+
+.imageProduct img {
+    @apply w-full h-[200px];
+}
+
+.description {
+    @apply grid grid-flow-row gap-1 m-3 p-2;
+}
+
+.nameProduct {
+    @apply font-bold text-base;
+}
+
+.nameProduct,
+.tileProduct {
+    @apply line-clamp-2;
+}
+
+.price {
+    @apply flex gap-3;
+}
+
+.discountPriceProduct,
+.priceProduct {
+    @apply flex items-center;
+}
+
+.discountPriceProduct {
+    @apply text-punch-600;
+}
+
+.priceProduct {
+    @apply line-through opacity-50;
+}
+
+.buttons {
+    @apply hidden;
+}
+
+.boxImage:hover .buttons {
+    @apply block;
+}
+
+.optionButtons {
+    @apply absolute top-0 right-[5%];
+}
+
+.buttonAddCart {
+    @apply w-[80%] absolute bottom-[5%] right-[10%] left-[10%];
+}
