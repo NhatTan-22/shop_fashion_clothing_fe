@@ -1,17 +1,18 @@
 // Libs
-import { ChangeEvent, ReactElement, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import { Checkbox, Menu, Radio, Select, Slider } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 // Components, Layouts, Pages
-import { BaseButton, Breadcrumb, IconSVG } from '~/components';
+import { Advertisement, BaseButton, Breadcrumb, IconSVG } from '~/components';
 // Others
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { IMenuItem } from '~/utils/interfaces/common';
 // Styles, Images, icons
 import styles from './ProductsPage.module.scss';
 import { icons } from '~/assets';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { subBanners } from '~/utils/constants/mockData';
 
 type Props = {
     content?: string;
@@ -155,6 +156,10 @@ const ProductsPage = (props: Props) => {
             ],
         },
     ];
+
+    useEffect(() => {
+        setProducts(subBanners);
+    }, [subBanners]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -219,6 +224,7 @@ const ProductsPage = (props: Props) => {
                     </div>
                 </div>
             </div>
+            <Advertisement />
         </div>
     );
 };

@@ -186,6 +186,15 @@
     "user_view_products_label": "View products",
     "user_title_button_sub_banner": "Shop Now",
 
+    "user_title_free_shipping_advertisement": "Free Shipping",
+    "user_label_free_shipping_advertisement": "Free shipping for order above $150",
+    "user_title_money_guarantee_advertisement": "Money Guarantee",
+    "user_label_money_guarantee_advertisement": "Within 30 days for an exchange",
+    "user_title_online_support_advertisement": "Online Support",
+    "user_label_online_support_advertisement": "24 hours a day, 7 days a week",
+    "user_title_flexible_payment_advertisement": "Flexible Payment",
+    "user_label_flexible_payment_advertisement": "Pay with multiple credit cards",
+
     "_user_contact": "Contact",
     "user_title_contact": "We always look forward to hearing from you!",
     "user_title_address_contact": "ADDRESS",
