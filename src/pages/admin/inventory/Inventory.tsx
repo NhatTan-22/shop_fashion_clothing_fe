@@ -117,12 +117,8 @@ const Inventory = (props: Props) => {
             render: (_, record) => {
                 if (record?.variants) {
                     const totalQuantity = record.variants.reduce((total, variant) => {
-                        return (
-                            total +
-                            variant.sizes.reduce((prevSize, currenSize) => {
-                                return prevSize + (currenSize.storeQuantity ?? 0);
-                            }, 0)
-                        );
+                        return total + variant.storeQuantity;
+                        
                     }, 0);
 
                     return <p>{`${totalQuantity ?? renderFormatValue(totalQuantity)}`}</p>;
@@ -164,15 +160,17 @@ const Inventory = (props: Props) => {
         dispatch(inventoryThunk(paramsPage))
             .unwrap()
             .then((response) => {
-                const pagination = response?.pagination;
-                setData(response?.data);
-                setCurrentPage({
-                    lengthPage: pagination.lengthPage,
-                    currentPage: pagination.currentPage,
-                });
+                if (response) {
+                    const pagination = response?.pagination;
+                    setData(response?.data);
+                    setCurrentPage({
+                        lengthPage: pagination.lengthPage,
+                        currentPage: pagination.currentPage,
+                    });
+                }
             })
             .catch((error) => {
-                message.error(error?.data);
+                message.error(error?.message);
             })
             .finally(() => {
                 loadingContext?.hide();

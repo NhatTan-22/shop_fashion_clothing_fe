@@ -16,4 +16,5 @@ export { default as HomePage } from './user/home/HomePage';
 export { default as ProductsPage } from './user/product/ProductsPage';
 export { default as BlogPage } from './user/blog/BlogPage';
 export { default as ContactPage } from './user/contact/ContactPage';
+export { default as OrderPage } from './user/order/OrderPage';
 //#endregion User Page

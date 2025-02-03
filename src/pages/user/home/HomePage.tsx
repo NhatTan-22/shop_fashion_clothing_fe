@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 // Components, Layouts, Pages
-import { BaseButton, IconSVG, Slider } from '~/components';
+import { BaseButton, IconSVG, ItemProduct, Slider } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
@@ -59,46 +59,7 @@ const HomePage = (props: Props) => {
                 </div>
                 <div className={cx('contentPopularProduct')}>
                     {subBanners?.map((product, index) => {
-                        return (
-                            <div className={cx('itemPopularProduct')} key={index}>
-                                <div className={cx('boxImage')}>
-                                    <div className={cx('imagePopular')}>
-                                        <img
-                                            // src={`${baseURL}/${product.image}`}
-                                            src={images.slider_0}
-                                            alt={product.title}
-                                        />
-                                    </div>
-                                    <div className={cx('buttons')}>
-                                        <div className={cx('optionButtons')}>
-                                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.heartIcon} />
-                                            <BaseButton styleButton={ButtonStyleEnum.TEXT} nextIcon={icons.eyeIcon} />
-                                        </div>
-                                        <BaseButton
-                                            className={cx('buttonAddCart')}
-                                            styleButton={ButtonStyleEnum.PRIMARY}
-                                            nameButton='Add To Cart'
-                                        />
-                                    </div>
-                                </div>
-                                <Link to={`/products/details/${index}`}>
-                                    <div className={cx('description')}>
-                                        <h1 className={cx('namePopular')}>{product.name}</h1>
-                                        <h3 className={cx('tilePopular')}>{product.title}</h3>
-                                        <div className={cx('price')}>
-                                            <h4 className={cx('discountPriceProduct')}>
-                                                <IconSVG IconComponent={icons.dollarIcon} />
-                                                {`${product.discountPrice}`}
-                                            </h4>
-                                            <h4 className={cx('priceProduct')}>
-                                                <IconSVG IconComponent={icons.dollarIcon} />
-                                                {`${product.price}`}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-                        );
+                        return <ItemProduct key={index} product={product} />;
                     })}
                 </div>
                 <div className={cx('subBanner')}>

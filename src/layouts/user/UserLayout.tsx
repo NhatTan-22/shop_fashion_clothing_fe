@@ -6,11 +6,15 @@ import { Link, Outlet } from 'react-router-dom';
 // Components, Layouts, Pages
 import { BaseButton, IconSVG } from '~/components';
 // Others
+import { RootState } from '~/redux/store';
+import { authActions } from '~/thunks/auth/authSlice';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { listHeader } from '~/utils/constants/common';
+import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
 import { icons, images } from '~/assets';
 import styles from './UserLayout.module.scss';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 
 type Props = {
     content?: string;
@@ -25,9 +29,11 @@ const UserLayout = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     //#endregion Declare Hook
 
     //#region Selector
+    const user = useAppSelector((state: RootState) => state.auth.user);
     //#endregion Selector
 
     //#region Declare State
@@ -64,6 +70,10 @@ const UserLayout = (props: Props) => {
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        dispatch(authActions.handleLogout());
     };
     //#endregion Handle Function
 
@@ -129,23 +139,34 @@ const UserLayout = (props: Props) => {
                                     <IconSVG IconComponent={icons.heartIcon} />
                                 </Link>
                                 <div className='relative'>
-                                    <Link to='order'>
+                                    <Link to='products/order'>
                                         <IconSVG IconComponent={icons.cartIcon} />
                                         <div className='absolute top-2 left-4 rounded-full bg-wisteria-600'>
                                             <span className='px-2 text-white'>0</span>
                                         </div>
                                     </Link>
                                 </div>
-                                {/* <BaseButton styleButton={ButtonStyleEnum.TEXT}>
-                                <img
-                                    className='w-10 h-10 rounded-full'
-                                    src='https://th.bing.com/th/id/OIP.Gg0lRdcH7S-EO2NWbRzCMQAAAA?pid=ImgDet&w=167&h=183&c=7&dpr=1.3'
-                                    alt=''
-                                />
-                                    </BaseButton> */}
-                                <Link to='/auth/login'>
-                                    <BaseButton nameButton='Login' />
-                                </Link>
+                                <div className={cx('identityUser')}>
+                                    {!user ? (
+                                        <Link to='/auth/login'>
+                                            <BaseButton nameButton='Login' />
+                                        </Link>
+                                    ) : (
+                                        <>
+                                            <img
+                                                className='w-10 h-10 rounded-full'
+                                                src={user.photoUrl ? `${baseURL}/${user.photoUrl}` : `${user.photoUrl}`}
+                                                alt=''
+                                            />
+                                            <BaseButton
+                                                width='100px'
+                                                styleButton={ButtonStyleEnum.TEXT}
+                                                onClick={handleLogout}
+                                                nameButton={`Welcome, ${user.firstName} ${user.lastName}!`}
+                                            />
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </>
                     ) : (

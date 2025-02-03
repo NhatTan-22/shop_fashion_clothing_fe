@@ -1,15 +1,20 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 // Components, Layouts, Pages
-import { IconSVG, SideBar } from '~/components';
+import { BaseButton, IconSVG, SideBar } from '~/components';
 // Others
+import { baseURL } from '~/utils/constants/env';
+import { RootState } from '~/redux/store';
+import { authActions } from '~/thunks/auth/authSlice';
 import { sidebarItems } from '~/utils/constants/common';
 // Styles, Images, icons
 import styles from './AdminLayout.module.scss';
 import { icons, images } from '~/assets';
-import { useEffect, useState } from 'react';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 
 type Props = {
     content?: string;
@@ -23,13 +28,16 @@ const AdminLayout = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
-    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     //#endregion Declare Hook
 
     //#region Selector
+    const admin = useAppSelector((state: RootState) => state.auth.user);
     //#endregion Selector
 
     //#region Declare State
+    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -55,6 +63,11 @@ const AdminLayout = (props: Props) => {
         setIsOpenSidebar(!isOpenSideBae);
     };
     const handleOpenDialog = () => {};
+
+    const handleLogout = () => {
+        dispatch(authActions.handleLogout());
+        navigate('/auth/login');
+    };
     //#endregion Handle Function
 
     return (
@@ -76,14 +89,23 @@ const AdminLayout = (props: Props) => {
                     </div>
                     <div className={cx('information')}>
                         <IconSVG IconComponent={icons.notification} width={40} height={40} />
-                        <img
-                            className={cx('imageAvatar')}
-                            src={images.fashionStore}
-                            alt=''
-                            width={40}
-                            height={40}
-                            onClick={handleOpenDialog}
-                        />
+                        {admin && (
+                            <>
+                                <img
+                                    className={cx('imageAvatar')}
+                                    src={admin.photoUrl ? `${baseURL}/${admin.photoUrl}` : `${admin.photoUrl}`}
+                                    alt=''
+                                    width={40}
+                                    height={40}
+                                    onClick={handleOpenDialog}
+                                />
+                                <BaseButton
+                                    styleButton={ButtonStyleEnum.TEXT}
+                                    onClick={handleLogout}
+                                    nameButton={`Welcome, ${admin.firstName} ${admin.lastName}!`}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className={cx('contentAdmin')}>

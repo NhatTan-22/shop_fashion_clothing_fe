@@ -1,0 +1,35 @@
+.mainProductsPage {
+    @apply font-nunito;
+}
+
+.swapperContact {
+    @apply max-w-[85%] mx-auto flex gap-6 mb-6;
+}
+
+.contentProduct {
+    @apply min-h-screen;
+}
+
+.itemCategory {
+    @apply pr-5;
+}
+
+.itemPrice {
+    @apply flex justify-between items-center;
+}
+
+.sideBarProduct {
+    @apply p-5 grid grid-flow-col;
+}
+
+.contentProduct {
+    @apply flex-1 p-5;
+}
+
+.headerProduct {
+    @apply flex justify-between;
+}
+
+.colLeftHeaderProduct {
+    @apply flex gap-3;
+}

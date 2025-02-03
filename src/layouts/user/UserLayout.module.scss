@@ -50,10 +50,23 @@
 
 .iconSearch {
     @apply absolute top-[15%] right-[5%];
+    @apply h-6 w-auto py-4 pl-3 outline-none border-solid border-2 bg-gray-100 rounded-2xl;
+}
+
+.inputSearch:focus {
+    @apply focus:border-wisteria-600;
+}
+
+.iconSearch {
+    @apply absolute top-[15%] right-[5%];
 }
 
 .actionUser {
     @apply items-center grid grid-flow-col gap-8 text-center;
+}
+
+.identityUser {
+    @apply grid grid-flow-col gap-3;
 }
 
 .wrapperBody {

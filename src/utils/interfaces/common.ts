@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 export interface IRouteModel {
     path: string;
     component: React.ElementType;
-    children?: IChildRouteModel[];
+    children?: IChildRouteModel[] | null;
     name?: string;
     index?: boolean;
 }
 
 export interface IChildRouteModel {
-    path: string;
+    path?: string;
     component: React.ElementType;
-    index: boolean;
-    children?: IChildRouteModel[];
+    index?: boolean;
+    children?: IChildRouteModel[] | null;
 }
 
 export interface ISideBar {
@@ -33,4 +33,11 @@ export interface IPagination extends IParamsPagination {
 export interface IParamsPagination {
     currentPage: number;
     limitPage?: number;
+}
+
+export interface IMenuItem {
+    key: string;
+    label: ReactNode;
+    icon?: string;
+    children?: IMenuItem[];
 }

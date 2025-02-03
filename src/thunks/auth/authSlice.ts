@@ -1,37 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authLoginThunk, authRegister } from '~/thunks/auth/authThunk';
 import { StorageEnum } from '~/utils/constants/enum';
+import { IUser } from '~/utils/interfaces/auth';
 
 export interface AuthState {
     accessToken: string | null | undefined;
-    firstName?: string;
-    lastName?: string;
-    phone?: string;
-    email?: string;
-    password?: string;
+    user: IUser | null;
 }
 
 const initialState: AuthState = {
-    accessToken: localStorage.getItem(StorageEnum.ACCESS_TOKEN)! || null,
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    password: '',
+    user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')!) : null,
+    accessToken: localStorage.getItem(StorageEnum.ACCESS_TOKEN) || null,
 };
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        handleLogout() {
-            localStorage.removeItem(StorageEnum.ACCESS_TOKEN);
+        handleLogout(state) {
+            state.user = null;
+            state.accessToken = null;
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            sessionStorage.removeItem('user');
         },
     },
     extraReducers(builder) {
         builder
             .addCase(authLoginThunk.pending, (state, action) => {})
-            .addCase(authLoginThunk.fulfilled, (state, action) => {})
+            .addCase(authLoginThunk.fulfilled, (state, action) => {
+                const { data, token } = action.payload;
+                state.user = data;
+                state.accessToken = token.access;
+                sessionStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem(StorageEnum.ACCESS_TOKEN, token.access);
+                localStorage.setItem(StorageEnum.REFRESH_TOKEN, token.refresh);
+            })
             .addCase(authLoginThunk.rejected, (state, action) => {});
 
         builder

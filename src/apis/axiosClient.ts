@@ -16,7 +16,9 @@ axiosClient.interceptors.request.use(
     function (config: InternalAxiosRequestConfig) {
         // Do something before request is sent
         const token = localStorage.getItem(StorageEnum.ACCESS_TOKEN);
-        config.headers.Authorization = token ? `Bearer ${token}` : '';
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
 

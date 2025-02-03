@@ -1,0 +1,15 @@
+.mainGridProduct {
+    @apply w-full min-h-[80%];
+}
+
+.contentGridProduct {
+    @apply grid grid-cols-4 gap-6;
+}
+
+.paginationGridProduct {
+    @apply mt-8;
+}
+
+.emptyGridProduct {
+    @apply min-h-screen flex justify-center items-center;
+}
