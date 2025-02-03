@@ -96,3 +96,9 @@ code {
 .ant-select-item:hover {
     background-color: #a56abd !important;
 }
+
+.ant-pagination-item-active,
+.ant-pagination-item-active > a {
+    border-color: #a56abd !important;
+    color: #a56abd !important;
+}
