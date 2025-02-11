@@ -5,7 +5,7 @@
 import { useEffect, useRef } from 'react';
 
 type Props = {
-    IconComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+    IconComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
     width?: number | string;
     height?: number | string;
     colorIcon?: string;
@@ -14,7 +14,7 @@ type Props = {
 
 const IconSVG = (props: Props) => {
     //#region Destructuring Props
-    const { IconComponent, width = 24, height = 24, colorIcon = 'currentColor', onClick } = props;
+    const { IconComponent, width = 24, height = 28, colorIcon = 'currentColor', onClick } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -46,7 +46,9 @@ const IconSVG = (props: Props) => {
 
     //#endregion Handle Function
 
-    return <IconComponent width={width} height={height} ref={svgRef} onClick={onClick} />;
+    return (
+        <IconComponent  width={width} height={height} ref={svgRef} onClick={onClick} />
+    );
 };
 
 export default IconSVG;

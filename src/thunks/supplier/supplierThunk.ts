@@ -6,9 +6,12 @@ import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 
 export const getSupplierThunk = createAsyncThunk(
     GET_SUPPLIER,
-    async (params: IParamsPagination, { rejectWithValue }) => {
+    async (params: IParamsPagination & { search?: string }, { rejectWithValue }) => {
         try {
-            const response = await supplierApi.getAllSupplier(params);
+            const filteredParams = { ...params };
+            if (!params.search) delete filteredParams.search;
+
+            const response = await supplierApi.getAllSupplier(filteredParams);
             return response.data;
         } catch (error: any) {
             rejectWithValue(error.response.data);
@@ -16,11 +19,14 @@ export const getSupplierThunk = createAsyncThunk(
     }
 );
 
-export const addSupplierThunk = createAsyncThunk(ADD_SUPPLIER, async (body: ISupplier | FormData, { rejectWithValue }) => {
-    try {
-        const response = await supplierApi.addSupplier(body);
-        return response;
-    } catch (error: any) {
-        rejectWithValue(error.response.data);
+export const addSupplierThunk = createAsyncThunk(
+    ADD_SUPPLIER,
+    async (body: ISupplier | FormData, { rejectWithValue }) => {
+        try {
+            const response = await supplierApi.addSupplier(body);
+            return response;
+        } catch (error: any) {
+            rejectWithValue(error.response.data);
+        }
     }
-});
+);

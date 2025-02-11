@@ -7,6 +7,9 @@ export const ADD_SUPPLIER = 'ADD_SUPPLIER';
 export const GET_INVENTORY = 'GET_INVENTORY';
 export const ADD_INVENTORY = 'ADD_INVENTORY';
 
+export const GET_CATEGORY = 'GET_CATEGORY';
+export const ADD_CATEGORY = 'ADD_CATEGORY';
+
 export const urlApiAuth = {
     login: 'auth/login',
     register: 'auth/register',
@@ -14,10 +17,16 @@ export const urlApiAuth = {
 };
 
 export const urlApiSupplier = {
-    getAllSupplier: '/admin/suppliers',
-    addSupplier: '/admin/suppliers/new-add',
+    getAllSupplier: '/suppliers',
+    addSupplier: '/suppliers/new-add',
 };
 
 export const urlApiInventory = {
-    getAllInventory: '/admin/products',
+    getAllInventory: '/products',
+    addInventory: '/products/add-new',
+};
+
+export const urlApiCategory = {
+    getAllCategory: '/categories',
+    addCategory: '/categories/add-new',
 };

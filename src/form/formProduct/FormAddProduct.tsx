@@ -1,22 +1,42 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Col, Form, GetProp, Input, Modal, Row, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
+import {
+    Col,
+    Form,
+    GetProp,
+    Input,
+    message,
+    Modal,
+    Row,
+    Select,
+    Space,
+    Steps,
+    Upload,
+    UploadFile,
+    UploadProps,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { FormInstance, useForm } from 'antd/es/form/Form';
 // Components, Layouts, Pages
+import { BaseButton } from '~/components';
 // Others
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './FormAddProduct.module.scss';
-import { BaseButton } from '~/components';
-import { ButtonStyleEnum, TypeButtonENum } from '~/utils/constants/enum';
 import { icons } from '~/assets';
+import { useAppDispatch } from '~/redux/hooks';
+import { LoadingContext } from '~/context';
+import { getSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import { getCategoryThunk } from '~/thunks/category/categoryThunk';
 
 type Props = {
     isShowModal?: boolean;
     onCancel: () => void;
 };
 
+const { Step } = Steps;
 const { TextArea } = Input;
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -30,13 +50,19 @@ const FormAddProduct = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const [form] = useForm<FormInstance>();
+    const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
     //#endregion Selector
 
     //#region Declare State
+    const [currentStep, setCurrentStep] = useState(0);
     const [supplier, setSupplier] = useState<ISupplier>();
+    const [optionCategory, setOptionCategory] = useState([]);
+    const [optionSupplierCode, setOptionSupplierCode] = useState();
 
     const [fileList, setFileList] = useState<UploadFile>();
     //#endregion Declare State
@@ -45,11 +71,406 @@ const FormAddProduct = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
+    const steps = [
+        {
+            title: `${t('admin_product_information_label')}`,
+            content: (
+                <>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Col span={11} style={{ display: 'flex', justifyContent: 'center' }}>
+                            <Upload
+                                name='productImage'
+                                className={cx('uploadFormAddProduct')}
+                                listType='picture-card'
+                                customRequest={(options: any) => {
+                                    options.onSuccess?.({}, options.file);
+                                }}
+                                maxCount={1}
+                            >
+                                <button style={{ border: 0, background: 'none' }} type='button'>
+                                    <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
+                                </button>
+                            </Upload>
+                        </Col>
+
+                        <Col span={11}>
+                            <Form.Item
+                                name='category'
+                                rules={[{ required: true, message: `${t('admin_add_product_category_required')}` }]}
+                            >
+                                <Select
+                                    showSearch
+                                    style={{ width: '100%' }}
+                                    size='large'
+                                    placeholder={t('admin_add_product_category_placeholder')}
+                                    optionFilterProp='label'
+                                    onChange={onChangeSelect}
+                                    onSearch={onSearchCategory}
+                                    options={optionCategory}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Col span={11}>
+                            <Form.Item
+                                name='productCode'
+                                label={t('admin_product_code_label_input')}
+                                rules={[{ required: true, message: `${t('admin_add_product_code_required')}` }]}
+                            >
+                                <Input size='large' placeholder={t('admin_add_product_code_placeholder')} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={11}>
+                            <Form.Item
+                                name='supplierCode'
+                                label={t('admin_supplier_code_label_input')}
+                                rules={[{ required: true, message: `${t('admin_add_select_supplier_code_required')}` }]}
+                                style={{ width: '100%' }}
+                            >
+                                <Select
+                                    showSearch
+                                    style={{ width: '100%' }}
+                                    size='large'
+                                    placeholder={t('admin_add_select_supplier_code_placeholder')}
+                                    optionFilterProp='label'
+                                    onChange={onChangeSelect}
+                                    onSearch={onSearchSupplierCode}
+                                    options={optionSupplierCode}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Form.Item
+                        name='productName'
+                        label={t('admin_product_name_label_input')}
+                        rules={[{ required: true, message: `${t('admin_add_product_name_required')}` }]}
+                        style={{ width: '100%' }}
+                    >
+                        <Input size='large' placeholder={t('admin_add_product_name_placeholder')} />
+                    </Form.Item>
+
+                    <Form.Item
+                        name='productDescription'
+                        label={t('admin_product_description_label_input')}
+                        rules={[{ required: true, message: `${t('admin_add_product_description_required')}` }]}
+                        style={{ width: '100%' }}
+                    >
+                        <TextArea
+                            rows={5}
+                            placeholder={t('admin_add_product_description_placeholder')}
+                            maxLength={200}
+                        />
+                    </Form.Item>
+                </>
+            ),
+        },
+        {
+            title: `${t('admin_product_prices_label')}`,
+            content: (
+                <>
+                    <Form.Item
+                        name='sellingPrice'
+                        label={t('admin_product_selling_price_label_input')}
+                        rules={[{ required: true, message: `${t('admin_add_product_selling_price_required')}` }]}
+                        style={{ width: '100%' }}
+                    >
+                        <Input
+                            type='number'
+                            size='large'
+                            placeholder={t('admin_add_product_selling_price_placeholder')}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name='promotionPrice'
+                        label={t('admin_product_promotion_price_label_input')}
+                        rules={[{ required: true, message: `${t('admin_add_product_promotion_price_required')}` }]}
+                        style={{ width: '100%' }}
+                    >
+                        <Input
+                            type='number'
+                            size='large'
+                            placeholder={t('admin_add_product_promotion_price_placeholder')}
+                        />
+                    </Form.Item>
+                </>
+            ),
+        },
+        {
+            title: `${t('admin_product_variants_label')}`,
+            content: (
+                <Form.List name='sizes'>
+                    {(fields, { add, remove }) => (
+                        <>
+                            <BaseButton
+                                disabled={fields.length > 3}
+                                className={cx('buttonAdd')}
+                                styleButton={ButtonStyleEnum.PRIMARY}
+                                nameButton={t('admin_product_add_variant_label')}
+                                onClick={() => add()}
+                            />
+                            <div className={cx('listAddVariant')}>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <Row key={key} className={cx('itemAddVariant')}>
+                                        <Col span={22}>
+                                            <Row>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, 'supplierImage']}
+                                                    className={cx('uploadFormAddProduct')}
+                                                >
+                                                    <Upload
+                                                        action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
+                                                        listType='picture-card'
+                                                        onChange={onChange}
+                                                        onPreview={onPreview}
+                                                        maxCount={1}
+                                                    >
+                                                        <button style={{ border: 0, background: 'none' }} type='button'>
+                                                            <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
+                                                        </button>
+                                                    </Upload>
+                                                </Form.Item>
+                                            </Row>
+                                            <Row justify={'space-between'}>
+                                                <Col span={11}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        name={[name, 'productSize']}
+                                                        label={
+                                                            <label
+                                                                className={cx('labelAddProduct')}
+                                                                htmlFor='productSize'
+                                                            >
+                                                                {t('admin_product_size_label_input')}
+                                                            </label>
+                                                        }
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: `${t('admin_add_product_size_required')}`,
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Select
+                                                            showSearch
+                                                            size='large'
+                                                            id='productSize'
+                                                            placeholder={t('admin_add_product_size_placeholder')}
+                                                            optionFilterProp='label'
+                                                            onChange={handleGetInput}
+                                                            filterOption={false}
+                                                            onSearch={onSearch}
+                                                            options={[
+                                                                {
+                                                                    value: 'jack',
+                                                                    label: 'Jack',
+                                                                },
+                                                                {
+                                                                    value: 'lucy',
+                                                                    label: 'Lucy',
+                                                                },
+                                                                {
+                                                                    value: 'tom',
+                                                                    label: 'Tom',
+                                                                },
+                                                            ]}
+                                                        />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={11}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        name={[name, 'storeQuantity']}
+                                                        label={
+                                                            <label
+                                                                className={cx('labelAddProduct')}
+                                                                htmlFor='storeQuantity'
+                                                            >
+                                                                {t('admin_product_store_quantity_label_input')}
+                                                            </label>
+                                                        }
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: `${t(
+                                                                    'admin_add_product_store_quantity_required'
+                                                                )}`,
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            id='storeQuantity'
+                                                            type='text'
+                                                            placeholder={t(
+                                                                'admin_add_product_store_quantity_placeholder'
+                                                            )}
+                                                            title={t('admin_product_store_quantity_label_input')}
+                                                            onChange={handleGetInput}
+                                                        />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+                                            <Row justify={'space-between'}>
+                                                <Col span={11}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        name={[name, 'productColor']}
+                                                        label={
+                                                            <label
+                                                                className={cx('labelAddProduct')}
+                                                                htmlFor='productColor'
+                                                            >
+                                                                {t('admin_product_color_label_input')}
+                                                            </label>
+                                                        }
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: `${t('admin_add_product_color_required')}`,
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Select
+                                                            showSearch
+                                                            size='large'
+                                                            id='productColor'
+                                                            placeholder={t('admin_add_product_color_placeholder')}
+                                                            optionFilterProp='label'
+                                                            onChange={handleGetInput}
+                                                            onSearch={onSearch}
+                                                            filterOption={false}
+                                                            options={[
+                                                                {
+                                                                    value: 'jack',
+                                                                    label: 'Jack',
+                                                                },
+                                                                {
+                                                                    value: 'lucy',
+                                                                    label: 'Lucy',
+                                                                },
+                                                                {
+                                                                    value: 'tom',
+                                                                    label: 'Tom',
+                                                                },
+                                                            ]}
+                                                        />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={11}>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        name={[name, 'sellingQuantity']}
+                                                        label={
+                                                            <label
+                                                                className={cx('labelAddProduct')}
+                                                                htmlFor='sellingQuantity'
+                                                            >
+                                                                {t('admin_product_selling_quantity_label_input')}
+                                                            </label>
+                                                        }
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: `${t(
+                                                                    'admin_add_product_selling_quantity_required'
+                                                                )}`,
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            id='sellingQuantity'
+                                                            type='text'
+                                                            placeholder={t(
+                                                                'admin_add_product_promotion_price_placeholder'
+                                                            )}
+                                                            title={t('admin_add_product_selling_quantity_placeholder')}
+                                                            onChange={handleGetInput}
+                                                        />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <BaseButton
+                                            styleButton={ButtonStyleEnum.TEXT}
+                                            className={cx('styleButton')}
+                                            prevIcon={icons.deleteIcon}
+                                            onClick={() => remove(name)}
+                                        />
+                                    </Row>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </Form.List>
+            ),
+        },
+    ];
+
     const handleGetInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {};
 
-    const handleClear = async () => {};
+    function onChangeSelect(value: string) {
+        console.log(`selected ${value}`);
+    }
 
-    const handleAddProduct = async () => {};
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    function onSearchCategory(value: string) {
+        if (!value) return;
+
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+        searchTimeout.current = setTimeout(() => {
+            dispatch(
+                getCategoryThunk({
+                    search: value,
+                })
+            )
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        setOptionCategory(response);
+                    }
+                })
+                .catch((error) => {
+                    message.error(error?.message);
+                });
+        }, 500);
+    }
+
+    function onSearchSupplierCode(value: string) {
+        if (!value) return;
+
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+        searchTimeout.current = setTimeout(() => {
+            dispatch(
+                getSupplierThunk({
+                    search: value,
+                })
+            )
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        setOptionSupplierCode(response);
+                    }
+                })
+                .catch((error) => {
+                    message.error(error?.message);
+                })
+                .finally(() => {});
+        }, 500);
+    }
+
+    function onSearch(value: string) {
+        console.log(`selected ${value}`);
+    }
+
+    const handleClear = async () => {};
 
     const onChange: UploadProps['onChange'] = ({ file: newFile }) => {
         setFileList(newFile);
@@ -69,412 +490,71 @@ const FormAddProduct = (props: Props) => {
         const imgWindow = window.open(src);
         imgWindow?.document.write(image.outerHTML);
     };
+
+    const nextStep = async () => {
+        try {
+            // await form.validateFields();
+            setCurrentStep(currentStep + 1);
+        } catch (error) {
+            console.log('Validation failed:', error);
+        }
+    };
+
+    const prevStep = () => {
+        setCurrentStep(currentStep - 1);
+    };
+
+    const handleAddProduct = async () => {
+        try {
+            await form.validateFields();
+            onCancel();
+        } catch (error) {
+            console.log('Validation failed:', error);
+        }
+    };
     //#endregion Handle Function
 
     return (
         <Modal
             title={<div className={cx('modalTitle')}>{t('admin_product_new_product_title')}</div>}
-            centered
             className={cx('modalAddProduct')}
-            open={isShowModal}
-            onCancel={onCancel}
-            okText='Add Product'
-            onOk={handleAddProduct}
             footer={
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                    <BaseButton key='clear' onClick={handleClear}>
-                        Clear
-                    </BaseButton>
-                    <BaseButton styleButton={ButtonStyleEnum.PRIMARY} onClick={handleAddProduct}>
-                        Add Product
-                    </BaseButton>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div>
+                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton='Clear' />
+                    </div>
+                    <div style={{ display: 'flex', gap: 20 }}>
+                        {currentStep > 0 && <BaseButton onClick={prevStep} nameButton='Previous' />}
+                        {currentStep < steps.length - 1 && (
+                            <BaseButton nameButton='Next' styleButton={ButtonStyleEnum.PRIMARY} onClick={nextStep} />
+                        )}
+                        {currentStep === steps.length - 1 && (
+                            <BaseButton
+                                nameButton='Submit'
+                                styleButton={ButtonStyleEnum.PRIMARY}
+                                onClick={handleAddProduct}
+                            />
+                        )}
+                    </div>
                 </div>
             }
+            centered
+            open={isShowModal}
+            onCancel={onCancel}
         >
-            <Form name='addProduct' className={cx('formAddProduct')} onFinish={handleAddProduct}>
-                <Row justify='space-between'>
-                    <Col span={6}>
-                        <Upload
-                            name='productImage'
-                            className={cx('uploadFormAddProduct')}
-                            listType='picture-card'
-                            customRequest={(options: any) => {
-                                options.onSuccess?.({}, options.file);
-                            }}
-                            onChange={onChange}
-                            onPreview={onPreview}
-                            maxCount={1}
-                        >
-                            <button style={{ border: 0, background: 'none' }} type='button'>
-                                <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
-                            </button>
-                        </Upload>
-                    </Col>
-                    <Col span={8}>
-                        <Form.Item
-                            name='productCode'
-                            label={
-                                <label className={cx('labelAddSupplier')} htmlFor='productCode'>
-                                    {t('admin_product_code_label_input')}
-                                </label>
-                            }
-                            rules={[{ required: true, message: `${t('admin_add_product_code_required')}` }]}
-                        >
-                            <Input
-                                className={cx('inputFormAddProduct')}
-                                id='productCode'
-                                name='productCode'
-                                type='text'
-                                autoFocus
-                                placeholder={t('admin_add_product_code_placeholder')}
-                                title={t('admin_product_code_label_input')}
-                                onChange={handleGetInput}
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            name='productName'
-                            label={
-                                <label className={cx('labelAddSupplier')} htmlFor='productName'>
-                                    {t('admin_product_name_label_input')}
-                                </label>
-                            }
-                            rules={[{ required: true, message: `${t('admin_add_product_name_required')}` }]}
-                        >
-                            <Input
-                                className={cx('inputFormAddProduct')}
-                                id='productName'
-                                name='productName'
-                                type='text'
-                                placeholder={t('admin_add_product_name_placeholder')}
-                                title={t('admin_product_name_label_input')}
-                                onChange={handleGetInput}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={9}>
-                        <Form.Item
-                            name='productDescription'
-                            label={
-                                <label className={cx('labelAddProduct')} htmlFor='productDescription'>
-                                    {t('admin_product_description_label_input')}
-                                </label>
-                            }
-                            rules={[{ required: true, message: `${t('admin_add_product_description_required')}` }]}
-                        >
-                            <TextArea
-                                className={cx('inputFormAddProduct')}
-                                id='productDescription'
-                                name='productDescription'
-                                rows={4}
-                                maxLength={255}
-                                placeholder={t('admin_add_product_description_placeholder')}
-                                title={t('admin_product_description_label_input')}
-                                onChange={handleGetInput}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row justify='start'>
-                    <div className={cx('labelProduct')}>{t('admin_product_prices_label')}</div>
-                </Row>
-                <Row justify={'space-around'}>
-                    <Col>
-                        <Form.Item
-                            name='sellingPrice'
-                            label={
-                                <label className={cx('labelAddProduct')} htmlFor='sellingPrice'>
-                                    {t('admin_product_selling_price_label_input')}
-                                </label>
-                            }
-                            rules={[{ required: true, message: `${t('admin_add_product_selling_price_required')}` }]}
-                        >
-                            <Input
-                                className={cx('inputFormAddProduct')}
-                                id='sellingPrice'
-                                name='sellingPrice'
-                                type='number'
-                                autoFocus
-                                placeholder={t('admin_add_product_selling_price_placeholder')}
-                                title={t('admin_product_selling_price_label_input')}
-                                onChange={handleGetInput}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col>
-                        <Form.Item
-                            name='promotionPrice'
-                            label={
-                                <label className={cx('labelAddProduct')} htmlFor='promotionPrice'>
-                                    {t('admin_product_promotion_price_label_input')}
-                                </label>
-                            }
-                            rules={[{ required: true, message: `${t('admin_add_product_promotion_price_required')}` }]}
-                        >
-                            <Input
-                                className={cx('inputFormAddProduct')}
-                                id='promotionPrice'
-                                name='promotionPrice'
-                                type='number'
-                                placeholder={t('admin_add_product_promotion_price_placeholder')}
-                                title={t('admin_product_promotion_price_label_input')}
-                                onChange={handleGetInput}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row justify='start'>
-                    <div className={cx('labelProduct')}>{t('admin_product_variants_label')}</div>
-                </Row>
-                <Form.List name='sizes'>
-                    {(fields, { add, remove }) => (
-                        <>
-                            <Row justify={'space-between'} style={{ marginRight: '50px' }}>
-                                <Col style={{ width: '220px' }}>
-                                    <Upload
-                                        name='supplierImage'
-                                        className={cx('uploadFormAddProduct')}
-                                        action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
-                                        listType='picture-card'
-                                        onChange={onChange}
-                                        onPreview={onPreview}
-                                        maxCount={1}
-                                    >
-                                        <button style={{ border: 0, background: 'none' }} type='button'>
-                                            <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
-                                        </button>
-                                    </Upload>
-                                </Col>
-                                <Col className={cx('form')} span={24}>
-                                    <Row>
-                                        <Col span={9}>
-                                            <Form.Item
-                                                name='size'
-                                                label={
-                                                    <label className={cx('labelAddProduct')} htmlFor='size'>
-                                                        {t('admin_product_size_label_input')}
-                                                    </label>
-                                                }
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: `${t('admin_add_product_size_required')}`,
-                                                    },
-                                                ]}
-                                            >
-                                                <Input
-                                                    className={cx('inputFormAddProduct')}
-                                                    id='size'
-                                                    name='size'
-                                                    type='text'
-                                                    placeholder={t('admin_add_product_size_placeholder')}
-                                                    title={t('admin_product_size_label_input')}
-                                                    onChange={handleGetInput}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name='storeQuantity'
-                                                label={
-                                                    <label className={cx('labelAddProduct')} htmlFor='storeQuantity'>
-                                                        {t('admin_product_store_quantity_label_input')}
-                                                    </label>
-                                                }
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: `${t('admin_add_product_store_quantity_required')}`,
-                                                    },
-                                                ]}
-                                            >
-                                                <Input
-                                                    className={cx('inputFormAddProduct')}
-                                                    id='storeQuantity'
-                                                    name='storeQuantity'
-                                                    type='text'
-                                                    placeholder={t('admin_add_product_store_quantity_placeholder')}
-                                                    title={t('admin_product_store_quantity_label_input')}
-                                                    onChange={handleGetInput}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name='sellingQuantity'
-                                                label={
-                                                    <label className={cx('labelAddProduct')} htmlFor='sellingQuantity'>
-                                                        {t('admin_product_selling_quantity_label_input')}
-                                                    </label>
-                                                }
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: `${t('admin_add_product_selling_quantity_required')}`,
-                                                    },
-                                                ]}
-                                            >
-                                                <Input
-                                                    className={cx('inputFormAddProduct')}
-                                                    id='sellingQuantity'
-                                                    name='sellingQuantity'
-                                                    type='text'
-                                                    placeholder={t('admin_add_product_promotion_price_placeholder')}
-                                                    title={t('admin_add_product_selling_quantity_placeholder')}
-                                                    onChange={handleGetInput}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-
-                            {fields.map(({ key, name, ...restField }) => (
-                                <Row>
-                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
-                                        <Row justify={'space-between'}>
-                                            <Col style={{ width: '220px' }}>
-                                                <Upload
-                                                    {...restField}
-                                                    name='supplierImage'
-                                                    className={cx('uploadFormAddProduct')}
-                                                    action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
-                                                    listType='picture-card'
-                                                    onChange={onChange}
-                                                    onPreview={onPreview}
-                                                    maxCount={1}
-                                                >
-                                                    <button style={{ border: 0, background: 'none' }} type='button'>
-                                                        <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
-                                                    </button>
-                                                </Upload>
-                                            </Col>
-                                            <Col className={cx('form')}>
-                                                <Row>
-                                                    <Col span={13}>
-                                                        <Form.Item
-                                                            {...restField}
-                                                            name={[name, 'size']}
-                                                            label={
-                                                                <label className={cx('labelAddProduct')} htmlFor='size'>
-                                                                    {t('admin_product_size_label_input')}
-                                                                </label>
-                                                            }
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: `${t('admin_add_product_size_required')}`,
-                                                                },
-                                                            ]}
-                                                        >
-                                                            <Input
-                                                                className={cx('inputFormAddProduct')}
-                                                                id='size'
-                                                                name='size'
-                                                                type='text'
-                                                                placeholder={t('admin_add_product_size_placeholder')}
-                                                                title={t('admin_product_size_label_input')}
-                                                                onChange={handleGetInput}
-                                                            />
-                                                        </Form.Item>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col span={12}>
-                                                        <Form.Item
-                                                            name='storeQuantity'
-                                                            label={
-                                                                <label
-                                                                    className={cx('labelAddProduct')}
-                                                                    htmlFor='storeQuantity'
-                                                                >
-                                                                    {t('admin_product_promotion_price_label_input')}
-                                                                </label>
-                                                            }
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: `${t(
-                                                                        'admin_add_product_promotion_price_required'
-                                                                    )}`,
-                                                                },
-                                                            ]}
-                                                        >
-                                                            <Input
-                                                                className={cx('inputFormAddProduct')}
-                                                                id='storeQuantity'
-                                                                name='storeQuantity'
-                                                                type='text'
-                                                                placeholder={t(
-                                                                    'admin_add_product_promotion_price_placeholder'
-                                                                )}
-                                                                title={t('admin_product_promotion_price_label_input')}
-                                                                onChange={handleGetInput}
-                                                            />
-                                                        </Form.Item>
-                                                    </Col>
-                                                    <Col span={12}>
-                                                        <Form.Item
-                                                            {...restField}
-                                                            name={[name, 'storeQuantity']}
-                                                            label={
-                                                                <label
-                                                                    className={cx('labelAddProduct')}
-                                                                    htmlFor='sellingQuantity'
-                                                                >
-                                                                    {t('admin_product_selling_quantity_label_input')}
-                                                                </label>
-                                                            }
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: `${t(
-                                                                        'admin_add_product_selling_quantity_required'
-                                                                    )}`,
-                                                                },
-                                                            ]}
-                                                        >
-                                                            <Input
-                                                                className={cx('inputFormAddProduct')}
-                                                                id='sellingQuantity'
-                                                                name='sellingQuantity'
-                                                                type='text'
-                                                                placeholder={t(
-                                                                    'admin_add_product_promotion_price_placeholder'
-                                                                )}
-                                                                title={t(
-                                                                    'admin_add_product_selling_quantity_placeholder'
-                                                                )}
-                                                                onChange={handleGetInput}
-                                                            />
-                                                        </Form.Item>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                    </Space>
-
-                                    <BaseButton
-                                        styleButton={ButtonStyleEnum.TEXT}
-                                        className={cx('styleButton')}
-                                        prevIcon={icons.deleteIcon}
-                                        onClick={() => remove(name)}
-                                    />
-                                </Row>
-                            ))}
-
-                            <Row>
-                                <BaseButton
-                                    styleButton={ButtonStyleEnum.PRIMARY}
-                                    nameButton={t('admin_product_add_variant_label')}
-                                    onClick={() => add()}
-                                />
-                            </Row>
-                        </>
-                    )}
-                </Form.List>
+            <Steps current={currentStep} style={{ marginBottom: 24 }}>
+                {steps.map((step) => (
+                    <Step key={step.title} title={step.title} />
+                ))}
+            </Steps>
+            <Form
+                layout='vertical'
+                form={form}
+                initialValues={{ sizes: [{}] }}
+                className={cx('formAddProduct')}
+                onFinish={handleAddProduct}
+            >
+                {steps[currentStep].content}
             </Form>
         </Modal>
     );

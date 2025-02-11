@@ -4,7 +4,7 @@ import { IParamsPagination } from '~/utils/interfaces/common';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 
 const supplierApi = {
-    async getAllSupplier(params: IParamsPagination) {
+    async getAllSupplier(params: IParamsPagination & { search?: string }) {
         const url = `${urlApiSupplier.getAllSupplier}`;
         const response = await axiosClient.get(url, { params });
         return response.data;

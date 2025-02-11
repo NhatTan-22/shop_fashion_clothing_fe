@@ -3,18 +3,19 @@
 }
 
 .sideBarAdminOpen {
-    @apply w-[280px] h-full bg-blue-chalk-100 p-4 text-center;
+    @apply w-[260px] h-full bg-blue-chalk-100 p-4 text-center;
     transition: width 0.3s ease;
 }
 
+.logoFashionStore,
 .sideBarAdminClose {
-    @apply w-0;
+    @apply w-24 bg-blue-chalk-100 items-center;
     transition: width 0.3s ease;
 }
 
 @media (max-width: 768px) {
     .sideBarAdminOpen {
-        @apply w-0;
+        @apply w-10;
     }
 
     .sideBarAdminOpen {

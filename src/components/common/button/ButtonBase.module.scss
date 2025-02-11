@@ -1,3 +1,11 @@
+.disabledStyle {
+    background-color: #ccc;
+    color: #888;
+    cursor: not-allowed !important;
+    border-color: #ccc;
+    opacity: 0.7;
+}
+
 .titleButton {
     @apply mx-1;
 }
