@@ -186,7 +186,7 @@ const ProductsPage = (props: Props) => {
             <div className={cx('swapperContact')}>
                 <div className={cx('sideBarProduct')}>
                     <Menu
-                        className={cx('custom-menu')}
+                        className={cx('custom-menu-global')}
                         items={items}
                         mode='inline'
                         inlineCollapsed={false}

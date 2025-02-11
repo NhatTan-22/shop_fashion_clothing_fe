@@ -37,7 +37,7 @@ const AdminLayout = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
+    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(false);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -74,11 +74,14 @@ const AdminLayout = (props: Props) => {
         <div id='adminLayout' className={cx('mainAdminLayout')}>
             <div className={cx(`${isOpenSideBae ? 'sideBarAdminOpen' : 'sideBarAdminClose'}`)}>
                 <img className={cx('logoFashionStore')} src={images.logoFashionStore} alt='' />
-                {isOpenSideBae && <SideBar items={sidebarItems} />}
+                <SideBar items={sidebarItems} isOpen={isOpenSideBae} />
             </div>
             <div className={cx('wrapperAdmin')}>
                 <div className={cx('headerAdmin')}>
-                    <IconSVG IconComponent={icons.listMenuIcon} onClick={handleSideBar} />
+                    <IconSVG
+                        IconComponent={isOpenSideBae ? icons.listMenuIcon : icons.listItemIcon}
+                        onClick={handleSideBar}
+                    />
                     <div className={cx('searchAll')}>
                         <IconSVG IconComponent={icons.searchIcon} />
                         <input

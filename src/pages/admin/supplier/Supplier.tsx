@@ -127,7 +127,6 @@ const Supplier = (props: Props) => {
                 }
             })
             .catch((error) => {
-                console.log('error: ', error);
                 message.error(error?.message);
             })
             .finally(() => {
@@ -142,12 +141,8 @@ const Supplier = (props: Props) => {
         setOpenDrawerDetail(true);
     };
 
-    const handleAddSupplier = () => {
-        setOpenModalAddSupplier(true);
-    };
-
-    const handleCloseAddSupplier = () => {
-        setOpenModalAddSupplier(false);
+    const handleIsOpenAddSupplier = () => {
+        setOpenModalAddSupplier(!openModalAddSupplier);
     };
 
     const handleChangePage = (e: number) => {
@@ -166,7 +161,7 @@ const Supplier = (props: Props) => {
                         nameButton={t('common_add_supplier')}
                         title={t('common_add_supplier')}
                         styleButton={ButtonStyleEnum.PRIMARY}
-                        onClick={handleAddSupplier}
+                        onClick={handleIsOpenAddSupplier}
                     />
                     <BaseButton
                         nameButton={t('common_filters')}
@@ -202,7 +197,7 @@ const Supplier = (props: Props) => {
                 )}
             </>
 
-            <FormAddSupplier isShowModal={openModalAddSupplier} onCancel={handleCloseAddSupplier} />
+            <FormAddSupplier isShowModal={openModalAddSupplier} onClose={handleIsOpenAddSupplier} />
         </div>
     );
 };

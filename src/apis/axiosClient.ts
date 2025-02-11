@@ -4,12 +4,30 @@ import { StorageEnum } from '~/utils/constants/enum';
 
 const axiosClient = axios.create({
     baseURL: baseURL,
-    timeout: 1000,
+    timeout: 5000,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
     },
 });
+
+const refreshToken = async () => {
+    try {
+        const refreshToken = localStorage.getItem(StorageEnum.REFRESH_TOKEN);
+        if (!refreshToken) throw new Error('No refresh token');
+
+        const response = await axios.post<{ accessToken: string }>(`${baseURL}/auth/refresh`, { refreshToken });
+
+        localStorage.setItem(StorageEnum.ACCESS_TOKEN, response.data.accessToken);
+        return response.data.accessToken;
+    } catch (error) {
+        console.error('Refresh token failed', error);
+        localStorage.removeItem(StorageEnum.ACCESS_TOKEN);
+        localStorage.removeItem(StorageEnum.REFRESH_TOKEN);
+        window.location.href = '/auth/login';
+        return null;
+    }
+};
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(
@@ -36,8 +54,27 @@ axiosClient.interceptors.response.use(
         return response;
     },
 
-    function (error: AxiosError | Error) {
+    async function (error: AxiosError | Error) {
         // Do something with response error
+        if (
+            axios.isAxiosError(error) &&
+            error.response?.status === 403 &&
+            error.response.data?.message === 'Token expired'
+        ) {
+            const originalRequest = error.config;
+
+            if (!originalRequest) {
+                return Promise.reject(error);
+            }
+
+            const newToken = await refreshToken();
+            if (newToken) {
+                originalRequest.headers?.set('Authorization', `Bearer ${newToken}`);
+
+                return axiosClient(originalRequest);
+            }
+        }
+
         return Promise.reject(error);
     }
 );

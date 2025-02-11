@@ -13,10 +13,12 @@ import styles from './FormAddSupplier.module.scss';
 import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { addSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import { BaseButton } from '~/components';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 
 type Props = {
     isShowModal?: boolean;
-    onCancel: () => void;
+    onClose: () => void;
 };
 
 const { Option } = Select;
@@ -28,13 +30,14 @@ const cx = classNames.bind(styles);
 
 const FormAddSupplier = (props: Props) => {
     //#region Destructuring Props
-    const { isShowModal, onCancel } = props;
+    const { isShowModal, onClose } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
+    const [form] = Form.useForm();
     //#endregion Declare Hook
 
     //#region Selector
@@ -75,30 +78,40 @@ const FormAddSupplier = (props: Props) => {
     };
 
     const handleAddSupplier = async () => {
-        const formData = new FormData();
-        Object.entries(supplier).forEach(([key, value]) => {
-            if (key === 'isTaking') {
-                formData.append(key, JSON.stringify(value));
-            } else if (key === 'supplierImage' && value) {
-                formData.append(key, value);
-            } else if (value !== undefined && value !== null) {
-                formData.append(key, value.toString());
-            }
-        });
-
-        loadingContext?.show();
-        dispatch(addSupplierThunk(formData))
-            .unwrap()
-            .then((response) => {
-                message.success(response.message);
-            })
-            .catch((error) => {
-                message.error(error.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                onCancel();
+        try {
+            await form.validateFields();
+            const formData = new FormData();
+            Object.entries(supplier).forEach(([key, value]) => {
+                if (key === 'isTaking') {
+                    formData.append(key, JSON.stringify(value));
+                } else if (key === 'supplierImage' && value) {
+                    formData.append(key, value);
+                } else if (value !== undefined && value !== null) {
+                    formData.append(key, value.toString());
+                }
             });
+
+            loadingContext?.show();
+            dispatch(addSupplierThunk(formData))
+                .unwrap()
+                .then((response) => {
+                    message.success(response.message);
+                    form.resetFields();
+                })
+                .catch((error) => {
+                    message.error(error.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    onClose();
+                });
+        } catch (error) {
+            message.error('Please enter complete information.');
+        }
+    };
+
+    const handleClear = () => {
+        form.resetFields();
     };
 
     const onPreview = async (file: UploadFile) => {
@@ -123,10 +136,23 @@ const FormAddSupplier = (props: Props) => {
             centered
             className={cx('modalAddSupplier')}
             open={isShowModal}
-            onCancel={onCancel}
-            onOk={handleAddSupplier}
+            onCancel={onClose}
+            footer={
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div>
+                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton='Clear' />
+                    </div>
+                    <div>
+                        <BaseButton
+                            styleButton={ButtonStyleEnum.PRIMARY}
+                            onClick={handleAddSupplier}
+                            nameButton='Add Supplier'
+                        />
+                    </div>
+                </div>
+            }
         >
-            <Form name='addSupplier' className={cx('formAddSupplier')} onFinish={handleAddSupplier}>
+            <Form form={form} name='addSupplier' className={cx('formAddSupplier')} onFinish={handleAddSupplier}>
                 <Row justify='space-between'>
                     <Col span={11}>
                         <Form.Item
@@ -137,12 +163,15 @@ const FormAddSupplier = (props: Props) => {
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_code_required')}` }]}
+                            style={{ width: '100%' }}
                         >
                             <Input
                                 className={cx('inputFormAddSupplier')}
                                 id='supplierCode'
                                 name='supplierCode'
+                                value={supplier.productCode}
                                 type='text'
+                                size='large'
                                 autoFocus
                                 placeholder={t('admin_add_supplier_code_placeholder')}
                                 title={t('admin_supplier_code_label_input')}
@@ -157,12 +186,14 @@ const FormAddSupplier = (props: Props) => {
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_name_required')}` }]}
+                            style={{ width: '100%' }}
                         >
                             <Input
                                 className={cx('inputFormAddSupplier')}
                                 id='supplierName'
                                 name='supplierName'
                                 type='text'
+                                size='large'
                                 placeholder={t('admin_add_supplier_name_placeholder')}
                                 title={t('admin_supplier_name_label_input')}
                                 onChange={handleGetInput}
@@ -182,6 +213,7 @@ const FormAddSupplier = (props: Props) => {
                                     message: `${t('admin_add_supplier_phone_pattern')}`,
                                 },
                             ]}
+                            style={{ width: '100%' }}
                         >
                             <Input
                                 // addonBefore={
@@ -200,6 +232,7 @@ const FormAddSupplier = (props: Props) => {
                                 id='supplierPhone'
                                 name='supplierPhone'
                                 type='tel'
+                                size='large'
                                 placeholder={t('admin_add_supplier_phone_placeholder')}
                                 title={t('admin_supplier_contact_phone_label_input')}
                                 onChange={handleGetInput}
@@ -216,15 +249,17 @@ const FormAddSupplier = (props: Props) => {
                                 { required: true, message: `${t('admin_add_supplier_email_required')}` },
                                 {
                                     pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                    message: `${t('admin_add_supplier_email_invalid')}`,
+                                    message: `${t('admin_add_supplier_email_pattern')}`,
                                 },
                             ]}
+                            style={{ width: '100%' }}
                         >
                             <Input
                                 className={cx('inputFormAddSupplier')}
                                 id='supplierEmail'
                                 name='supplierEmail'
                                 type='email'
+                                size='large'
                                 placeholder={t('admin_add_supplier_email_placeholder')}
                                 title={t('admin_supplier_email_label_input')}
                                 onChange={handleGetInput}
@@ -238,12 +273,14 @@ const FormAddSupplier = (props: Props) => {
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_address_required')}` }]}
+                            style={{ width: '100%' }}
                         >
                             <TextArea
                                 className={cx('inputFormAddSupplier')}
                                 id='supplierAddress'
                                 name='supplierAddress'
                                 rows={4}
+                                size='large'
                                 maxLength={255}
                                 placeholder={t('admin_add_supplier_address_placeholder')}
                                 title={t('admin_supplier_address_label_input')}
@@ -281,6 +318,7 @@ const FormAddSupplier = (props: Props) => {
                                 id='productCode'
                                 name='productCode'
                                 type='text'
+                                size='large'
                                 placeholder={t('admin_add_supplier_product_code_placeholder')}
                                 title={t('admin_supplier_product_code_label_input')}
                                 onChange={handleGetInput}
@@ -294,12 +332,14 @@ const FormAddSupplier = (props: Props) => {
                                 </label>
                             }
                             rules={[{ required: true, message: `${t('admin_add_supplier_quantity_import_required')}` }]}
+                            style={{ width: '100%' }}
                         >
                             <Input
                                 className={cx('inputFormAddSupplier')}
                                 id='quantityImported'
                                 name='quantityImported'
                                 type='number'
+                                size='large'
                                 placeholder={t('admin_add_supplier_quantity_import_placeholder')}
                                 title={t('admin_supplier_quantity_imported_label_input')}
                                 onChange={handleGetInput}
