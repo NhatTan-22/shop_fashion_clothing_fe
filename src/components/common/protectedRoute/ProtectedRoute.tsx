@@ -1,7 +1,9 @@
 // Libs
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '~/redux/hooks';
+import { navigateLogin } from '~/utils/constants/helper';
+import { userRoute } from '~/utils/constants/route';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons1
@@ -16,6 +18,7 @@ const ProtectedRoute = (props: Props) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
+    const navigate = useNavigate();
     let location = useLocation();
     //#endregion Declare Hook
 
@@ -28,12 +31,30 @@ const ProtectedRoute = (props: Props) => {
     //#endregion Declare State
 
     //#region Implement Hook
+    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const storedToken = localStorage.getItem('accessToken');
+
+    const finalUser = user || storedUser;
+    const finalAuth = isAuthenticated || storedToken;
+
+    useEffect(() => {
+        if (typeof finalUser?.role === 'number') {
+            const route = navigateLogin(finalUser.role);
+            if (location.pathname === '/' || location.pathname === '/auth/login') {
+                if (location.pathname !== route) {
+                    navigate(route, { replace: true });
+                }
+            }
+        } else if (!finalUser) {
+            navigate(userRoute.home, { replace: true });
+        } else if (!finalAuth) {
+            navigate('/auth/login');
+        }
+    }, [finalAuth, finalUser, location.pathname, navigate]);
+
     //#endregion Implement Hook
 
     //#region Handle Function
-    if (!isAuthenticated && (!user?.role || user?.role)) {
-        return <Navigate to='/auth/login' state={{ from: location }} replace />;
-    }
     //#endregion Handle Function
 
     return children;

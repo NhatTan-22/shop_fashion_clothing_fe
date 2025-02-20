@@ -55,7 +55,7 @@ const ProductsPage = (props: Props) => {
                     key: 'Men',
                     label: (
                         <div className={cx('itemCategory')}>
-                            <Checkbox>Men</Checkbox>
+                            <Checkbox style={{ accentColor: 'red' }}>Men</Checkbox>
                             <span>{`(4)`}</span>
                         </div>
                     ),
@@ -178,6 +178,7 @@ const ProductsPage = (props: Props) => {
         setSelectedSize(e.target.value);
         console.log('Selected size:', e.target.value);
     }
+
     //#endregion Handle Function
 
     return (

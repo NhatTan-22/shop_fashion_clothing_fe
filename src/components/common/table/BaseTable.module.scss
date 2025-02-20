@@ -1,9 +1,11 @@
 .baseTable {
-    @apply w-full min-h-[200px] overflow-auto;
+    @apply w-full min-h-[200px] overflow-auto font-nunito;
 }
 
 .baseTable thead tr th {
     @apply bg-wisteria-600 text-blue-chalk-100 sticky top-[-3px] z-[5px] min-h-[60px];
+    font-size: 1.125rem;
+    line-height: 1.6rem;
 }
 
 .bodyBaseTable {
@@ -15,7 +17,7 @@ table {
 }
 
 .baseTable tbody {
-    @apply max-h-[200px] border-collapse overflow-scroll;
+    @apply max-h-[200px] border-collapse overflow-scroll text-base;
 }
 
 .baseTable::-webkit-scrollbar {

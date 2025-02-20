@@ -1,8 +1,12 @@
 import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
 import authReducer from '~/thunks/auth/authSlice';
+import productReducer from '~/thunks/product/productSlice';
+import supplierReducer from '~/thunks/supplier/supplierSlice';
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    supplier: supplierReducer,
+    product: productReducer,
 });
 
 export function makeStore() {

@@ -1,24 +1,24 @@
-import { urlApiInventory } from '~/utils/constants/actionType';
+import { urlApiProduct } from '~/utils/constants/actionType';
 import { IParamsPagination } from '~/utils/interfaces/common';
 import axiosClient from './axiosClient';
-import { IProduct } from '~/utils/interfaces/interfaceProduct';
+import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 
-const inventoryApi = {
-    async getAllInventory(params: IParamsPagination) {
-        const url = `${urlApiInventory.getAllInventory}`;
+const productApi = {
+    async getAllProduct(params: IParamsPagination) {
+        const url = `${urlApiProduct.getAllProduct}`;
         const response = await axiosClient.get(url, { params });
         return response.data;
     },
 
-    async addInventory(body: IProduct | FormData) {
+    async addProduct(body: IAddProduct | FormData) {
         const headers =
             body instanceof FormData
                 ? { 'Content-Type': 'multipart/form-data' }
                 : { 'Content-Type': 'application/json' };
-        const url = `${urlApiInventory.addInventory}`;
+        const url = `${urlApiProduct.addProduct}`;
         const response = await axiosClient.post(url, body, { headers });
         return response.data;
     },
 };
 
-export default inventoryApi;
+export default productApi;

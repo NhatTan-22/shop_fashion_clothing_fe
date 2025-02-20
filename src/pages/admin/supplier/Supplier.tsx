@@ -2,21 +2,23 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect, useState } from 'react';
-import { Empty, message, Pagination } from 'antd';
+import { Dropdown, Empty, MenuProps, message, Modal, Pagination } from 'antd';
 // Components, Layouts, Pages
-import { useAppDispatch } from '~/redux/hooks';
-import { BaseButton, BaseTable, DetailSupplier } from '~/components';
+import { BaseButton, BaseTable, DetailSupplier, IconSVG } from '~/components';
 import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
 // Others
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { supplierActions } from '~/thunks/supplier/supplierSlice';
 import { LoadingContext } from '~/context';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { getSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import { deleteSupplierThunk, getSupplierThunk } from '~/thunks/supplier/supplierThunk';
 import { convertTypeSupplier, renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
+import { icons } from '~/assets';
 
 type Props = {
     content?: string;
@@ -36,64 +38,96 @@ const Supplier = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
+    const isRefreshTable = useAppSelector((state) => state.supplier.isRefreshSupplier);
+
     const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
         {
-            key: 'supplierCode',
+            key: 'sku',
             title: `${t('admin_supplier_code_label_table')}`,
-            dataIndex: 'supplierCode',
+            dataIndex: 'sku',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'supplierName',
+            key: 'name',
             title: `${t('admin_supplier_name_label_table')}`,
-            dataIndex: 'supplierName',
+            dataIndex: 'name',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
 
         {
-            key: 'supplierPhone',
+            key: 'phone',
             title: `${t('admin_supplier_phone_label_table')}`,
-            dataIndex: 'supplierPhone',
+            dataIndex: 'phone',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'productCode',
+            key: 'categories',
             title: `${t('admin_products_code_label_table')}`,
-            dataIndex: 'productCode',
+            dataIndex: 'categories',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'isTaking',
+            key: 'restockStatus',
             title: `${t('admin_supplier_type_label_table')}`,
-            dataIndex: 'isTaking',
+            dataIndex: 'restockStatus',
             render: (_, record) => {
-                return record?.isTaking?.map((type, index) => {
-                    const typeData = convertTypeSupplier(type);
-                    return (
-                        <p key={index} className={cx(typeData?.className)}>
-                            {typeData?.text}
-                        </p>
-                    );
-                });
+                if (record) {
+                    return <p>{record?.restockStatus}</p>;
+                }
             },
         },
         {
-            key: 'quantityImported',
+            key: 'orderQuantity',
             title: `${t('admin_supplier_quantity_imported_label_table')}`,
-            dataIndex: 'quantityImported',
+            dataIndex: 'orderQuantity',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            key: 'action',
+            title: '',
+            dataIndex: 'action',
+            render: (_, record) => {
+                if (record) {
+                    return (
+                        <Dropdown
+                            menu={{
+                                items: [
+                                    {
+                                        key: `${t('common_edit')}`,
+                                        label: <p style={{ marginLeft: '2px' }}>Edit</p>,
+                                        icon: <IconSVG IconComponent={icons.editIcon} />,
+                                        onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `${t('common_delete')}`,
+                                        label: <p style={{ marginLeft: '2px' }}>Delete</p>,
+                                        icon: <IconSVG IconComponent={icons.deleteIcon} />,
+                                        onClick: () => handleDeleteSupplier(record),
+                                    },
+                                ],
+                            }}
+                            trigger={['click']}
+                        >
+                            <div>
+                                <IconSVG IconComponent={icons.dotVerticalIcon} />
+                            </div>
+                        </Dropdown>
+                    );
+                }
             },
         },
     ];
+
     //#endregion Selector
 
     //#region Declare State
@@ -127,18 +161,49 @@ const Supplier = (props: Props) => {
                 }
             })
             .catch((error) => {
+                console.log(error?.message);
                 message.error(error?.message);
             })
             .finally(() => {
                 loadingContext?.hide();
+                dispatch(supplierActions.setRefreshTableFalse());
             });
-    }, [paramsPage.currentPage, data.length]);
+    }, [paramsPage.currentPage, isRefreshTable]);
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleRowClick = (row: DataType<ISupplier>) => {
-        setSupplier(row);
+    const handleEditSupplier = (data: DataType<ISupplier>) => {
+        setSupplier(data);
         setOpenDrawerDetail(true);
+    };
+
+    const handleDeleteSupplier = (data: DataType<ISupplier>) => {
+        Modal.confirm({
+            title: 'Xác nhận xóa',
+            // icon: <ExclamationCircleOutlined />,
+            content: 'Bạn có chắc chắn muốn xóa Supplier này không?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk: () => {
+                loadingContext?.show();
+                dispatch(deleteSupplierThunk(data._id))
+                    .unwrap()
+                    .then((response) => {
+                        if (response) {
+                            setOpenDrawerDetail(false);
+                            message.success(response.message);
+                            dispatch(supplierActions.setRefreshTableTrue());
+                        }
+                    })
+                    .catch((error) => {
+                        message.error(error.message);
+                    })
+                    .finally(() => {
+                        loadingContext?.hide();
+                    });
+            },
+        });
     };
 
     const handleIsOpenAddSupplier = () => {
@@ -173,7 +238,7 @@ const Supplier = (props: Props) => {
             <>
                 {data.length ? (
                     <div className={cx('bodySupplier')}>
-                        <BaseTable columns={columns} dataSource={data} onClick={handleRowClick} />
+                        <BaseTable columns={columns} dataSource={data} />
                         <Pagination
                             className={cx('footerPagination')}
                             align='center'

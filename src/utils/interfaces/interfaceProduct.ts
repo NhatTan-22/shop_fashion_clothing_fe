@@ -1,27 +1,27 @@
-export interface IProduct {
-    _id?: Object;
-    productCode?: string;
-    productName?: string;
-    productImage?: string;
-    description?: string;
-    supplierCode: string;
-    status: boolean;
-    price?: IPrice;
-    variants: IVariant[];
+export interface IProduct extends IAddProduct {
+    _id: Object;
+    sku: string;
+    ratings: number;
+    status: string;
+    availability: string;
+}
+
+export interface IAddProduct {
+    images: string[];
+    name: string;
+    description: string;
     category: string;
+    pricing: {
+        price: number;
+        promotionPrice: number;
+        discountPercentage: number;
+    };
+    stock: number;
+    sizes: string[];
+    colors: string[];
+    brand: string;
+    gender?: string;
+    supplier: string;
 }
 
-export interface IPrice {
-    sellingPrice?: number;
-    importPrice?: number;
-    promotionPrice?: number;
-}
-
-export interface IVariant {
-    image: string;
-    productColor: string;
-    productSize: string;
-    storeQuantity: number;
-    importQuantity: number;
-    sellingQuantity: number;
-}
+// export type ISupplierCreate = Omit<IProduct, '_id'>;

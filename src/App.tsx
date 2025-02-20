@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AdminLayout, AuthLayout, UserLayout } from './layouts';
 import {
+    adminRoute,
     privateAdminRoutes,
     privateUserRoutes,
     publicAuthRoutes,
@@ -14,7 +15,14 @@ const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<Navigate to={userRoute.home} replace />} />
+                <Route
+                    path='/'
+                    element={
+                            <ProtectedRoute>
+                                <Navigate to={userRoute.home} replace />
+                            </ProtectedRoute>
+                    }
+                />
 
                 <Route element={<AuthLayout />}>
                     {publicAuthRoutes.map((route, index) => {
@@ -69,7 +77,7 @@ const App = () => {
                     element={
                         <ProtectedRoute>
                             <UserLayout />
-                        </ProtectedRoute>
+                         </ProtectedRoute>
                     }
                 >
                     {privateUserRoutes.map((route, index) => {
@@ -95,7 +103,7 @@ const App = () => {
                 </Route>
 
                 <Route
-                    path={userRoute.base}
+                    path={adminRoute.base}
                     element={
                         <ProtectedRoute>
                             <AdminLayout />

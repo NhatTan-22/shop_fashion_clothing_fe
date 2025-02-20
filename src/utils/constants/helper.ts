@@ -6,8 +6,10 @@ export const navigateLogin = (role?: Number) => {
             return `${adminRoute.base}${adminRoute.dashboard}`;
         }
         case 1: {
-            return `${userRoute.base}`;
+            return `${userRoute.home}`;
         }
+        default:
+            return `${userRoute.home}`;
     }
 };
 
@@ -23,9 +25,9 @@ export const convertTypeSupplier = (type: number) => {
 };
 
 export const renderFormatValue = (
-    value: string | number | object,
+    value: string | number | Object,
     formatvalue?: string,
-    callback?: (value: string | number | object) => void
+    callback?: (value: string | number | Object) => void
 ) => {
     if (!value) {
         return formatvalue || '--';
