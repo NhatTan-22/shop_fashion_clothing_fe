@@ -2,15 +2,17 @@
 import classNames from 'classnames/bind';
 import {
     Col,
+    Flex,
     Form,
     GetProp,
+    Image,
     Input,
     message,
     Modal,
     Row,
     Select,
-    Space,
     Steps,
+    Tag,
     Upload,
     UploadFile,
     UploadProps,
@@ -18,18 +20,22 @@ import {
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FormInstance, useForm } from 'antd/es/form/Form';
+import { UploadChangeParam } from 'antd/es/upload';
 // Components, Layouts, Pages
 import { BaseButton } from '~/components';
 // Others
-import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
+import { useAppDispatch } from '~/redux/hooks';
+import { LoadingContext } from '~/context';
+import { searchSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import { searchCategoryThunk } from '~/thunks/category/categoryThunk';
+import { addProductThunk } from '~/thunks/product/productThunk';
+import { productActions } from '~/thunks/product/productSlice';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 // Styles, Images, icons
 import styles from './FormAddProduct.module.scss';
 import { icons } from '~/assets';
-import { useAppDispatch } from '~/redux/hooks';
-import { LoadingContext } from '~/context';
-import { getSupplierThunk } from '~/thunks/supplier/supplierThunk';
-import { getCategoryThunk } from '~/thunks/category/categoryThunk';
+import { baseURL } from '~/utils/constants/env';
 
 type Props = {
     isShowModal?: boolean;
@@ -40,6 +46,13 @@ const { Step } = Steps;
 const { TextArea } = Input;
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
 
 const cx = classNames.bind(styles);
 
@@ -60,42 +73,91 @@ const FormAddProduct = (props: Props) => {
 
     //#region Declare State
     const [currentStep, setCurrentStep] = useState(0);
-    const [supplier, setSupplier] = useState<ISupplier>();
-    const [optionCategory, setOptionCategory] = useState([]);
-    const [optionSupplierCode, setOptionSupplierCode] = useState();
 
-    const [fileList, setFileList] = useState<UploadFile>();
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<string>('');
+
+    const [optionCategory, setOptionCategory] = useState([]);
+    const [optionSupplier, setOptionSupplier] = useState([]);
+
+    const [sizeInput, setSizeInput] = useState<string>('');
+    const [colorInput, setColorInput] = useState<string>('');
+
+    const [addProduct, setAddProduct] = useState<IAddProduct>({
+        images: [],
+        name: '',
+        description: '',
+        category: '',
+        pricing: {
+            price: 0,
+            promotionPrice: 0,
+            discountPercentage: 0,
+        },
+        stock: 0,
+        sizes: [],
+        colors: [],
+        gender: '',
+        brand: '',
+        supplier: '',
+    });
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {
+        if (isShowModal) {
+            getSearchCategories('');
+            getSearchSuppliers('');
+        }
+    }, [isShowModal]);
     //#endregion Implement Hook
 
     //#region Handle Function
     const steps = [
         {
-            title: `${t('admin_product_information_label')}`,
+            title: `${t('admin_product_general_information_step_title')}`,
             content: (
                 <>
                     <Row style={{ justifyContent: 'space-between' }}>
-                        <Col span={11} style={{ display: 'flex', justifyContent: 'center' }}>
-                            <Upload
-                                name='productImage'
-                                className={cx('uploadFormAddProduct')}
-                                listType='picture-card'
-                                customRequest={(options: any) => {
-                                    options.onSuccess?.({}, options.file);
-                                }}
-                                maxCount={1}
+                        <Col span={11}>
+                            <Form.Item
+                                name='name'
+                                label={t('admin_product_name_label_input')}
+                                rules={[{ required: true, message: `${t('admin_add_product_name_required')}` }]}
+                                style={{ width: '100%' }}
                             >
-                                <button style={{ border: 0, background: 'none' }} type='button'>
-                                    <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
-                                </button>
-                            </Upload>
+                                <Input
+                                    size='large'
+                                    name='name'
+                                    placeholder={t('admin_add_product_name_placeholder')}
+                                    onChange={handleGetInput}
+                                />
+                            </Form.Item>
                         </Col>
+                        <Col span={11}>
+                            <Form.Item name='gender' label={t('admin_gender_label_select')}>
+                                <Select
+                                    style={{ width: '100%' }}
+                                    size='large'
+                                    placeholder={t('admin_add_product_category_placeholder')}
+                                    optionFilterProp='label'
+                                    defaultValue={'UNISEX'}
+                                    onChange={(value) => handleChangeSelect(value, 'gender')}
+                                    options={[
+                                        { value: 'MALE', label: t('gender_male') },
+                                        { value: 'FEMALE', label: t('gender_female') },
+                                        { value: 'UNISEX', label: t('gender_unisex') },
+                                    ]}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
 
+                    <Row style={{ justifyContent: 'space-between' }}>
                         <Col span={11}>
                             <Form.Item
                                 name='category'
+                                label={t('admin_product_category_label_select')}
                                 rules={[{ required: true, message: `${t('admin_add_product_category_required')}` }]}
                             >
                                 <Select
@@ -104,399 +166,261 @@ const FormAddProduct = (props: Props) => {
                                     size='large'
                                     placeholder={t('admin_add_product_category_placeholder')}
                                     optionFilterProp='label'
-                                    onChange={onChangeSelect}
+                                    onChange={(value) => handleChangeSelect(value, 'category')}
                                     onSearch={onSearchCategory}
                                     options={optionCategory}
                                 />
                             </Form.Item>
                         </Col>
-                    </Row>
-
-                    <Row style={{ justifyContent: 'space-between' }}>
                         <Col span={11}>
                             <Form.Item
-                                name='productCode'
-                                label={t('admin_product_code_label_input')}
-                                rules={[{ required: true, message: `${t('admin_add_product_code_required')}` }]}
-                            >
-                                <Input size='large' placeholder={t('admin_add_product_code_placeholder')} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={11}>
-                            <Form.Item
-                                name='supplierCode'
-                                label={t('admin_supplier_code_label_input')}
-                                rules={[{ required: true, message: `${t('admin_add_select_supplier_code_required')}` }]}
+                                name='supplier'
+                                label={t('admin_supplier_name_label_input')}
+                                rules={[{ required: true, message: `${t('admin_add_select_supplier_name_required')}` }]}
                                 style={{ width: '100%' }}
                             >
                                 <Select
                                     showSearch
                                     style={{ width: '100%' }}
                                     size='large'
-                                    placeholder={t('admin_add_select_supplier_code_placeholder')}
+                                    placeholder={t('admin_add_select_supplier_name_placeholder')}
                                     optionFilterProp='label'
-                                    onChange={onChangeSelect}
+                                    onChange={(value) => handleChangeSelect(value, 'supplier')}
                                     onSearch={onSearchSupplierCode}
-                                    options={optionSupplierCode}
+                                    options={optionSupplier}
                                 />
                             </Form.Item>
                         </Col>
                     </Row>
-
-                    <Form.Item
-                        name='productName'
-                        label={t('admin_product_name_label_input')}
-                        rules={[{ required: true, message: `${t('admin_add_product_name_required')}` }]}
-                        style={{ width: '100%' }}
-                    >
-                        <Input size='large' placeholder={t('admin_add_product_name_placeholder')} />
-                    </Form.Item>
-
-                    <Form.Item
-                        name='productDescription'
-                        label={t('admin_product_description_label_input')}
-                        rules={[{ required: true, message: `${t('admin_add_product_description_required')}` }]}
-                        style={{ width: '100%' }}
-                    >
-                        <TextArea
-                            rows={5}
-                            placeholder={t('admin_add_product_description_placeholder')}
-                            maxLength={200}
-                        />
-                    </Form.Item>
                 </>
             ),
         },
         {
-            title: `${t('admin_product_prices_label')}`,
+            title: `${t('admin_product_description_step_title')}`,
             content: (
                 <>
-                    <Form.Item
-                        name='sellingPrice'
-                        label={t('admin_product_selling_price_label_input')}
-                        rules={[{ required: true, message: `${t('admin_add_product_selling_price_required')}` }]}
-                        style={{ width: '100%' }}
-                    >
-                        <Input
-                            type='number'
-                            size='large'
-                            placeholder={t('admin_add_product_selling_price_placeholder')}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name='promotionPrice'
-                        label={t('admin_product_promotion_price_label_input')}
-                        rules={[{ required: true, message: `${t('admin_add_product_promotion_price_required')}` }]}
-                        style={{ width: '100%' }}
-                    >
-                        <Input
-                            type='number'
-                            size='large'
-                            placeholder={t('admin_add_product_promotion_price_placeholder')}
-                        />
-                    </Form.Item>
+                    <Row>
+                        <Form.Item
+                            name='description'
+                            label={t('admin_product_description_label_input')}
+                            rules={[{ required: true, message: `${t('admin_add_product_description_required')}` }]}
+                            style={{ width: '100%' }}
+                        >
+                            <TextArea
+                                name='description'
+                                rows={5}
+                                placeholder={t('admin_add_product_description_placeholder')}
+                                maxLength={255}
+                                onChange={handleGetInput}
+                            />
+                        </Form.Item>
+                    </Row>
+                    <Row>{/* Code React-Quill */}</Row>
                 </>
             ),
         },
         {
-            title: `${t('admin_product_variants_label')}`,
+            title: `${t('admin_product_pricing_step_title')}`,
             content: (
-                <Form.List name='sizes'>
-                    {(fields, { add, remove }) => (
-                        <>
-                            <BaseButton
-                                disabled={fields.length > 3}
-                                className={cx('buttonAdd')}
-                                styleButton={ButtonStyleEnum.PRIMARY}
-                                nameButton={t('admin_product_add_variant_label')}
-                                onClick={() => add()}
-                            />
-                            <div className={cx('listAddVariant')}>
-                                {fields.map(({ key, name, ...restField }) => (
-                                    <Row key={key} className={cx('itemAddVariant')}>
-                                        <Col span={22}>
-                                            <Row>
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name, 'supplierImage']}
-                                                    className={cx('uploadFormAddProduct')}
-                                                >
-                                                    <Upload
-                                                        action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
-                                                        listType='picture-card'
-                                                        onChange={onChange}
-                                                        onPreview={onPreview}
-                                                        maxCount={1}
-                                                    >
-                                                        <button style={{ border: 0, background: 'none' }} type='button'>
-                                                            <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
-                                                        </button>
-                                                    </Upload>
-                                                </Form.Item>
-                                            </Row>
-                                            <Row justify={'space-between'}>
-                                                <Col span={11}>
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, 'productSize']}
-                                                        label={
-                                                            <label
-                                                                className={cx('labelAddProduct')}
-                                                                htmlFor='productSize'
-                                                            >
-                                                                {t('admin_product_size_label_input')}
-                                                            </label>
-                                                        }
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: `${t('admin_add_product_size_required')}`,
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Select
-                                                            showSearch
-                                                            size='large'
-                                                            id='productSize'
-                                                            placeholder={t('admin_add_product_size_placeholder')}
-                                                            optionFilterProp='label'
-                                                            onChange={handleGetInput}
-                                                            filterOption={false}
-                                                            onSearch={onSearch}
-                                                            options={[
-                                                                {
-                                                                    value: 'jack',
-                                                                    label: 'Jack',
-                                                                },
-                                                                {
-                                                                    value: 'lucy',
-                                                                    label: 'Lucy',
-                                                                },
-                                                                {
-                                                                    value: 'tom',
-                                                                    label: 'Tom',
-                                                                },
-                                                            ]}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col span={11}>
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, 'storeQuantity']}
-                                                        label={
-                                                            <label
-                                                                className={cx('labelAddProduct')}
-                                                                htmlFor='storeQuantity'
-                                                            >
-                                                                {t('admin_product_store_quantity_label_input')}
-                                                            </label>
-                                                        }
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: `${t(
-                                                                    'admin_add_product_store_quantity_required'
-                                                                )}`,
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Input
-                                                            size='large'
-                                                            id='storeQuantity'
-                                                            type='text'
-                                                            placeholder={t(
-                                                                'admin_add_product_store_quantity_placeholder'
-                                                            )}
-                                                            title={t('admin_product_store_quantity_label_input')}
-                                                            onChange={handleGetInput}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                            </Row>
-                                            <Row justify={'space-between'}>
-                                                <Col span={11}>
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, 'productColor']}
-                                                        label={
-                                                            <label
-                                                                className={cx('labelAddProduct')}
-                                                                htmlFor='productColor'
-                                                            >
-                                                                {t('admin_product_color_label_input')}
-                                                            </label>
-                                                        }
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: `${t('admin_add_product_color_required')}`,
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Select
-                                                            showSearch
-                                                            size='large'
-                                                            id='productColor'
-                                                            placeholder={t('admin_add_product_color_placeholder')}
-                                                            optionFilterProp='label'
-                                                            onChange={handleGetInput}
-                                                            onSearch={onSearch}
-                                                            filterOption={false}
-                                                            options={[
-                                                                {
-                                                                    value: 'jack',
-                                                                    label: 'Jack',
-                                                                },
-                                                                {
-                                                                    value: 'lucy',
-                                                                    label: 'Lucy',
-                                                                },
-                                                                {
-                                                                    value: 'tom',
-                                                                    label: 'Tom',
-                                                                },
-                                                            ]}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col span={11}>
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, 'sellingQuantity']}
-                                                        label={
-                                                            <label
-                                                                className={cx('labelAddProduct')}
-                                                                htmlFor='sellingQuantity'
-                                                            >
-                                                                {t('admin_product_selling_quantity_label_input')}
-                                                            </label>
-                                                        }
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: `${t(
-                                                                    'admin_add_product_selling_quantity_required'
-                                                                )}`,
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Input
-                                                            size='large'
-                                                            id='sellingQuantity'
-                                                            type='text'
-                                                            placeholder={t(
-                                                                'admin_add_product_promotion_price_placeholder'
-                                                            )}
-                                                            title={t('admin_add_product_selling_quantity_placeholder')}
-                                                            onChange={handleGetInput}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <BaseButton
-                                            styleButton={ButtonStyleEnum.TEXT}
-                                            className={cx('styleButton')}
-                                            prevIcon={icons.deleteIcon}
-                                            onClick={() => remove(name)}
-                                        />
-                                    </Row>
+                <>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Col span={11}>
+                            <Form.Item
+                                name='stock'
+                                label={t('admin_product_stock_label_input')}
+                                rules={[{ required: true, message: `${t('admin_add_product_stock_required')}` }]}
+                                style={{ width: '100%' }}
+                            >
+                                <Input
+                                    type='number'
+                                    size='large'
+                                    name='stock'
+                                    placeholder={t('admin_add_product_stock_placeholder')}
+                                    onChange={handleGetInput}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={11}>
+                            <Form.Item
+                                name='price'
+                                label={t('admin_product_selling_price_label_input')}
+                                rules={[
+                                    { required: true, message: `${t('admin_add_product_selling_price_required')}` },
+                                ]}
+                                style={{ width: '100%' }}
+                            >
+                                <Input
+                                    type='number'
+                                    size='large'
+                                    name='price'
+                                    placeholder={t('admin_add_product_selling_price_placeholder')}
+                                    onChange={handleGetInput}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Col span={11}>
+                            <Form.Item
+                                name='promotionPrice'
+                                label={t('admin_product_promotion_price_label_input')}
+                                style={{ width: '100%' }}
+                            >
+                                <Input
+                                    type='number'
+                                    size='large'
+                                    name='promotionPrice'
+                                    placeholder={t('admin_add_product_promotion_price_placeholder')}
+                                    onChange={handleGetInput}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={11}>
+                            <Form.Item
+                                name='discountPercentage'
+                                label={t('admin_product_discount_percentage_label_input')}
+                                style={{ width: '100%' }}
+                            >
+                                <Input
+                                    type='number'
+                                    size='large'
+                                    name='discountPercentage'
+                                    placeholder={t('admin_add_product_discount_percentage_placeholder')}
+                                    onChange={handleGetInput}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </>
+            ),
+        },
+        {
+            title: `${t('admin_product_variants_step_title')}`,
+            content: (
+                <>
+                    <Row style={{ justifyContent: 'center' }}>
+                        <Form.Item name='images'>
+                            <Upload
+                                name='images'
+                                className={cx('uploadFormAddProduct')}
+                                action={`${baseURL}/public/images`}
+                                listType='picture-card'
+                                fileList={fileList}
+                                customRequest={(options: any) => {
+                                    options.onSuccess?.({}, options.file);
+                                }}
+                                maxCount={4}
+                                multiple={true}
+                                onPreview={handlePreview}
+                                onChange={handleChange}
+                            >
+                                {fileList.length >= 4 ? null : (
+                                    <button style={{ border: 0, background: 'none' }} type='button'>
+                                        <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
+                                    </button>
+                                )}
+                            </Upload>
+                            {previewImage && (
+                                <Image
+                                    wrapperStyle={{ display: 'none' }}
+                                    preview={{
+                                        visible: previewOpen,
+                                        onVisibleChange: (visible) => setPreviewOpen(visible),
+                                        afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                                    }}
+                                    src={previewImage}
+                                />
+                            )}
+                        </Form.Item>
+                    </Row>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Col span={11}>
+                            <Form.Item
+                                name='sizes'
+                                label={
+                                    <label className={cx('labelAddProduct')} htmlFor='sizes'>
+                                        {t('admin_product_size_label_input')}
+                                    </label>
+                                }
+                            >
+                                <Input
+                                    name='sizes'
+                                    size='large'
+                                    type='text'
+                                    value={sizeInput}
+                                    onChange={handleGetInput}
+                                    placeholder={t('admin_add_product_size_placeholder')}
+                                    onPressEnter={() => handleInputConfirm('sizes')}
+                                />
+                            </Form.Item>
+                            <Flex gap='4px 0' wrap>
+                                {addProduct.sizes.map((size, index) => (
+                                    <Tag
+                                        key={`${index}-${size}`}
+                                        bordered={false}
+                                        closable
+                                        onClose={(e) => {
+                                            e.preventDefault();
+                                            const remove = addProduct.sizes.filter((sizeFilter) => sizeFilter !== size);
+                                            setAddProduct((prev) => ({ ...prev, sizes: remove }));
+                                        }}
+                                    >
+                                        {`${size}`}
+                                    </Tag>
                                 ))}
-                            </div>
-                        </>
-                    )}
-                </Form.List>
+                            </Flex>
+                        </Col>
+                        <Col span={11}>
+                            <Form.Item
+                                name='colors'
+                                label={
+                                    <label className={cx('labelAddProduct')} htmlFor='colors'>
+                                        {t('admin_product_color_label_input')}
+                                    </label>
+                                }
+                            >
+                                <Input
+                                    size='large'
+                                    type='text'
+                                    name='colors'
+                                    value={colorInput}
+                                    onChange={handleGetInput}
+                                    placeholder={t('admin_add_product_color_placeholder')}
+                                    onPressEnter={() => handleInputConfirm('colors')}
+                                />
+                            </Form.Item>
+                            <Flex gap='4px 0' wrap>
+                                {addProduct.colors.map((color, index) => (
+                                    <Tag
+                                        key={`${index}-${color}`}
+                                        color={`${color}`}
+                                        bordered={false}
+                                        closable
+                                        onClose={(e) => {
+                                            e.preventDefault();
+                                            const remove = addProduct.colors.filter(
+                                                (colorFilter) => colorFilter !== color
+                                            );
+                                            setAddProduct((prev) => ({ ...prev, colors: remove }));
+                                        }}
+                                    >
+                                        {`${color}`}
+                                    </Tag>
+                                ))}
+                            </Flex>
+                        </Col>
+                    </Row>
+                </>
             ),
         },
     ];
-
-    const handleGetInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {};
-
-    function onChangeSelect(value: string) {
-        console.log(`selected ${value}`);
-    }
-
-    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
-
-    function onSearchCategory(value: string) {
-        if (!value) return;
-
-        if (searchTimeout.current) clearTimeout(searchTimeout.current);
-
-        searchTimeout.current = setTimeout(() => {
-            dispatch(
-                getCategoryThunk({
-                    search: value,
-                })
-            )
-                .unwrap()
-                .then((response) => {
-                    if (response) {
-                        setOptionCategory(response);
-                    }
-                })
-                .catch((error) => {
-                    message.error(error?.message);
-                });
-        }, 500);
-    }
-
-    function onSearchSupplierCode(value: string) {
-        if (!value) return;
-
-        if (searchTimeout.current) clearTimeout(searchTimeout.current);
-
-        searchTimeout.current = setTimeout(() => {
-            dispatch(
-                getSupplierThunk({
-                    search: value,
-                })
-            )
-                .unwrap()
-                .then((response) => {
-                    if (response) {
-                        setOptionSupplierCode(response);
-                    }
-                })
-                .catch((error) => {
-                    message.error(error?.message);
-                })
-                .finally(() => {});
-        }, 500);
-    }
-
-    function onSearch(value: string) {
-        console.log(`selected ${value}`);
-    }
-
-    const handleClear = async () => {};
-
-    const onChange: UploadProps['onChange'] = ({ file: newFile }) => {
-        setFileList(newFile);
-    };
-
-    const onPreview = async (file: UploadFile) => {
-        let src = file.url as string;
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj as FileType);
-                reader.onload = () => resolve(reader.result as string);
-            });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(image.outerHTML);
-    };
 
     const nextStep = async () => {
         try {
             // await form.validateFields();
             setCurrentStep(currentStep + 1);
         } catch (error) {
-            console.log('Validation failed:', error);
+            message.error(String(error));
         }
     };
 
@@ -504,12 +428,177 @@ const FormAddProduct = (props: Props) => {
         setCurrentStep(currentStep - 1);
     };
 
+    function getSearchCategories(value: string) {
+        dispatch(
+            searchCategoryThunk({
+                search: value,
+            })
+        )
+            .unwrap()
+            .then((response) => {
+                if (response) {
+                    setOptionCategory(response);
+                }
+            })
+            .catch((error) => {
+                message.error(error?.message);
+            });
+    }
+
+    function getSearchSuppliers(value: string) {
+        dispatch(
+            searchSupplierThunk({
+                search: value,
+            })
+        )
+            .unwrap()
+            .then((response) => {
+                if (response) {
+                    setOptionSupplier(response);
+                }
+            })
+            .catch((error) => {
+                message.error(error?.message);
+            })
+            .finally(() => {});
+    }
+
+    function onSearchCategory(value: string) {
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+        searchTimeout.current = setTimeout(() => {
+            getSearchCategories(value);
+        }, 500);
+    }
+
+    function onSearchSupplierCode(value: string) {
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+        searchTimeout.current = setTimeout(() => {
+            getSearchSuppliers(value);
+        }, 500);
+    }
+
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    function handleChangeSelect(value: string, field: 'category' | 'supplier' | 'gender') {
+        setAddProduct((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    }
+
+    function handleGetInput(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        const { name, value } = e.target;
+        const numericValue = Number(value);
+        if (name === 'sizes') {
+            setSizeInput(value);
+        } else if (name === 'colors') {
+            setColorInput(value);
+        } else if (['price', 'promotionPrice', 'discountPercentage'].includes(name)) {
+            setAddProduct((prev) => ({
+                ...prev,
+                pricing: {
+                    ...prev.pricing,
+                    [name]: numericValue,
+                },
+            }));
+        } else {
+            setAddProduct((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
+    }
+
+    function handleChange(info: UploadChangeParam<UploadFile<any>>) {
+        const newFileList = info.fileList;
+        setFileList(newFileList);
+
+        const imageUrls = newFileList
+            .filter((file) => file.status === 'done' || file.originFileObj)
+            .map((file) => (file.url ? file.url : URL.createObjectURL(file.originFileObj!)));
+
+        setAddProduct((prev) => ({
+            ...prev,
+            images: imageUrls,
+        }));
+    }
+
+    async function handlePreview(file: UploadFile) {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as FileType);
+        }
+
+        setPreviewImage(file.url || (file.preview as string));
+        setPreviewOpen(true);
+    }
+
+    function handleInputConfirm(type: 'sizes' | 'colors') {
+        if (type === 'sizes' && sizeInput && !addProduct.sizes.includes(sizeInput)) {
+            setAddProduct((prev) => ({
+                ...prev,
+                sizes: [...prev.sizes, sizeInput],
+            }));
+            setSizeInput('');
+        }
+        if (type === 'colors' && colorInput && !addProduct.colors.includes(colorInput)) {
+            setAddProduct((prev) => ({
+                ...prev,
+                colors: [...prev.colors, colorInput],
+            }));
+            setColorInput('');
+        }
+    }
+
+    const handleClear = async () => {
+        form.resetFields();
+    };
+
     const handleAddProduct = async () => {
         try {
             await form.validateFields();
-            onCancel();
+            const formData = new FormData();
+
+            Object.entries(addProduct).forEach(([key, value]) => {
+                if (key === 'images') {
+                    fileList.forEach((file, index) => {
+                        if (file.originFileObj) {
+                            formData.append(`images`, file.originFileObj);
+                        }
+                    });
+                } else if (key === 'pricing') {
+                    formData.append('pricing', JSON.stringify(value));
+                } else if (Array.isArray(value)) {
+                    formData.append(key, JSON.stringify(value));
+                } else if (value !== undefined && value !== null) {
+                    formData.append(key, value.toString());
+                }
+            });
+
+            loadingContext?.show();
+
+            dispatch(addProductThunk(formData))
+                .unwrap()
+                .then((response) => {
+                    message.success(response.message);
+                    form.resetFields();
+                    setFileList([]);
+                    dispatch(productActions.setRefreshTableTrue());
+                })
+                .catch((error) => {
+                    message.error(error.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    onCancel();
+                });
         } catch (error) {
-            console.log('Validation failed:', error);
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
         }
     };
     //#endregion Handle Function
@@ -547,13 +636,7 @@ const FormAddProduct = (props: Props) => {
                     <Step key={step.title} title={step.title} />
                 ))}
             </Steps>
-            <Form
-                layout='vertical'
-                form={form}
-                initialValues={{ sizes: [{}] }}
-                className={cx('formAddProduct')}
-                onFinish={handleAddProduct}
-            >
+            <Form layout='vertical' form={form} className={cx('formAddProduct')} onFinish={handleAddProduct}>
                 {steps[currentStep].content}
             </Form>
         </Modal>

@@ -9,7 +9,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-    user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')!) : null,
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
     accessToken: localStorage.getItem(StorageEnum.ACCESS_TOKEN) || null,
 };
 
@@ -22,7 +22,7 @@ const authSlice = createSlice({
             state.accessToken = null;
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
-            sessionStorage.removeItem('user');
+            localStorage.removeItem('user');
         },
     },
     extraReducers(builder) {
@@ -32,7 +32,7 @@ const authSlice = createSlice({
                 const { data, token } = action.payload;
                 state.user = data;
                 state.accessToken = token.access;
-                sessionStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('user', JSON.stringify(data));
                 localStorage.setItem(StorageEnum.ACCESS_TOKEN, token.access);
                 localStorage.setItem(StorageEnum.REFRESH_TOKEN, token.refresh);
             })

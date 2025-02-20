@@ -3,7 +3,7 @@
 }
 
 .contentInventory {
-    @apply p-5 rounded bg-blue-chalk-100 flex flex-col h-[180px] overflow-hidden;
+    @apply p-5 rounded bg-blue-chalk-100 flex flex-col h-[200px];
 }
 
 .contentProductsInventory {
@@ -11,7 +11,7 @@
 }
 
 .bodyInventory {
-    @apply flex flex-col flex-1 justify-between min-h-[80%];
+    @apply flex flex-col flex-1 justify-between min-h-[20%];
 }
 
 .headerInventory {
@@ -78,17 +78,13 @@ h3 {
     @apply pt-4;
 }
 
-.inStock {
-    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-green-500;
-}
-
-.outOfStock {
-    @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-red-500;
+.avatar {
+    @apply flex w-6 h-6 justify-center items-center rounded-full bg-slate-500;
 }
 
 @media screen and (max-width: 768px) {
     .contentInventory {
-        @apply min-h-[50%];
+        @apply min-h-[600px];
     }
 
     .bodyOverall {

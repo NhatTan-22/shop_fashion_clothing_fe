@@ -26,6 +26,8 @@ import { ReactComponent as CurrencyDollarIcon } from '../icons/currencyDollarIco
 import { ReactComponent as HeadphoneIcon } from '../icons/headphoneIcon.svg';
 import { ReactComponent as DeliveryIcon } from '../icons/deliveryIcon.svg';
 import { ReactComponent as PaymentIcon } from '../icons/paymentIcon.svg';
+import { ReactComponent as DotVerticalIcon } from '../icons/dotVerticalIcon.svg';
+import { ReactComponent as EditIcon } from '../icons/editIcon.svg';
 
 const icons = {
     homeIcon: HomeIcon,
@@ -56,6 +58,8 @@ const icons = {
     headphoneIcon: HeadphoneIcon,
     deliveryIcon: DeliveryIcon,
     paymentIcon: PaymentIcon,
+    dotVerticalIcon: DotVerticalIcon,
+    editIcon: EditIcon,
 };
 
 export default icons;

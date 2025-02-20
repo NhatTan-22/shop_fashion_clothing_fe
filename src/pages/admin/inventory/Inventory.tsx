@@ -2,14 +2,13 @@
 import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Empty, message, Pagination } from 'antd';
+import { Avatar, Empty, message, Pagination, Tag } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, BaseTable } from '~/components';
 import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { FormAddProduct } from '~/form';
 // Others
-import { inventoryThunk } from '~/thunks/inventory/inventoryThunk';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
@@ -17,6 +16,10 @@ import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Inventory.module.scss';
+import { getProductThunk } from '~/thunks/product/productThunk';
+import { baseURL } from '~/utils/constants/env';
+import { ICategory } from '~/utils/interfaces/interfaceCategory';
+import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 
 type Props = {
     content?: string;
@@ -39,89 +42,101 @@ const Inventory = (props: Props) => {
     const columns: Columns<IProduct, DataType<IProduct>>[] = [
         {
             title: t('admin_products_code_label_table'),
-            dataIndex: 'productCode',
-            key: 'productCode',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
-        {
-            title: t('admin_products_name_label_table'),
-            dataIndex: 'productName',
-            key: 'productName',
+            dataIndex: 'sku',
+            key: 'sku',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
             title: t('admin_products_image_label_table'),
-            dataIndex: 'image',
-            key: 'image',
+            dataIndex: 'images',
+            key: 'images',
             render: (_, record) => {
-                return (
-                    <Avatar.Group
-                        shape='circle'
-                        max={{
-                            count: 2,
-                        }}
-                    >
-                        {record?.variants?.map((image, index) => {
-                            return (
-                                <>{image ? <Avatar key={index} src={`${image}`} /> : `${renderFormatValue(image)}`}</>
-                            );
-                        })}
-                    </Avatar.Group>
-                );
+                if (record?.images) {
+                    return (
+                        <Avatar.Group
+                            shape='circle'
+                            max={{
+                                count: 2,
+                            }}
+                        >
+                            {record.images.map((image, index) => {
+                                return (
+                                    <>
+                                        {image ? (
+                                            <Avatar key={index} src={`${baseURL}/${image}`} alt={record.name} />
+                                        ) : (
+                                            <div className={cx('avatar')}>{`${renderFormatValue(image)}`}</div>
+                                        )}
+                                    </>
+                                );
+                            })}
+                        </Avatar.Group>
+                    );
+                }
             },
         },
         {
-            title: t('admin_supplier_code_label_table'),
-            dataIndex: 'supplierCode',
-            key: 'supplierCode',
+            title: t('admin_products_name_label_table'),
+            dataIndex: 'name',
+            key: 'name',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+
+        {
+            title: t('admin_supplier_code_label_table'),
+            dataIndex: 'supplier',
+            key: 'supplier',
+            render: (_, record) => {
+                if (record?.supplier) {
+                    const supplier = record.supplier as ISupplier | string;
+                    return <p>{`${typeof supplier === 'object' && renderFormatValue(supplier.supplierName)}`}</p>;
+                }
             },
         },
         {
             title: t('admin_products_categories_label_table'),
             dataIndex: 'category',
             key: 'category',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            render: (_, record) => {
+                if (record?.category) {
+                    const category = record.category as ICategory | string;
+                    return <p>{`${typeof category === 'object' && renderFormatValue(category.name)}`}</p>;
+                }
             },
         },
         {
             title: t('admin_products_selling_price_label_table'),
-            dataIndex: 'sellingPrice',
-            key: 'sellingPrice',
+            dataIndex: 'price',
+            key: 'price',
             render: (_, record) => {
-                if (record?.price?.sellingPrice) {
-                    return <p>{`${record.price.sellingPrice ?? renderFormatValue(record.price.sellingPrice)}`}</p>;
+                if (record?.pricing) {
+                    return <p>{`${record.pricing.price ?? renderFormatValue(record.pricing.price)}`}</p>;
                 }
             },
         },
         {
             title: t('admin_products_import_price_label_table'),
-            dataIndex: 'importPrice',
-            key: 'importPrice',
+            dataIndex: 'promotionPrice',
+            key: 'promotionPrice',
             render: (_, record) => {
-                if (record?.price?.importPrice) {
-                    return <p>{`${record.price.importPrice ?? renderFormatValue(record.price.importPrice)}`}</p>;
+                if (record?.pricing) {
+                    return (
+                        <p>{`${record.pricing.promotionPrice ?? renderFormatValue(record.pricing.promotionPrice)}`}</p>
+                    );
                 }
             },
         },
         {
             title: t('admin_products_store_quantity_label_table'),
-            dataIndex: 'storeQuantity',
-            key: 'storeQuantity',
+            dataIndex: 'stock',
+            key: 'stock',
             render: (_, record) => {
-                if (record?.variants) {
-                    const totalQuantity = record.variants.reduce((total, variant) => {
-                        return total + variant.storeQuantity;
-                        
-                    }, 0);
-
-                    return <p>{`${totalQuantity ?? renderFormatValue(totalQuantity)}`}</p>;
+                if (record?.stock) {
+                    return <p>{`${record.stock ?? renderFormatValue(record.stock)}`}</p>;
                 }
             },
         },
@@ -131,9 +146,9 @@ const Inventory = (props: Props) => {
             key: 'status',
             render: (text, _) => {
                 if (text) {
-                    return <p className={cx('inStock')}>${t('admin_products_in_stock_status')}</p>;
+                    return <Tag color='green'>{t('admin_products_in_stock_status')}</Tag>;
                 } else {
-                    return <p className={cx('outOfStock')}>{t('admin_products_in_out_of_stock_status')}</p>;
+                    return <Tag color='red'>{t('admin_products_in_out_of_stock_status')}</Tag>;
                 }
             },
         },
@@ -157,7 +172,7 @@ const Inventory = (props: Props) => {
     //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
-        dispatch(inventoryThunk(paramsPage))
+        dispatch(getProductThunk(paramsPage))
             .unwrap()
             .then((response) => {
                 if (response) {
@@ -189,12 +204,6 @@ const Inventory = (props: Props) => {
 
     const handleCloseAddProduct = () => {
         setOpenModalAddProduct(false);
-    };
-
-    const handleRowClick = (row: DataType<IProduct>) => {
-        // Component detail Inventory
-        console.log('Clicked row data:', row);
-        // setOpenDrawerDetail(true);
     };
     //#endregion Handle Function
 
@@ -274,7 +283,7 @@ const Inventory = (props: Props) => {
                 <>
                     {data.length ? (
                         <div className={cx('bodyInventory')}>
-                            <BaseTable columns={columns} dataSource={data} onClick={handleRowClick} />
+                            <BaseTable columns={columns} dataSource={data} />
                             <div className={cx('footerPagination')}>
                                 <Pagination
                                     className={cx('footerPagination')}

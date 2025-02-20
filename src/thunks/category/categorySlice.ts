@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addCategoryThunk, getCategoryThunk } from './categoryThunk';
+import { addCategoryThunk, getCategoryThunk, searchCategoryThunk } from './categoryThunk';
 
 export interface ICategory {
     label?: string;
@@ -20,7 +20,10 @@ const categorySlice = createSlice({
             .addCase(getCategoryThunk.pending, (state, action) => {})
             .addCase(getCategoryThunk.fulfilled, (state, action) => {})
             .addCase(getCategoryThunk.rejected, (state, action) => {});
-
+        builder
+            .addCase(searchCategoryThunk.pending, (state, action) => {})
+            .addCase(searchCategoryThunk.fulfilled, (state, action) => {})
+            .addCase(searchCategoryThunk.rejected, (state, action) => {});
         builder
             .addCase(addCategoryThunk.pending, (state, action) => {})
             .addCase(addCategoryThunk.fulfilled, (state, action) => {})

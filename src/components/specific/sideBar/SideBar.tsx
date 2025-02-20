@@ -29,19 +29,23 @@ const SideBar = (props: Props) => {
 
     //#region Selector
     const menuItems = items?.map((item) => ({
-        key: item.path,
+        key: item.path || item.label,
         icon: <IconSVG IconComponent={item.icon} />,
-        label: (
+        label: item.path ? (
             <Link to={item.path} className={cx('itemSideBar')}>
                 {t(item.label)}
             </Link>
+        ) : (
+            <div className={cx('itemSideBar')}>{t(item.label)}</div>
         ),
         children: item.children?.map((child) => ({
             key: child.path,
-            label: (
+            label: child.path ? (
                 <Link to={child.path} className={cx('itemSideBar')}>
                     {t(child.label)}
                 </Link>
+            ) : (
+                <div className={cx('itemSideBar')}>{t(child.label)}</div>
             ),
         })),
     }));

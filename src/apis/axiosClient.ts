@@ -21,10 +21,11 @@ const refreshToken = async () => {
         localStorage.setItem(StorageEnum.ACCESS_TOKEN, response.data.accessToken);
         return response.data.accessToken;
     } catch (error) {
-        console.error('Refresh token failed', error);
-        localStorage.removeItem(StorageEnum.ACCESS_TOKEN);
-        localStorage.removeItem(StorageEnum.REFRESH_TOKEN);
-        window.location.href = '/auth/login';
+        if (axios.isAxiosError(error) && error.response?.status === 403) {
+            localStorage.removeItem(StorageEnum.ACCESS_TOKEN);
+            localStorage.removeItem(StorageEnum.REFRESH_TOKEN);
+            window.location.href = '/auth/login';
+        }
         return null;
     }
 };
@@ -46,6 +47,19 @@ axiosClient.interceptors.request.use(
     }
 );
 
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+    _retry?: boolean;
+}
+
+async function refreshTokenHandler(originalRequest: CustomAxiosRequestConfig) {
+    const newToken = await refreshToken();
+    if (newToken) {
+        originalRequest.headers.set('Authorization', `Bearer ${newToken}`);
+        return axiosClient(originalRequest);
+    }
+    return Promise.reject(new Error('Refresh token failed'));
+}
+
 // Add a response interceptor
 axiosClient.interceptors.response.use(
     function (response: AxiosResponse) {
@@ -61,17 +75,18 @@ axiosClient.interceptors.response.use(
             error.response?.status === 403 &&
             error.response.data?.message === 'Token expired'
         ) {
-            const originalRequest = error.config;
+            const originalRequest = error.config as CustomAxiosRequestConfig;
 
-            if (!originalRequest) {
+            if (!originalRequest || originalRequest._retry) {
                 return Promise.reject(error);
             }
 
-            const newToken = await refreshToken();
-            if (newToken) {
-                originalRequest.headers?.set('Authorization', `Bearer ${newToken}`);
+            originalRequest._retry = true;
 
-                return axiosClient(originalRequest);
+            try {
+                return await refreshTokenHandler(originalRequest);
+            } catch (err) {
+                return Promise.reject(err);
             }
         }
 
