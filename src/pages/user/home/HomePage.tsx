@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 // Components, Layouts, Pages
-import { BaseButton, IconSVG, ItemProduct, Slider } from '~/components';
+import { BaseButton, ItemProduct, Slider } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
+import { subBanners } from '~/utils/constants/mockData';
 // Styles, Images, icons
 import styles from './HomePage.module.scss';
-import { icons, images } from '~/assets';
-import { subBanners } from '~/utils/constants/mockData';
+import { icons } from '~/assets';
 
 type Props = {
     content?: string;

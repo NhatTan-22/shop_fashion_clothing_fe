@@ -1,6 +1,7 @@
 // Libs
 import classNames from 'classnames/bind';
 import {
+    Button,
     Col,
     Flex,
     Form,
@@ -32,10 +33,10 @@ import { addProductThunk } from '~/thunks/product/productThunk';
 import { productActions } from '~/thunks/product/productSlice';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
+import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
 import styles from './FormAddProduct.module.scss';
 import { icons } from '~/assets';
-import { baseURL } from '~/utils/constants/env';
 
 type Props = {
     isShowModal?: boolean;
@@ -342,8 +343,10 @@ const FormAddProduct = (props: Props) => {
                                         {t('admin_product_size_label_input')}
                                     </label>
                                 }
+                                style={{ width: '100%' }}
                             >
                                 <Input
+                                    style={{ width: '100%' }}
                                     name='sizes'
                                     size='large'
                                     type='text'
@@ -378,8 +381,10 @@ const FormAddProduct = (props: Props) => {
                                         {t('admin_product_color_label_input')}
                                     </label>
                                 }
+                                style={{ width: '100%' }}
                             >
                                 <Input
+                                    style={{ width: '100%' }}
                                     size='large'
                                     type='text'
                                     name='colors'
@@ -414,6 +419,8 @@ const FormAddProduct = (props: Props) => {
             ),
         },
     ];
+
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
     const nextStep = async () => {
         try {
@@ -478,8 +485,6 @@ const FormAddProduct = (props: Props) => {
             getSearchSuppliers(value);
         }, 500);
     }
-
-    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
     function handleChangeSelect(value: string, field: 'category' | 'supplier' | 'gender') {
         setAddProduct((prev) => ({
@@ -613,16 +618,18 @@ const FormAddProduct = (props: Props) => {
                         <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton='Clear' />
                     </div>
                     <div style={{ display: 'flex', gap: 20 }}>
-                        {currentStep > 0 && <BaseButton onClick={prevStep} nameButton='Previous' />}
+                        {currentStep > 0 && (
+                            <Button size='large' onClick={prevStep}>{`${t('common_previous')}`}</Button>
+                        )}
                         {currentStep < steps.length - 1 && (
-                            <BaseButton nameButton='Next' styleButton={ButtonStyleEnum.PRIMARY} onClick={nextStep} />
+                            <Button size='large' type='primary' onClick={nextStep}>
+                                {`${t('common_next')}`}
+                            </Button>
                         )}
                         {currentStep === steps.length - 1 && (
-                            <BaseButton
-                                nameButton='Submit'
-                                styleButton={ButtonStyleEnum.PRIMARY}
-                                onClick={handleAddProduct}
-                            />
+                            <Button size='large' type='primary' onClick={handleAddProduct}>
+                                {`${t('common_submit')}`}
+                            </Button>
                         )}
                     </div>
                 </div>

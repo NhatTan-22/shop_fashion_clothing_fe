@@ -1,6 +1,6 @@
 // Libs
-import React, { useEffect } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '~/redux/hooks';
 import { navigateLogin } from '~/utils/constants/helper';
 import { userRoute } from '~/utils/constants/route';

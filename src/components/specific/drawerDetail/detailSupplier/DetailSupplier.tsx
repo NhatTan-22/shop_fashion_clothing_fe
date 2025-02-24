@@ -1,7 +1,7 @@
 // Libs
 import classNames from 'classnames/bind';
 import { Drawer, Form, message } from 'antd';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
 import { BaseButton, IconSVG } from '~/components';
@@ -20,14 +20,14 @@ import { supplierActions } from '~/thunks/supplier/supplierSlice';
 type Props = {
     openDrawerDetail?: boolean;
     setOpenDrawerDetail: React.Dispatch<React.SetStateAction<boolean>>;
-    dataSupplier?: ISupplier;
+    slug: string;
 };
 
 const cx = classNames.bind(styles);
 
 const DetailSupplier = (props: Props) => {
     //#region Destructuring Props
-    const { openDrawerDetail, setOpenDrawerDetail, dataSupplier } = props;
+    const { openDrawerDetail, setOpenDrawerDetail, slug } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -44,6 +44,7 @@ const DetailSupplier = (props: Props) => {
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {}, [slug]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -72,29 +73,26 @@ const DetailSupplier = (props: Props) => {
             <Drawer
                 onClose={() => setOpenDrawerDetail(!openDrawerDetail)}
                 open={openDrawerDetail}
-                title={<div className={cx('titleDrawer')}>{dataSupplier?.supplierName ?? '--'}</div>}
+                // title={<div className={cx('titleDrawer')}>{dataSupplier?.supplierName ?? '--'}</div>}
                 width={600}
                 footer={
                     <BaseButton
                         styleButton={ButtonStyleEnum.PRIMARY}
                         nameButton={t('common_update')}
                         className={cx('styleButton')}
-                        onClick={() => {
-                            handleUpdateSupplier(dataSupplier?._id as Object);
-                        }}
                     />
                 }
             >
-                <Form
+                {/* <Form
                     layout='vertical'
                     form={form}
-                    // initialValues={{ sizes: [{}] }}
+                    initialValues={{ sizes: [{}] }}
                     name='addSupplier'
                     className={cx('formAddSupplier')}
                     onFinish={handleUpdateSupplier}
-                >
-                    <ul>
-                        <li>
+                > */}
+                <ul>
+                    {/* <li>
                             <img
                                 src={`${baseURL}/${dataSupplier?.image}`}
                                 alt={dataSupplier?.supplierName && ''}
@@ -137,15 +135,15 @@ const DetailSupplier = (props: Props) => {
                                 <span className={cx('titleItemDrawer')}>{t('supplier_type_label')}</span>
                                 <div>{dataSupplier?.restockStatus || 'No data'}</div>
                             </div>
-                        </li>
-                        {/* <li>
+                        </li> */}
+                    {/* <li>
                             <div className={cx('itemDrawer')}>
                                 <span className={cx('titleItemDrawer')}>{t('supplier_quantity_imported_label')}</span>
                                 <span>{dataSupplier?.orderQuantity ?? '--'}</span>
                             </div>
                         </li> */}
-                    </ul>
-                </Form>
+                </ul>
+                {/* </Form> */}
             </Drawer>
         </div>
     );
