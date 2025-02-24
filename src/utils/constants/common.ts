@@ -10,9 +10,18 @@ export const sidebarItems: ISideBar[] = [
         icon: icons.homeIcon,
     },
     {
-        path: '/admin/inventory',
         label: 'admin_inventory',
         icon: icons.inventoryIcon,
+        children: [
+            {
+                path: '/admin/inventory',
+                label: 'admin_inventory_products',
+            },
+            {
+                path: '/admin/inventory/categories',
+                label: 'admin_inventory_categories',
+            },
+        ],
     },
     {
         path: '/admin/reports',

@@ -1,33 +1,40 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Drawer } from 'antd';
+import { Drawer, Form, message } from 'antd';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
 import { BaseButton, IconSVG } from '~/components';
 // Others
+import { baseURL } from '~/utils/constants/env';
+import { LoadingContext } from '~/context';
+import { useAppDispatch } from '~/redux/hooks';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
-import { convertTypeSupplier } from '~/utils/constants/helper';
 // Styles, Images, icons
 import { icons } from '~/assets';
 import styles from './DetailSupplier.module.scss';
-import { baseURL } from '~/utils/constants/env';
+import { deleteSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import { supplierActions } from '~/thunks/supplier/supplierSlice';
 
 type Props = {
     openDrawerDetail?: boolean;
     setOpenDrawerDetail: React.Dispatch<React.SetStateAction<boolean>>;
-    dataSupplier?: ISupplier;
+    slug: string;
 };
 
 const cx = classNames.bind(styles);
 
 const DetailSupplier = (props: Props) => {
     //#region Destructuring Props
-    const { openDrawerDetail, setOpenDrawerDetail, dataSupplier } = props;
+    const { openDrawerDetail, setOpenDrawerDetail, slug } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
+    const [form] = Form.useForm();
     //#endregion Declare Hook
 
     //#region Selector
@@ -37,10 +44,28 @@ const DetailSupplier = (props: Props) => {
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {}, [slug]);
     //#endregion Implement Hook
 
     //#region Handle Function
-    const typeData = dataSupplier?.isTaking ? convertTypeSupplier(dataSupplier.isTaking[0]) : null;
+    const handleUpdateSupplier = (idSupplier: Object) => {
+        loadingContext?.show();
+        dispatch(deleteSupplierThunk(idSupplier))
+            .unwrap()
+            .then((response) => {
+                if (response) {
+                    setOpenDrawerDetail(false);
+                    message.success(response.message);
+                    dispatch(supplierActions.setRefreshTableTrue());
+                }
+            })
+            .catch((error) => {
+                message.error(error.message);
+            })
+            .finally(() => {
+                loadingContext?.hide();
+            });
+    };
     //#endregion Handle Function
 
     return (
@@ -48,69 +73,77 @@ const DetailSupplier = (props: Props) => {
             <Drawer
                 onClose={() => setOpenDrawerDetail(!openDrawerDetail)}
                 open={openDrawerDetail}
-                title={<div className={cx('titleDrawer')}>{dataSupplier?.supplierName ?? '--'}</div>}
-                width={400}
-                // Delete
+                // title={<div className={cx('titleDrawer')}>{dataSupplier?.supplierName ?? '--'}</div>}
+                width={600}
                 footer={
                     <BaseButton
-                        styleButton={ButtonStyleEnum.PRIMARY_RED}
-                        nameButton={t('common_delete')}
+                        styleButton={ButtonStyleEnum.PRIMARY}
+                        nameButton={t('common_update')}
                         className={cx('styleButton')}
-                        prevIcon={icons.deleteIcon}
                     />
                 }
             >
+                {/* <Form
+                    layout='vertical'
+                    form={form}
+                    initialValues={{ sizes: [{}] }}
+                    name='addSupplier'
+                    className={cx('formAddSupplier')}
+                    onFinish={handleUpdateSupplier}
+                > */}
                 <ul>
-                    <li>
-                        <img
-                            src={`${baseURL}/${dataSupplier?.supplierImage}`}
-                            alt={dataSupplier?.supplierName}
-                            className={cx('imageDrawer')}
-                        />
-                    </li>
-                    <li>
-                        <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>
-                                <IconSVG IconComponent={icons.emailIcon} /> {t('admin_supplier_email_label')}
-                            </span>
-                            <span>{dataSupplier?.supplierEmail ?? '--'}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>
-                                <IconSVG IconComponent={icons.phoneIcon} /> {t('admin_supplier_contact_phone_label')}
-                            </span>
-                            <span>{dataSupplier?.supplierPhone ?? '--'}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>
-                                <IconSVG IconComponent={icons.addressIcon} /> {t('admin_supplier_address_label')}
-                            </span>
-                            <span>{dataSupplier?.supplierAddress ?? '--'}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>{t('admin_supplier_code_product_label')}</span>
-                            <span>{dataSupplier?.supplierCode ?? '--'}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>{t('supplier_type_label')}</span>
-                            <div className={cx(typeData?.className)}>{typeData?.text || 'No data'}</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div className={cx('itemDrawer')}>
-                            <span className={cx('titleItemDrawer')}>{t('supplier_quantity_imported_label')}</span>
-                            <span>{dataSupplier?.quantityImported ?? '--'}</span>
-                        </div>
-                    </li>
+                    {/* <li>
+                            <img
+                                src={`${baseURL}/${dataSupplier?.image}`}
+                                alt={dataSupplier?.supplierName && ''}
+                                className={cx('imageDrawer')}
+                            />
+                        </li>
+                        <li>
+                            <div className={cx('itemDrawer')}>
+                                <span className={cx('titleItemDrawer')}>
+                                    <IconSVG IconComponent={icons.emailIcon} /> {t('admin_supplier_email_label')}
+                                </span>
+                                <span>{dataSupplier?.email ?? '--'}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div className={cx('itemDrawer')}>
+                                <span className={cx('titleItemDrawer')}>
+                                    <IconSVG IconComponent={icons.phoneIcon} />{' '}
+                                    {t('admin_supplier_contact_phone_label')}
+                                </span>
+                                <span>{dataSupplier?.phone ?? '--'}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div className={cx('itemDrawer')}>
+                                <span className={cx('titleItemDrawer')}>
+                                    <IconSVG IconComponent={icons.addressIcon} /> {t('admin_supplier_address_label')}
+                                </span>
+                                <span>{dataSupplier?.address ?? '--'}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div className={cx('itemDrawer')}>
+                                <span className={cx('titleItemDrawer')}>{t('admin_supplier_code_product_label')}</span>
+                                <span>{dataSupplier?.contactPerson ?? '--'}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div className={cx('itemDrawer')}>
+                                <span className={cx('titleItemDrawer')}>{t('supplier_type_label')}</span>
+                                <div>{dataSupplier?.restockStatus || 'No data'}</div>
+                            </div>
+                        </li> */}
+                    {/* <li>
+                            <div className={cx('itemDrawer')}>
+                                <span className={cx('titleItemDrawer')}>{t('supplier_quantity_imported_label')}</span>
+                                <span>{dataSupplier?.orderQuantity ?? '--'}</span>
+                            </div>
+                        </li> */}
                 </ul>
+                {/* </Form> */}
             </Drawer>
         </div>
     );

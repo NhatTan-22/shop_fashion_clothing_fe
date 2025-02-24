@@ -3,13 +3,12 @@ import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
-import { BaseButton, BaseTable, Breadcrumb, IconSVG } from '~/components';
+import { BaseButton, BaseTable, IconSVG } from '~/components';
 // Others
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { IOrder } from '~/utils/interfaces/interfaceOrder';
 import { renderFormatValue } from '~/utils/constants/helper';
 import { baseURL } from '~/utils/constants/env';
-import { orders } from '~/utils/constants/mockData';
 // Styles, Images, icons
 import styles from './OrderPage.module.scss';
 import { icons } from '~/assets';

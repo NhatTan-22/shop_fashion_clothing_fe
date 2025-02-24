@@ -37,7 +37,7 @@ const Button = (props: Props) => {
         onClick,
         width = '100%',
         height = 40,
-        disabled,
+        disabled = false,
         type = 'button',
         children,
         prevIcon,
@@ -64,10 +64,10 @@ const Button = (props: Props) => {
     return (
         <div id='baseButtonComponent' className={cx(`baseButton ${className}`)} style={{ height: `${height}px` }}>
             <button
-                className={cx(`${styleButton ? styleButton : 'defaultStyle'}`)}
+                className={cx(`${styleButton ? styleButton : 'defaultStyle'}`, { disabledStyle: disabled })}
                 type={type}
                 onClick={onClick}
-                disabled={disabled}
+                disabled={disabled ? true : false}
                 style={{ width: width, height: `${height}px` }}
                 title={title}
             >

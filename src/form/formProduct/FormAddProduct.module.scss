@@ -1,13 +1,38 @@
 .modalAddProduct {
-    @apply min-w-[50%];
+    @apply min-w-[50%] max-h-[80%] overflow-auto;
+}
+
+.modalAddProduct::-webkit-scrollbar {
+    @apply w-0;
 }
 
 .modalTitle {
-    @apply border-b-2 pb-3 font-bold text-xl;
+    @apply border-b-2 pb-3 font-bold text-xl relative;
 }
 
 .formAddProduct {
-    @apply mt-8 border-b-2 pb-3 gap-32;
+    @apply border-b-2 gap-32 p-6;
+}
+
+.modalAddProduct .ant-modal-footer {
+    flex-shrink: 0;
+    padding: 16px 24px;
+}
+
+.listAddVariant {
+    @apply max-h-[400px] overflow-auto;
+}
+
+.listAddVariant::-webkit-scrollbar {
+    @apply w-0.5;
+}
+
+.listAddVariant::-webkit-scrollbar-thumb {
+    @apply bg-wisteria-600 rounded-full;
+}
+
+.listAddVariant::-webkit-scrollbar-track {
+    @apply bg-blue-chalk-100;
 }
 
 .uploadFormAddProduct {
@@ -18,10 +43,11 @@
     @apply text-base font-bold;
 }
 
-.styleButton {
-    @apply ml-2 mt-10;
+.buttonAdd {
+    @apply w-full mb-3;
+    border-radius: 100% !important;
 }
 
-.form {
-    @apply flex-1;
+.styleButton {
+    @apply flex m-auto;
 }

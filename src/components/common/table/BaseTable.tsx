@@ -10,14 +10,13 @@ import styles from './BaseTable.module.scss';
 type Props<T extends object> = {
     columns: Columns<T, DataType<T>>[];
     dataSource: DataType<T>[];
-    onClick?: (row: DataType<T>) => void;
 };
 
 const cx = classNames.bind(styles);
 
 const BaseTable = <T extends object>(props: Props<T>) => {
     //#region Destructuring Props
-    const { columns, dataSource, onClick } = props;
+    const { columns, dataSource } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -33,42 +32,56 @@ const BaseTable = <T extends object>(props: Props<T>) => {
     //#region Implement Hook
     useEffect(() => {
         if (dataSource.length) {
-            setSource(dataSource);
+            setSource([...dataSource]);
         }
-        setSource(dataSource);
+        setSource([...dataSource]);
     }, [dataSource]);
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleGetObject = (data: DataType<T>) => {
-        if (onClick) {
-            onClick(data);
-        }
-    };
     //#endregion Handle Function
 
     return (
         <div id='baseTableComponent' className={cx('baseTable')}>
-            <table>
+            <table style={{ tableLayout: 'initial' }}>
                 <thead>
                     <tr>
                         {columns?.map((column, index) => {
-                            return <th key={`${column.key}_${index}`}>{column.title}</th>;
+                            return (
+                                <th
+                                    key={`${column.key}_${index}`}
+                                    style={{
+                                        textAlign: 'center',
+                                        zIndex: 100,
+                                        height: '60px',
+                                        position: 'sticky',
+                                        top: 0,
+                                    }}
+                                >
+                                    {column.title}
+                                </th>
+                            );
                         })}
                     </tr>
                 </thead>
                 <tbody className={cx('bodyBaseTable')}>
                     {source?.map((dataTable, index) => {
                         return (
-                            <tr key={`${dataTable.key}_${index}`} onClick={() => handleGetObject(dataTable)}>
+                            <tr key={`${dataTable.key}_${index}`}>
                                 {columns?.map((column, index) => {
                                     const value = dataTable[column.dataIndex as keyof typeof dataTable];
                                     return column.render ? (
-                                        <td key={`${column.key}_${index}`}>
+                                        <td
+                                            key={`${column.key}_${index}`}
+                                            style={{ textAlign: column.align ?? 'center' }}
+                                        >
                                             {column.render(value as T, dataTable as DataType<T>)}
                                         </td>
                                     ) : (
-                                        <td key={`${column.key}_${index}`}>{`${value}`}</td>
+                                        <td
+                                            key={`${column.key}_${index}`}
+                                            style={{ textAlign: column.align ?? 'center' }}
+                                        >{`${value}`}</td>
                                     );
                                 })}
                             </tr>

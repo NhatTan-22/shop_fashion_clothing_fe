@@ -55,7 +55,7 @@ const ProductsPage = (props: Props) => {
                     key: 'Men',
                     label: (
                         <div className={cx('itemCategory')}>
-                            <Checkbox>Men</Checkbox>
+                            <Checkbox style={{ accentColor: 'red' }}>Men</Checkbox>
                             <span>{`(4)`}</span>
                         </div>
                     ),
@@ -174,10 +174,12 @@ const ProductsPage = (props: Props) => {
         });
     };
 
+    console.log(selectedKeys);
+
     function handleSizeChange(e: any) {
         setSelectedSize(e.target.value);
-        console.log('Selected size:', e.target.value);
     }
+
     //#endregion Handle Function
 
     return (
@@ -186,7 +188,7 @@ const ProductsPage = (props: Props) => {
             <div className={cx('swapperContact')}>
                 <div className={cx('sideBarProduct')}>
                     <Menu
-                        className={cx('custom-menu')}
+                        className={cx('custom-menu-global')}
                         items={items}
                         mode='inline'
                         inlineCollapsed={false}

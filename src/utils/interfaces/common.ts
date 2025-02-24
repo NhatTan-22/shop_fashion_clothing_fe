@@ -16,9 +16,10 @@ export interface IChildRouteModel {
 }
 
 export interface ISideBar {
-    path: string;
+    path?: string;
     label: string;
-    icon: React.FC<React.SVGProps<SVGSVGElement>>;
+    icon?: React.FC<React.SVGProps<SVGSVGElement>>;
+    children?: ISideBar[] | null;
 }
 
 export interface IBreadcrumb {
@@ -31,8 +32,11 @@ export interface IPagination extends IParamsPagination {
 }
 
 export interface IParamsPagination {
-    currentPage: number;
+    currentPage?: number;
     limitPage?: number;
+    search?: string;
+    sortBy?: string;
+    order?: 'asc' | 'desc';
 }
 
 export interface IMenuItem {

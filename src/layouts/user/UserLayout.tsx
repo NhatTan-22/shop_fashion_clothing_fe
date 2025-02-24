@@ -15,6 +15,7 @@ import { baseURL } from '~/utils/constants/env';
 import { icons, images } from '~/assets';
 import styles from './UserLayout.module.scss';
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
+import { userRoute } from '~/utils/constants/route';
 
 type Props = {
     content?: string;
@@ -139,7 +140,7 @@ const UserLayout = (props: Props) => {
                                     <IconSVG IconComponent={icons.heartIcon} />
                                 </Link>
                                 <div className='relative'>
-                                    <Link to='products/order'>
+                                    <Link to={`${userRoute.products}${userRoute.order}`}>
                                         <IconSVG IconComponent={icons.cartIcon} />
                                         <div className='absolute top-2 left-4 rounded-full bg-wisteria-600'>
                                             <span className='px-2 text-white'>0</span>

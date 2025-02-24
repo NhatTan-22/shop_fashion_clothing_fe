@@ -10,15 +10,19 @@ import './assets/fonts/style.css';
 import './utils/i18n';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { ConfigProvider } from 'antd';
+import themeConfig from './config/themeConfig';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
             <GlobalStyles>
-                <LoadingProvider>
-                    <App />
-                </LoadingProvider>
+                <ConfigProvider theme={themeConfig}>
+                    <LoadingProvider>
+                        <App />
+                    </LoadingProvider>
+                </ConfigProvider>
             </GlobalStyles>
         </Provider>
     </React.StrictMode>
