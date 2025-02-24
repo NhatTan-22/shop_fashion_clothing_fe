@@ -2,9 +2,9 @@
 import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Empty, message, Pagination, Tag } from 'antd';
+import { Avatar, Button, Dropdown, Empty, message, Pagination, Tag } from 'antd';
 // Components, Layouts, Pages
-import { BaseButton, BaseTable } from '~/components';
+import { BaseTable, IconSVG } from '~/components';
 import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { FormAddProduct } from '~/form';
@@ -12,7 +12,6 @@ import { FormAddProduct } from '~/form';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Inventory.module.scss';
@@ -20,6 +19,7 @@ import { getProductThunk } from '~/thunks/product/productThunk';
 import { baseURL } from '~/utils/constants/env';
 import { ICategory } from '~/utils/interfaces/interfaceCategory';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
+import { icons } from '~/assets';
 
 type Props = {
     content?: string;
@@ -61,17 +61,13 @@ const Inventory = (props: Props) => {
                                 count: 2,
                             }}
                         >
-                            {record.images.map((image, index) => {
-                                return (
-                                    <>
-                                        {image ? (
-                                            <Avatar key={index} src={`${baseURL}/${image}`} alt={record.name} />
-                                        ) : (
-                                            <div className={cx('avatar')}>{`${renderFormatValue(image)}`}</div>
-                                        )}
-                                    </>
-                                );
-                            })}
+                            {record.images.map((image, index) => (
+                                <Avatar
+                                    key={`${record._id}_image_${index}`}
+                                    src={`${baseURL}/${image}`}
+                                    alt={record.name}
+                                />
+                            ))}
                         </Avatar.Group>
                     );
                 }
@@ -87,7 +83,7 @@ const Inventory = (props: Props) => {
         },
 
         {
-            title: t('admin_supplier_code_label_table'),
+            title: t('admin_supplier_name_label_table'),
             dataIndex: 'supplier',
             key: 'supplier',
             render: (_, record) => {
@@ -149,6 +145,46 @@ const Inventory = (props: Props) => {
                     return <Tag color='green'>{t('admin_products_in_stock_status')}</Tag>;
                 } else {
                     return <Tag color='red'>{t('admin_products_in_out_of_stock_status')}</Tag>;
+                }
+            },
+        },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => {
+                if (record) {
+                    return (
+                        <Dropdown
+                            menu={{
+                                items: [
+                                    {
+                                        key: `common_detail_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_detail')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.eyeIcon} />,
+                                        // onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `common_edit_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_edit')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.editIcon} />,
+                                        // onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `common_delete_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_delete')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.deleteIcon} />,
+                                        // onClick: () => handleDeleteSupplier(record),
+                                    },
+                                ],
+                            }}
+                            trigger={['click']}
+                        >
+                            <div>
+                                <IconSVG IconComponent={icons.dotVerticalIcon} />
+                            </div>
+                        </Dropdown>
+                    );
                 }
             },
         },
@@ -266,17 +302,10 @@ const Inventory = (props: Props) => {
                         <h1>{t('admin_products_header')}</h1>
                     </div>
                     <div className={cx('headerButtons')}>
-                        <BaseButton
-                            nameButton={t('common_add_product')}
-                            title={t('common_add_product')}
-                            styleButton={ButtonStyleEnum.PRIMARY}
-                            onClick={handleAddProduct}
-                        />
-                        <BaseButton
-                            nameButton={t('common_filters')}
-                            title={t('common_filters')}
-                            styleButton={ButtonStyleEnum.PRIMARY}
-                        />
+                        <Button size='large' type='primary' onClick={handleAddProduct}>
+                            {t('common_add_product')}
+                        </Button>
+                        <Button size='large' type='primary'>{`${t('common_filters')}`}</Button>
                     </div>
                 </div>
 

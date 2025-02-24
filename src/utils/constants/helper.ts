@@ -35,3 +35,22 @@ export const renderFormatValue = (
 
     return callback ? callback(value) : value;
 };
+
+export const renderFormatDate = (
+    value: string | Date,
+    format: string = 'DD-MM-YYYY',
+    callback?: (formattedDate: string) => void
+) => {
+    if (!value) return '--/--/--';
+
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return '--/--/--';
+
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
+
+    let formattedDate = format.replace('DD', day).replace('MM', month).replace('YYYY', String(year));
+
+    return callback ? callback(formattedDate) : formattedDate;
+};

@@ -2,9 +2,9 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect, useState } from 'react';
-import { Dropdown, Empty, MenuProps, message, Modal, Pagination } from 'antd';
+import { Avatar, Button, Dropdown, Empty, message, Modal, Pagination, Tag } from 'antd';
 // Components, Layouts, Pages
-import { BaseButton, BaseTable, DetailSupplier, IconSVG } from '~/components';
+import { BaseTable, DetailSupplier, IconSVG } from '~/components';
 import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
 // Others
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
@@ -13,9 +13,10 @@ import { supplierActions } from '~/thunks/supplier/supplierSlice';
 import { LoadingContext } from '~/context';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { deleteSupplierThunk, getSupplierThunk } from '~/thunks/supplier/supplierThunk';
-import { convertTypeSupplier, renderFormatValue } from '~/utils/constants/helper';
+import { renderFormatDate, renderFormatValue } from '~/utils/constants/helper';
+import { ICategory } from '~/utils/interfaces/interfaceCategory';
+import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
 import styles from './Supplier.module.scss';
 import { icons } from '~/assets';
@@ -43,21 +44,40 @@ const Supplier = (props: Props) => {
     const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
         {
             key: 'sku',
-            title: `${t('admin_supplier_code_label_table')}`,
+            title: `${t('admin_supplier_sku_label_table')}`,
             dataIndex: 'sku',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'name',
+            key: 'image',
+            title: `${t('admin_supplier_image_label_table')}`,
+            dataIndex: 'image',
+            render: (_, record) => {
+                if (record) {
+                    return <Avatar src={`${baseURL}/${record.image}`} alt={record.supplierName} />;
+                }
+            },
+        },
+        {
+            key: 'supplierName',
             title: `${t('admin_supplier_name_label_table')}`,
-            dataIndex: 'name',
+            dataIndex: 'supplierName',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
+            align: 'left',
         },
-
+        {
+            key: 'contactPerson',
+            title: `${t('admin_supplier_contact_person_label_table')}`,
+            dataIndex: 'contactPerson',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+            align: 'left',
+        },
         {
             key: 'phone',
             title: `${t('admin_supplier_phone_label_table')}`,
@@ -68,19 +88,13 @@ const Supplier = (props: Props) => {
         },
         {
             key: 'categories',
-            title: `${t('admin_products_code_label_table')}`,
+            title: `${t('admin_supplier_categories_provided_label_table')}`,
             dataIndex: 'categories',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
-        {
-            key: 'restockStatus',
-            title: `${t('admin_supplier_type_label_table')}`,
-            dataIndex: 'restockStatus',
             render: (_, record) => {
-                if (record) {
-                    return <p>{record?.restockStatus}</p>;
+                if (record.categories.length) {
+                    return <p>{record.categories.map((category) => (category as ICategory).name).join(', ')}</p>;
+                } else {
+                    return <p>{`${renderFormatValue('')}`}</p>;
                 }
             },
         },
@@ -90,6 +104,38 @@ const Supplier = (props: Props) => {
             dataIndex: 'orderQuantity',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            key: 'importPrice',
+            title: `${t('admin_supplier_imported_price_label_table')}`,
+            dataIndex: 'importPrice',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            key: 'restockStatus',
+            title: `${t('admin_supplier_type_label_table')}`,
+            dataIndex: 'restockStatus',
+            render: (_, record) => {
+                if (record?.restockStatus.toUpperCase() === 'PENDING') {
+                    return <Tag color='gold'>{`${t('admin_supplier_type_pending_label_table')}`}</Tag>;
+                } else if (record?.restockStatus.toUpperCase() === 'SHIPPED') {
+                    return <Tag color='blue'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
+                } else {
+                    return <Tag color='green'>{`${t('admin_supplier_type_received_label_table')}`}</Tag>;
+                }
+            },
+        },
+        {
+            key: 'lastRestockDate',
+            title: `${t('admin_supplier_last_restock_date_label_table')}`,
+            dataIndex: 'lastRestockDate',
+            render: (_, record) => {
+                if (record.lastRestockDate) {
+                    return <p>{`${renderFormatDate(record.lastRestockDate)}`}</p>;
+                }
             },
         },
         {
@@ -103,14 +149,20 @@ const Supplier = (props: Props) => {
                             menu={{
                                 items: [
                                     {
+                                        key: `${t('common_detail')}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_detail')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.eyeIcon} />,
+                                        onClick: () => handleDetailSupplier(record.slug),
+                                    },
+                                    {
                                         key: `${t('common_edit')}`,
-                                        label: <p style={{ marginLeft: '2px' }}>Edit</p>,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_edit')}`}</p>,
                                         icon: <IconSVG IconComponent={icons.editIcon} />,
-                                        onClick: () => handleEditSupplier(record),
+                                        // onClick: () => handleEditSupplier(record),
                                     },
                                     {
                                         key: `${t('common_delete')}`,
-                                        label: <p style={{ marginLeft: '2px' }}>Delete</p>,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_delete')}`}</p>,
                                         icon: <IconSVG IconComponent={icons.deleteIcon} />,
                                         onClick: () => handleDeleteSupplier(record),
                                     },
@@ -133,15 +185,15 @@ const Supplier = (props: Props) => {
     //#region Declare State
     const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
     const [openModalAddSupplier, setOpenModalAddSupplier] = useState<boolean>(false);
-    const [data, setData] = useState<ISupplier[]>([]);
-    const [supplier, setSupplier] = useState<ISupplier>();
-    const [currentPage, setCurrentPage] = useState<IPagination>({
-        lengthPage: 0,
-        currentPage: 1,
-    });
+    const [supplier, setSupplier] = useState<ISupplier[]>([]);
+    const [slug, setSlug] = useState<string>('');
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
         currentPage: 1,
         limitPage: 10,
+    });
+    const [currentPage, setCurrentPage] = useState<IPagination>({
+        lengthPage: 0,
+        currentPage: 1,
     });
     //#endregion Declare State
 
@@ -153,11 +205,12 @@ const Supplier = (props: Props) => {
             .then((response) => {
                 if (response) {
                     const pagination = response?.pagination;
-                    setData(response?.data);
-                    setCurrentPage({
+                    setSupplier(response?.data);
+                    setCurrentPage((prev) => ({
+                        ...prev,
                         lengthPage: pagination.lengthPage,
                         currentPage: pagination.currentPage,
-                    });
+                    }));
                 }
             })
             .catch((error) => {
@@ -168,12 +221,12 @@ const Supplier = (props: Props) => {
                 loadingContext?.hide();
                 dispatch(supplierActions.setRefreshTableFalse());
             });
-    }, [paramsPage.currentPage, isRefreshTable]);
+    }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleEditSupplier = (data: DataType<ISupplier>) => {
-        setSupplier(data);
+    const handleDetailSupplier = (slug: string) => {
+        setSlug(slug);
         setOpenDrawerDetail(true);
     };
 
@@ -211,7 +264,7 @@ const Supplier = (props: Props) => {
     };
 
     const handleChangePage = (e: number) => {
-        setParamsPage({ ...paramsPage, currentPage: e });
+        setParamsPage((prev) => ({ ...prev, currentPage: e }));
     };
     //#endregion Handle Function
 
@@ -222,28 +275,22 @@ const Supplier = (props: Props) => {
                     <h1>{t('admin_suppliers_header')}</h1>
                 </div>
                 <div className={cx('headerButtons')}>
-                    <BaseButton
-                        nameButton={t('common_add_supplier')}
-                        title={t('common_add_supplier')}
-                        styleButton={ButtonStyleEnum.PRIMARY}
-                        onClick={handleIsOpenAddSupplier}
-                    />
-                    <BaseButton
-                        nameButton={t('common_filters')}
-                        title={t('common_filters')}
-                        styleButton={ButtonStyleEnum.PRIMARY}
-                    />
+                    <Button size='large' type='primary' onClick={handleIsOpenAddSupplier}>
+                        {`${t('common_add_supplier')}`}
+                    </Button>
+                    <Button size='large' type='primary'>{`${t('common_filters')}`}</Button>
                 </div>
             </div>
             <>
-                {data.length ? (
+                {supplier.length ? (
                     <div className={cx('bodySupplier')}>
-                        <BaseTable columns={columns} dataSource={data} />
+                        <BaseTable columns={columns} dataSource={supplier} />
                         <Pagination
                             className={cx('footerPagination')}
                             align='center'
-                            defaultCurrent={currentPage?.currentPage}
+                            pageSize={paramsPage.limitPage}
                             total={currentPage.lengthPage}
+                            current={currentPage.currentPage}
                             showSizeChanger={false}
                             onChange={handleChangePage}
                         />
@@ -253,13 +300,11 @@ const Supplier = (props: Props) => {
                 )}
             </>
             <>
-                {supplier && (
-                    <DetailSupplier
-                        openDrawerDetail={openDrawerDetail}
-                        setOpenDrawerDetail={setOpenDrawerDetail}
-                        dataSupplier={supplier}
-                    />
-                )}
+                <DetailSupplier
+                    openDrawerDetail={openDrawerDetail}
+                    setOpenDrawerDetail={setOpenDrawerDetail}
+                    slug={slug}
+                />
             </>
 
             <FormAddSupplier isShowModal={openModalAddSupplier} onClose={handleIsOpenAddSupplier} />

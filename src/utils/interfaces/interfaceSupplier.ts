@@ -1,17 +1,20 @@
 export interface ISupplier extends IAddSupplier {
     _id: Object;
+    slug: string;
+    sku: string;
+    restockStatus: string;
 }
 
 export interface IAddSupplier {
-    supplierName: String;
-    contactPerson: String;
-    image: String;
-    email: String;
-    phone: String;
-    address: String;
-    categories: Object[];
-    orderQuantity: Number;
-    restockStatus: String;
-    expectedArrivalDate: Date;
-    lastRestockDate?: Date;
+    supplierName: string;
+    contactPerson: string;
+    image: string | File | null;
+    email: string;
+    phone: string;
+    address: string;
+    categories: object[] | string[];
+    orderQuantity: number;
+    importPrice: number;
+    expectedArrivalDate: Date | string;
+    lastRestockDate: Date | string;
 }

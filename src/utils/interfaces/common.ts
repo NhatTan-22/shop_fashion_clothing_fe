@@ -34,6 +34,9 @@ export interface IPagination extends IParamsPagination {
 export interface IParamsPagination {
     currentPage?: number;
     limitPage?: number;
+    search?: string;
+    sortBy?: string;
+    order?: 'asc' | 'desc';
 }
 
 export interface IMenuItem {

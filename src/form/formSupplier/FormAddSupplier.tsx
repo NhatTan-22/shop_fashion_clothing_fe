@@ -1,8 +1,24 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Col, Form, GetProp, Input, message, Modal, Row, Select, Steps, Upload, UploadFile, UploadProps } from 'antd';
+import {
+    Col,
+    DatePicker,
+    Form,
+    GetProp,
+    Image,
+    Input,
+    message,
+    Modal,
+    Row,
+    Select,
+    Steps,
+    Upload,
+    UploadFile,
+    UploadProps,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
-import React, { useContext, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { useContext, useEffect, useRef, useState } from 'react';
 // Components, Layouts, Pages
 // Others
 import { IAddSupplier } from '~/utils/interfaces/interfaceSupplier';
@@ -15,6 +31,8 @@ import { BaseButton } from '~/components';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { supplierActions } from '~/thunks/supplier/supplierSlice';
 import { UploadChangeParam } from 'antd/es/upload';
+import { baseURL } from '~/utils/constants/env';
+import { searchCategoryThunk } from '~/thunks/category/categoryThunk';
 
 type Props = {
     isShowModal?: boolean;
@@ -22,10 +40,17 @@ type Props = {
 };
 
 const { Step } = Steps;
-const { Option } = Select;
+// const { Option } = Select;
 const { TextArea } = Input;
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
 
 const cx = classNames.bind(styles);
 
@@ -46,11 +71,33 @@ const FormAddSupplier = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [supplier, setSupplier] = useState<Partial<IAddSupplier>>({});
+    const [supplier, setSupplier] = useState<IAddSupplier>({
+        supplierName: '',
+        contactPerson: '',
+        image: '',
+        email: '',
+        phone: '',
+        address: '',
+        categories: [],
+        orderQuantity: 0,
+        importPrice: 0,
+        expectedArrivalDate: new Date(),
+        lastRestockDate: new Date(),
+    });
     const [currentStep, setCurrentStep] = useState(0);
+
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    const [previewImage, setPreviewImage] = useState<string>('');
+
+    const [optionCategory, setOptionCategory] = useState([]);
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {
+        if (isShowModal) {
+            getSearchCategories('');
+        }
+    }, [isShowModal]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -60,53 +107,43 @@ const FormAddSupplier = (props: Props) => {
             content: (
                 <>
                     <Row style={{ justifyContent: 'center' }}>
-                        <Upload
-                            name='image'
-                            className={cx('uploadFormAddSupplier')}
-                            listType='picture-circle'
-                            customRequest={(options: any) => {
-                                options.onSuccess?.({}, options.file);
-                            }}
-                            action={'http://localhost:8080/suppliers/new-add'}
-                            onChange={onChange}
-                            onPreview={onPreview}
-                            maxCount={1}
-                        >
-                            <button style={{ border: 0, background: 'none' }} type='button'>
-                                <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
-                            </button>
-                        </Upload>
+                        <div>
+                            <Upload
+                                name='image'
+                                className={cx('uploadFormAddSupplier')}
+                                listType='picture-circle'
+                                customRequest={(options: any) => {
+                                    options.onSuccess?.({}, options.file);
+                                }}
+                                action={`${baseURL}/public/images`}
+                                onChange={handleChangeImage}
+                                onPreview={handlePreview}
+                                maxCount={1}
+                            >
+                                <button style={{ border: 0, background: 'none' }} type='button'>
+                                    <div style={{ marginTop: 8 }}>{`+ Upload`}</div>
+                                </button>
+                            </Upload>
+                            {previewImage && (
+                                <Image
+                                    wrapperStyle={{ display: 'none' }}
+                                    preview={{
+                                        visible: previewOpen,
+                                        onVisibleChange: (visible) => setPreviewOpen(visible),
+                                        afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                                    }}
+                                    src={previewImage}
+                                />
+                            )}
+                        </div>
                     </Row>
 
                     <Row style={{ justifyContent: 'space-between' }}>
                         <Col span={11}>
                             <Form.Item
-                                name='sku'
+                                name='supplierName'
                                 label={
-                                    <label className={cx('labelAddSupplier')} htmlFor='sku'>
-                                        {t('admin_supplier_code_label_input')}
-                                    </label>
-                                }
-                                rules={[{ required: true, message: `${t('admin_add_supplier_code_required')}` }]}
-                                style={{ width: '100%' }}
-                            >
-                                <Input
-                                    id='sku'
-                                    name='sku'
-                                    type='text'
-                                    size='large'
-                                    autoFocus
-                                    placeholder={t('admin_add_supplier_code_placeholder')}
-                                    title={t('admin_supplier_code_label_input')}
-                                    onChange={handleGetInput}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={11}>
-                            <Form.Item
-                                name='name'
-                                label={
-                                    <label className={cx('labelAddSupplier')} htmlFor='name'>
+                                    <label className={cx('labelAddSupplier')} htmlFor='supplierName'>
                                         {t('admin_supplier_name_label_input')}
                                     </label>
                                 }
@@ -114,13 +151,36 @@ const FormAddSupplier = (props: Props) => {
                                 style={{ width: '100%' }}
                             >
                                 <Input
-                                    id='name'
-                                    name='name'
+                                    id='supplierName'
+                                    name='supplierName'
                                     type='text'
                                     size='large'
+                                    autoFocus
                                     placeholder={t('admin_add_supplier_name_placeholder')}
-                                    title={t('admin_supplier_name_label_input')}
-                                    onChange={handleGetInput}
+                                    onChange={(e) => handleChange(e.target.value, 'supplierName')}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={11}>
+                            <Form.Item
+                                name='contactPerson'
+                                label={
+                                    <label className={cx('labelAddSupplier')} htmlFor='contactPerson'>
+                                        {t('admin_supplier_contact_person_label_input')}
+                                    </label>
+                                }
+                                rules={[
+                                    { required: true, message: `${t('admin_add_supplier_contact_person_required')}` },
+                                ]}
+                                style={{ width: '100%' }}
+                            >
+                                <Input
+                                    id='contactPerson'
+                                    name='contactPerson'
+                                    type='text'
+                                    size='large'
+                                    placeholder={t('admin_add_supplier_contact_person_placeholder')}
+                                    onChange={(e) => handleChange(e.target.value, 'contactPerson')}
                                 />
                             </Form.Item>
                         </Col>
@@ -150,7 +210,7 @@ const FormAddSupplier = (props: Props) => {
                                     size='large'
                                     placeholder={t('admin_add_supplier_phone_placeholder')}
                                     title={t('admin_supplier_contact_phone_label_input')}
-                                    onChange={handleGetInput}
+                                    onChange={(e) => handleChange(e.target.value, 'phone')}
                                 />
                             </Form.Item>
                         </Col>
@@ -178,7 +238,7 @@ const FormAddSupplier = (props: Props) => {
                                     size='large'
                                     placeholder={t('admin_add_supplier_email_placeholder')}
                                     title={t('admin_supplier_email_label_input')}
-                                    onChange={handleGetInput}
+                                    onChange={(e) => handleChange(e.target.value, 'email')}
                                 />
                             </Form.Item>
                         </Col>
@@ -202,7 +262,7 @@ const FormAddSupplier = (props: Props) => {
                             maxLength={255}
                             placeholder={t('admin_add_supplier_address_placeholder')}
                             title={t('admin_supplier_address_label_input')}
-                            onChange={handleGetInput}
+                            onChange={(e) => handleChange(e.target.value, 'address')}
                         />
                     </Form.Item>
                 </>
@@ -212,107 +272,117 @@ const FormAddSupplier = (props: Props) => {
             title: `${t('admin_import_product_information_label')}`,
             content: (
                 <>
-                    <Form.Item
-                        name='productCode'
-                        label={
-                            <label className={cx('labelAddSupplier')} htmlFor='productCode'>
-                                {t('admin_supplier_product_code_label_input')}
-                            </label>
-                        }
-                        rules={[{ required: true, message: `${t('admin_add_supplier_product_code_required')}` }]}
-                    >
-                        <Input
-                            id='productCode'
-                            name='productCode'
-                            type='text'
-                            size='large'
-                            placeholder={t('admin_add_supplier_product_code_placeholder')}
-                            title={t('admin_supplier_product_code_label_input')}
-                            onChange={handleGetInput}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name='importQuantity'
-                        label={
-                            <label className={cx('labelAddSupplier')} htmlFor='importQuantity'>
-                                {t('admin_supplier_quantity_imported_label_input')}
-                            </label>
-                        }
-                        rules={[{ required: true, message: `${t('admin_add_supplier_quantity_import_required')}` }]}
-                        style={{ width: '100%' }}
-                    >
-                        <Input
-                            id='importQuantity'
-                            name='importQuantity'
-                            type='number'
-                            size='large'
-                            min={0}
-                            placeholder={t('admin_add_supplier_quantity_import_placeholder')}
-                            title={t('admin_supplier_quantity_imported_label_input')}
-                            onChange={handleGetInput}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name='importPrice'
-                        label={
-                            <label className={cx('labelAddSupplier')} htmlFor='importPrice'>
-                                {t('admin_supplier_price_imported_label_input')}
-                            </label>
-                        }
-                        rules={[{ required: true, message: `${t('admin_add_supplier_price_import_required')}` }]}
-                        style={{ width: '100%' }}
-                    >
-                        <Input
-                            id='importPrice'
+                    <Row justify={'space-between'}>
+                        <Col span={11}>
+                            <Form.Item
+                                name='category'
+                                label={t('admin_product_category_label_select')}
+                                rules={[{ required: true, message: `${t('admin_add_product_category_required')}` }]}
+                                style={{ width: '100%' }}
+                            >
+                                <Select
+                                    mode='multiple'
+                                    showSearch
+                                    style={{ width: '100%' }}
+                                    size='large'
+                                    placeholder={t('admin_add_product_category_placeholder')}
+                                    optionFilterProp='label'
+                                    onChange={(value) => handleChangeSelect(value, 'categories')}
+                                    onSearch={onSearchCategory}
+                                    options={optionCategory}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={11}>
+                            <Form.Item name='date' label={t('admin_supplier_date_label_input')}>
+                                <DatePicker
+                                    style={{ width: '90%' }}
+                                    size='large'
+                                    disabledDate={disabledDate}
+                                    onChange={(date) => {
+                                        handleChangeDate(date || null, 'lastRestockDate');
+                                    }}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Form.Item
+                            name='orderQuantity'
+                            label={
+                                <label className={cx('labelAddSupplier')} htmlFor='orderQuantity'>
+                                    {t('admin_supplier_order_quantity_label_input')}
+                                </label>
+                            }
+                            rules={[{ required: true, message: `${t('admin_add_supplier_order_quantity_required')}` }]}
+                            style={{ width: '100%' }}
+                        >
+                            <Input
+                                id='orderQuantity'
+                                name='orderQuantity'
+                                type='number'
+                                size='large'
+                                min={0}
+                                placeholder={t('admin_add_supplier_order_quantity_placeholder')}
+                                onChange={(e) => handleChange(e.target.value, 'orderQuantity')}
+                            />
+                        </Form.Item>
+                    </Row>
+                    <Row>
+                        <Form.Item
                             name='importPrice'
-                            type='number'
-                            min={0}
-                            max={999}
-                            size='large'
-                            placeholder={t('admin_add_supplier_price_import_placeholder')}
-                            title={t('admin_supplier_price_imported_label_input')}
-                            onChange={handleGetInput}
-                        />
-                    </Form.Item>
+                            label={
+                                <label className={cx('labelAddSupplier')} htmlFor='importPrice'>
+                                    {t('admin_supplier_price_imported_label_input')}
+                                </label>
+                            }
+                            rules={[{ required: true, message: `${t('admin_add_supplier_price_import_required')}` }]}
+                            style={{ width: '100%' }}
+                        >
+                            <Input
+                                id='importPrice'
+                                name='importPrice'
+                                type='number'
+                                min={0}
+                                max={999}
+                                size='large'
+                                placeholder={t('admin_add_supplier_price_import_placeholder')}
+                                title={t('admin_supplier_price_imported_label_input')}
+                                onChange={(e) => handleChange(e.target.value, 'importPrice')}
+                            />
+                        </Form.Item>
+                    </Row>
                 </>
             ),
         },
     ];
 
-    async function onPreview(file: UploadFile) {
-        let src = file.url as string;
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj as File);
-                reader.onload = () => resolve(reader.result as string);
+    function getSearchCategories(value: string) {
+        dispatch(searchCategoryThunk({ search: value }))
+            .unwrap()
+            .then((response) => {
+                if (response) {
+                    setOptionCategory(response);
+                }
+            })
+            .catch((error) => {
+                message.error(error?.message);
             });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(image.outerHTML);
     }
 
-    function onChange({ file }: UploadChangeParam<UploadFile<any>>): void {
-        if (file.status === 'done') {
-            setSupplier((prevSupplier) => ({
-                ...prevSupplier,
-                supplierImage: file.originFileObj || null,
-            }));
-        }
-    }
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-    function handleGetInput(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setSupplier((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
+    function onSearchCategory(value: string) {
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+        searchTimeout.current = setTimeout(() => {
+            getSearchCategories(value);
+        }, 500);
     }
 
     const nextStep = async () => {
         try {
-            await form.validateFields();
+            // await form.validateFields();
             setCurrentStep(currentStep + 1);
         } catch (error) {
             console.log('Validation failed:', error);
@@ -323,16 +393,62 @@ const FormAddSupplier = (props: Props) => {
         setCurrentStep(currentStep - 1);
     };
 
+    function disabledDate(current: Dayjs) {
+        return current && current < dayjs().startOf('day');
+    }
+
+    async function handlePreview(file: UploadFile) {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as FileType);
+        }
+
+        setPreviewImage(file.url || (file.preview as string));
+        setPreviewOpen(true);
+    }
+
+    function handleChangeImage({ file }: UploadChangeParam<UploadFile<any>>): void {
+        if (file.status === 'done') {
+            setSupplier((prevSupplier) => ({
+                ...prevSupplier,
+                image: file.response?.url || file.originFileObj || null,
+            }));
+        }
+    }
+
+    function handleChangeSelect(value: string[], field: 'categories') {
+        setSupplier((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    }
+
+    function handleChangeDate(value: Dayjs, field: keyof IAddSupplier) {
+        setSupplier((prev) => ({
+            ...prev,
+            expectedArrivalDate: dayjs().toISOString(),
+            [field]: value.format('YYYY-MM-DDTHH:mm:ss'),
+        }));
+    }
+
+    console.log(supplier);
+
+    function handleChange(value: string | string[] | null, field: keyof IAddSupplier) {
+        setSupplier((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    }
+
     const handleAddSupplier = async () => {
         try {
             await form.validateFields();
             const formData = new FormData();
 
             Object.entries(supplier).forEach(([key, value]) => {
-                if (key === 'isTaking') {
-                    formData.append(key, JSON.stringify(value));
-                } else if (key === 'supplierImage' && value instanceof File) {
+                if (key === 'image' && value instanceof File) {
                     formData.append(key, value);
+                } else if (key === 'categories' && Array.isArray(value)) {
+                    formData.append(key, JSON.stringify(value));
                 } else if (value !== undefined && value !== null) {
                     formData.append(key, value.toString());
                 }
@@ -354,7 +470,11 @@ const FormAddSupplier = (props: Props) => {
                     onClose();
                 });
         } catch (error) {
-            message.error('Please enter complete information.');
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
         }
     };
 
@@ -399,7 +519,6 @@ const FormAddSupplier = (props: Props) => {
             <Form
                 layout='vertical'
                 form={form}
-                // initialValues={{ sizes: [{}] }}
                 name='addSupplier'
                 className={cx('formAddSupplier')}
                 onFinish={handleAddSupplier}

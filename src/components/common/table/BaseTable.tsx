@@ -43,11 +43,24 @@ const BaseTable = <T extends object>(props: Props<T>) => {
 
     return (
         <div id='baseTableComponent' className={cx('baseTable')}>
-            <table>
+            <table style={{ tableLayout: 'initial' }}>
                 <thead>
                     <tr>
                         {columns?.map((column, index) => {
-                            return <th key={`${column.key}_${index}`}>{column.title}</th>;
+                            return (
+                                <th
+                                    key={`${column.key}_${index}`}
+                                    style={{
+                                        textAlign: 'center',
+                                        zIndex: 100,
+                                        height: '60px',
+                                        position: 'sticky',
+                                        top: 0,
+                                    }}
+                                >
+                                    {column.title}
+                                </th>
+                            );
                         })}
                     </tr>
                 </thead>
@@ -58,11 +71,17 @@ const BaseTable = <T extends object>(props: Props<T>) => {
                                 {columns?.map((column, index) => {
                                     const value = dataTable[column.dataIndex as keyof typeof dataTable];
                                     return column.render ? (
-                                        <td key={`${column.key}_${index}`}>
+                                        <td
+                                            key={`${column.key}_${index}`}
+                                            style={{ textAlign: column.align ?? 'center' }}
+                                        >
                                             {column.render(value as T, dataTable as DataType<T>)}
                                         </td>
                                     ) : (
-                                        <td key={`${column.key}_${index}`}>{`${value}`}</td>
+                                        <td
+                                            key={`${column.key}_${index}`}
+                                            style={{ textAlign: column.align ?? 'center' }}
+                                        >{`${value}`}</td>
                                     );
                                 })}
                             </tr>

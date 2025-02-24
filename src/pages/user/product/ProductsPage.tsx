@@ -174,9 +174,10 @@ const ProductsPage = (props: Props) => {
         });
     };
 
+    console.log(selectedKeys);
+
     function handleSizeChange(e: any) {
         setSelectedSize(e.target.value);
-        console.log('Selected size:', e.target.value);
     }
 
     //#endregion Handle Function
