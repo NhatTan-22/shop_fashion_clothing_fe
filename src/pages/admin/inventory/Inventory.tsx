@@ -2,7 +2,7 @@
 import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Dropdown, Empty, message, Pagination, Tag } from 'antd';
+import { Avatar, Button, Dropdown, Empty, message, Pagination, Table, Tag } from 'antd';
 // Components, Layouts, Pages
 import { BaseTable, IconSVG } from '~/components';
 import { useAppDispatch } from '~/redux/hooks';
@@ -312,17 +312,22 @@ const Inventory = (props: Props) => {
                 <>
                     {data.length ? (
                         <div className={cx('bodyInventory')}>
-                            <BaseTable columns={columns} dataSource={data} />
-                            <div className={cx('footerPagination')}>
-                                <Pagination
-                                    className={cx('footerPagination')}
-                                    align='center'
-                                    defaultCurrent={currentPage.currentPage}
-                                    total={currentPage.lengthPage}
-                                    showSizeChanger={false}
-                                    onChange={handleChangePage}
-                                />
-                            </div>
+                            <Table
+                                bordered={false}
+                                // tableLayout='auto'
+                                columns={columns}
+                                dataSource={data}
+                                pagination={false}
+                                scroll={{ x: 400, y: 390 }}
+                            />
+                            <Pagination
+                                className={cx('footerPagination')}
+                                align='center'
+                                defaultCurrent={currentPage.currentPage}
+                                total={currentPage.lengthPage}
+                                showSizeChanger={false}
+                                onChange={handleChangePage}
+                            />
                         </div>
                     ) : (
                         <Empty className={cx('bodyEmptySupplier')} />

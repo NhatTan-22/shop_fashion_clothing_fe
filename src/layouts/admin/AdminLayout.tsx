@@ -1,24 +1,26 @@
 // Libs
 import classNames from 'classnames/bind';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
+import { Avatar, Button, Input, Layout, Menu, MenuProps } from 'antd';
 // Components, Layouts, Pages
-import { BaseButton, IconSVG, SideBar } from '~/components';
+import { IconSVG } from '~/components';
 // Others
 import { baseURL } from '~/utils/constants/env';
 import { RootState } from '~/redux/store';
 import { authActions } from '~/thunks/auth/authSlice';
-import { sidebarItems } from '~/utils/constants/common';
-// Styles, Images, icons
+// Styles, Images, <IconSVG IconComponent={}icons
 import styles from './AdminLayout.module.scss';
 import { icons, images } from '~/assets';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
 
 type Props = {
     content?: string;
 };
+const { Header, Sider, Content } = Layout;
+const { Search } = Input;
+type MenuItem = Required<MenuProps>['items'][number];
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +32,7 @@ const AdminLayout = (props: Props) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     //#endregion Declare Hook
 
     //#region Selector
@@ -37,7 +40,7 @@ const AdminLayout = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(false);
+    const [collapsed, setCollapsed] = useState<boolean>(false);
     //#endregion Declare State
 
     //#region Implement Hook
@@ -51,16 +54,75 @@ const AdminLayout = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
+    const items: MenuItem[] = [
+        {
+            key: '/admin/dash-board',
+            label: `${t('admin_dashBoard')}`,
+            icon: (
+                <div>
+                    <IconSVG IconComponent={icons.homeIcon} />
+                </div>
+            ),
+            onClick: () => navigate('/admin/dash-board'),
+        },
+        {
+            key: '/admin/inventory',
+            label: `${t('admin_inventory')}`,
+            icon: (
+                <div>
+                    <IconSVG IconComponent={icons.inventoryIcon} />
+                </div>
+            ),
+            children: [
+                {
+                    key: '/admin/inventory/products',
+                    label: `${t('admin_inventory_products')}`,
+                    onClick: () => navigate('/admin/inventory/products'),
+                },
+                {
+                    key: '/admin/inventory/categories',
+                    label: `${t('admin_inventory_categories')}`,
+                    onClick: () => navigate('/admin/inventory/categories'),
+                },
+                {
+                    key: '/admin/inventory/brands',
+                    label: `${t('admin_inventory_brands')}`,
+                    onClick: () => navigate('/admin/inventory/brands'),
+                },
+            ],
+        },
+        {
+            key: '/admin/reports',
+            label: `${t('admin_reports')}`,
+            icon: (
+                <div>
+                    <IconSVG IconComponent={icons.reportIcon} />
+                </div>
+            ),
+            onClick: () => navigate('/admin/reports'),
+        },
+        {
+            key: '/admin/suppliers',
+            label: `${t('admin_suppliers')}`,
+            icon: (
+                <div>
+                    <IconSVG IconComponent={icons.supplierIcon} />
+                </div>
+            ),
+            onClick: () => navigate('/admin/suppliers'),
+        },
+    ];
+
     const handleResize = () => {
         if (window.innerWidth <= 768) {
-            setIsOpenSidebar(false);
+            setCollapsed(true);
         } else {
-            setIsOpenSidebar(true);
+            setCollapsed(false);
         }
     };
 
     const handleSideBar = () => {
-        setIsOpenSidebar(!isOpenSideBae);
+        setCollapsed(!collapsed);
     };
     const handleOpenDialog = () => {};
 
@@ -72,49 +134,53 @@ const AdminLayout = (props: Props) => {
 
     return (
         <div id='adminLayout' className={cx('mainAdminLayout')}>
-            <div className={cx(`${isOpenSideBae ? 'sideBarAdminOpen' : 'sideBarAdminClose'}`)}>
-                <img className={cx('logoFashionStore')} src={images.logoFashionStore} alt='' />
-                <SideBar items={sidebarItems} isOpen={isOpenSideBae} />
-            </div>
-            <div className={cx('wrapperAdmin')}>
-                <div className={cx('headerAdmin')}>
-                    <IconSVG
-                        IconComponent={isOpenSideBae ? icons.listMenuIcon : icons.listItemIcon}
-                        onClick={handleSideBar}
+            <Layout>
+                <Sider trigger={null} collapsible collapsed={collapsed}>
+                    <div>
+                        <img className={cx('logoFashionStore')} src={images.logoFashionStore} alt='' />
+                    </div>
+                    <Menu
+                        mode='inline'
+                        style={{ height: 'auto' }}
+                        defaultSelectedKeys={[location.pathname]}
+                        items={items}
                     />
-                    <div className={cx('searchAll')}>
-                        <IconSVG IconComponent={icons.searchIcon} />
-                        <input
-                            type='text'
-                            className={cx('inputSearchAll')}
-                            placeholder={t('Search product, supplier, order')}
-                        />
-                    </div>
-                    <div className={cx('information')}>
-                        <IconSVG IconComponent={icons.notification} width={40} height={40} />
-                        {admin && (
-                            <>
-                                <img
-                                    className={cx('imageAvatar')}
-                                    src={admin.photoUrl ? `${baseURL}/${admin.photoUrl}` : `${admin.photoUrl}`}
-                                    alt=''
-                                    width={40}
-                                    height={40}
-                                    onClick={handleOpenDialog}
-                                />
-                                <BaseButton
-                                    styleButton={ButtonStyleEnum.TEXT}
-                                    onClick={handleLogout}
-                                    nameButton={`Welcome, ${admin.firstName} ${admin.lastName}!`}
-                                />
-                            </>
-                        )}
-                    </div>
-                </div>
-                <div className={cx('contentAdmin')}>
-                    <Outlet />
-                </div>
-            </div>
+                </Sider>
+                <Layout>
+                    <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Button type='text' onClick={handleSideBar}>
+                            <IconSVG IconComponent={collapsed ? icons.listMenuIcon : icons.listItemIcon} />
+                        </Button>
+                        <Search type='text' style={{ width: 304 }} placeholder={t('Search product, supplier, order')} />
+                        <div className={cx('information')}>
+                            <Button type='text'>
+                                <IconSVG IconComponent={icons.notification} width={40} height={40} />
+                            </Button>
+                            {admin && (
+                                <>
+                                    <Avatar
+                                        size='large'
+                                        src={admin.photoUrl ? `${baseURL}/${admin.photoUrl}` : `${admin.photoUrl}`}
+                                        alt=''
+                                        // onClick={handleOpenDialog}
+                                    />
+                                    <Button type='text' onClick={handleLogout}>
+                                        {`Welcome, ${admin.firstName} ${admin.lastName}!`}
+                                    </Button>
+                                </>
+                            )}
+                        </div>
+                    </Header>
+                    <Content
+                        style={{
+                            padding: 24,
+                            minHeight: 280,
+                        }}
+                    >
+                        <Outlet />
+                    </Content>
+                </Layout>
+            </Layout>
         </div>
     );
 };

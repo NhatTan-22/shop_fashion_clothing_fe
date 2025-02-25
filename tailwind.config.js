@@ -22,7 +22,12 @@ export default {
                 'wisteria-600': '#a56abd',
                 'eminence-800': '#6e3482',
                 'bossa-nova-900': '#49225b',
-                'punch-600': '#e20c0c'
+                'punch-600': '#e20c0c',
+                'purple-1': '#f9f0ff',
+                'purple-2': '#efdbff',
+                'purple-9': '#22075e',
+                'purple-10': '#120338',
+
             },
             backgroundColor: {
                 'black': '#000',
