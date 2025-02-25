@@ -314,7 +314,7 @@ const Inventory = (props: Props) => {
                         <div className={cx('bodyInventory')}>
                             <Table
                                 bordered={false}
-                                // tableLayout='auto'
+                                tableLayout='auto'
                                 columns={columns}
                                 dataSource={data}
                                 pagination={false}

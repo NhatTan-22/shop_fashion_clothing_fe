@@ -14,6 +14,7 @@
     "common_submit": "Submit",
     "common_apply": "Apply",
     "common_next": "Next",
+    "common_clear": "Clear",
     "common_previous": "Previous",
 
     "gender_male": "MALE",
@@ -166,6 +167,16 @@
     "admin_add_product_discount_percentage_placeholder": "Enter Promotion Price",
     "admin_add_product_size_placeholder": "Enter Product Size",
     "admin_add_product_color_placeholder": "Select Product Color",
+
+    "admin_category_add_title": "Add Category",
+    "admin_add_category_name_label_input": "Category Name",
+    "admin_add_category_name_required": "Please input Category Name",
+    "admin_add_category_name_placeholder": "Enter Category Name",
+    "admin_category_description_label_input": "Description",
+    "admin_add_category_description_required": "Please input Description",
+    "admin_add_category_description_placeholder": "Enter Description",
+
+    "admin_category_title": "Category",
 
     "_user": "User",
     "_user_layout_home": "layout_home",
