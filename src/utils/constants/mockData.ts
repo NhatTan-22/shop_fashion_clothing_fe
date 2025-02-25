@@ -1,5 +1,4 @@
 import { IOrder } from '../interfaces/interfaceOrder';
-import { IProduct } from '../interfaces/interfaceProduct';
 
 // export const products: IProduct[] = [
 //     {

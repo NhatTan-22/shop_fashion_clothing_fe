@@ -11,7 +11,7 @@
 }
 
 .bodyInventory {
-    @apply flex flex-col flex-1 justify-between min-h-[20%];
+    @apply flex flex-col flex-1 justify-between min-h-[20%] overflow-hidden relative;
 }
 
 .headerInventory {
@@ -75,7 +75,7 @@ h3 {
 }
 
 .footerPagination {
-    @apply pt-4;
+    @apply absolute bottom-0 flex justify-center items-center pt-2 w-full bg-blue-chalk-100;
 }
 
 .avatar {

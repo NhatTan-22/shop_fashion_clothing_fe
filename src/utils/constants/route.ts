@@ -25,6 +25,9 @@ export const adminRoute = {
     base: '/admin',
     dashboard: '/dash-board',
     inventory: '/inventory',
+    products: '/products',
+    categories: '/categories',
+    brands: '/brands',
     reports: '/reports',
     suppliers: '/suppliers',
     orders: '/orders',
@@ -64,7 +67,15 @@ export const privateAdminRoutes: IRouteModel[] = [
         component: Dashboard,
     },
     {
-        path: `${adminRoute.base}${adminRoute.inventory}`,
+        path: `${adminRoute.base}${adminRoute.inventory}${adminRoute.products}`,
+        component: Inventory,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.inventory}${adminRoute.categories}`,
+        component: Inventory,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.inventory}${adminRoute.brands}`,
         component: Inventory,
     },
     {

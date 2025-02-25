@@ -2,7 +2,7 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect, useState } from 'react';
-import { Avatar, Button, Dropdown, Empty, message, Modal, Pagination, Tag } from 'antd';
+import { Avatar, Button, Dropdown, Empty, message, Modal, Pagination, Table, Tag } from 'antd';
 // Components, Layouts, Pages
 import { BaseTable, DetailSupplier, IconSVG } from '~/components';
 import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
@@ -284,7 +284,14 @@ const Supplier = (props: Props) => {
             <>
                 {supplier.length ? (
                     <div className={cx('bodySupplier')}>
-                        <BaseTable columns={columns} dataSource={supplier} />
+                        <Table
+                            bordered={false}
+                            tableLayout='auto'
+                            columns={columns}
+                            dataSource={supplier}
+                            pagination={false}
+                            scroll={{ x: 400, y: 590 }}
+                        />
                         <Pagination
                             className={cx('footerPagination')}
                             align='center'

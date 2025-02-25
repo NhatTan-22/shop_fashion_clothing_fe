@@ -430,8 +430,6 @@ const FormAddSupplier = (props: Props) => {
         }));
     }
 
-    console.log(supplier);
-
     function handleChange(value: string | string[] | null, field: keyof IAddSupplier) {
         setSupplier((prev) => ({
             ...prev,
