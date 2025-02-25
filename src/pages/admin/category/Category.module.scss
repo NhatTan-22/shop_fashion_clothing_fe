@@ -14,10 +14,6 @@
     @apply w-0;
 }
 
-.contentCategory {
-    @apply p-5 rounded bg-blue-chalk-100 flex flex-col flex-1 max-h-full;
-}
-
 .headerCategory {
     @apply text-2xl font-bold text-bossa-nova-900 mb-4;
 }
@@ -28,4 +24,16 @@
 
 .buttonHeader {
     @apply flex justify-between;
+}
+
+.contentCategory {
+    @apply p-5 rounded bg-blue-chalk-100 flex flex-col flex-1 max-h-full;
+}
+
+.bodyCategory {
+    @apply flex flex-col flex-1 justify-between min-h-[20%] overflow-hidden relative;
+}
+
+.footerPagination {
+    @apply absolute bottom-0 flex justify-center items-center pt-2 w-full bg-blue-chalk-100;
 }

@@ -1,8 +1,10 @@
 // Libs
 import classNames from 'classnames/bind';
 import {
+    Avatar,
     Button,
     Col,
+    Dropdown,
     Empty,
     Form,
     GetProp,
@@ -20,13 +22,17 @@ import { FormInstance, useForm } from 'antd/es/form/Form';
 import { useState } from 'react';
 // Components, Layouts, Pages
 // Others
-import { IAddCategory } from '~/utils/interfaces/interfaceCategory';
+import { IAddCategory, ICategory } from '~/utils/interfaces/interfaceCategory';
 // Styles, Images, icons
 import styles from './Category.module.scss';
 import { baseURL } from '~/utils/constants/env';
 import { UploadChangeParam } from 'antd/es/upload';
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { icons } from '~/assets';
+import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
+import { renderFormatValue } from '~/utils/constants/helper';
+import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 
 type Props = {};
 
@@ -53,17 +59,97 @@ const Category = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
+    const columns: Columns<ICategory, DataType<ICategory>>[] = [
+        {
+            title: t('admin_category_logo_label_table'),
+            dataIndex: 'logo',
+            key: 'logo',
+            render: (_, record) => {
+                if (record?.logo) {
+                    return <Avatar src={`${baseURL}/${record.logo}`} alt={record.name} />;
+                }
+            },
+        },
+        {
+            title: t('admin_category_name_label_table'),
+            dataIndex: 'name',
+            key: 'name',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            title: t('admin_category_description_label_table'),
+            dataIndex: 'description',
+            key: 'description',
+            render: (_, record) => {
+                if (record?.description) {
+                    return <p>{`${record.description ?? renderFormatValue(record.description)}`}</p>;
+                }
+            },
+        },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => {
+                if (record) {
+                    return (
+                        <Dropdown
+                            menu={{
+                                items: [
+                                    {
+                                        key: `common_detail_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_detail')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.eyeIcon} />,
+                                        // onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `common_edit_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_edit')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.editIcon} />,
+                                        // onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `common_delete_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_delete')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.deleteIcon} />,
+                                        // onClick: () => handleDeleteSupplier(record),
+                                    },
+                                ],
+                            }}
+                            trigger={['click']}
+                        >
+                            <div>
+                                <IconSVG IconComponent={icons.dotVerticalIcon} />
+                            </div>
+                        </Dropdown>
+                    );
+                }
+            },
+        },
+    ];
     //#endregion Selector
 
     //#region Declare State
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<string>('');
 
-    const [category, setCategory] = useState<IAddCategory>({
+    const [addCategory, setAddCategory] = useState<IAddCategory>({
         name: '',
         logo: '',
         description: '',
     });
+    const [category, setCategory] = useState<ICategory[]>([]);
+    const [currentPage, setCurrentPage] = useState<IPagination>({
+        lengthPage: 0,
+        currentPage: 1,
+    });
+    const [paramsPage, setParamsPage] = useState<IParamsPagination>({
+        currentPage: 1,
+        limitPage: 10,
+    });
+
     //#endregion Declare State
 
     //#region Implement Hook
@@ -82,7 +168,7 @@ const Category = (props: Props) => {
 
     function handleChangeImage({ file }: UploadChangeParam<UploadFile<any>>): void {
         if (file.status === 'done') {
-            setCategory((prevSupplier) => ({
+            setAddCategory((prevSupplier) => ({
                 ...prevSupplier,
                 logo: file.response?.url || file.originFileObj || null,
             }));
@@ -91,14 +177,20 @@ const Category = (props: Props) => {
 
     function handleGetInput(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.target;
-        setCategory((prev) => ({
+        setAddCategory((prev) => ({
             ...prev,
             [name]: value,
         }));
     }
 
     function handleAddCategory() {}
-    function handleClear() {}
+    function handleClear() {
+        form.resetFields();
+    }
+
+    const handleChangePage = (e: number) => {
+        setParamsPage({ ...paramsPage, currentPage: e });
+    };
     //#endregion Handle Function
 
     return (
@@ -195,13 +287,13 @@ const Category = (props: Props) => {
                 </div>
 
                 <>
-                    {/* {data.length ? (
-                        <div className={cx('bodyInventory')}>
+                    {category.length ? (
+                        <div className={cx('bodyCategory')}>
                             <Table
                                 bordered={false}
                                 tableLayout='auto'
                                 columns={columns}
-                                dataSource={data}
+                                dataSource={category}
                                 pagination={false}
                                 scroll={{ x: 400, y: 390 }}
                             />
@@ -214,9 +306,9 @@ const Category = (props: Props) => {
                                 onChange={handleChangePage}
                             />
                         </div>
-                    ) : ( */}
-                    <Empty className={cx('bodyEmptySupplier')} />
-                    {/* )} */}
+                    ) : (
+                        <Empty className={cx('bodyEmptySupplier')} />
+                    )}
                 </>
             </div>
         </div>

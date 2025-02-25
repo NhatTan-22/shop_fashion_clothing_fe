@@ -177,6 +177,9 @@
     "admin_add_category_description_placeholder": "Enter Description",
 
     "admin_category_title": "Category",
+    "admin_category_logo_label_table": "Logo",
+    "admin_category_name_label_table": "Category Name",
+    "admin_category_description_label_table": "Description",
 
     "_user": "User",
     "_user_layout_home": "layout_home",
