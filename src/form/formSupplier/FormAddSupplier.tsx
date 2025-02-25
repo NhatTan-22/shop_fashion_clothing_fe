@@ -491,7 +491,7 @@ const FormAddSupplier = (props: Props) => {
             footer={
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton='Clear' />
+                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton={`${t('common_clear')}`} />
                     </div>
                     <div style={{ display: 'flex', gap: 20 }}>
                         {currentStep > 0 && <BaseButton onClick={prevStep} nameButton='Previous' />}
