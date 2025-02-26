@@ -382,10 +382,10 @@ const FormAddSupplier = (props: Props) => {
 
     const nextStep = async () => {
         try {
-            // await form.validateFields();
+            await form.validateFields();
             setCurrentStep(currentStep + 1);
         } catch (error) {
-            console.log('Validation failed:', error);
+            message.warning(`${error}`);
         }
     };
 
@@ -491,7 +491,11 @@ const FormAddSupplier = (props: Props) => {
             footer={
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton={`${t('common_clear')}`} />
+                        <BaseButton
+                            styleButton={ButtonStyleEnum.TEXT}
+                            onClick={handleClear}
+                            nameButton={`${t('common_clear')}`}
+                        />
                     </div>
                     <div style={{ display: 'flex', gap: 20 }}>
                         {currentStep > 0 && <BaseButton onClick={prevStep} nameButton='Previous' />}

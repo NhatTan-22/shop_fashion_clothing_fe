@@ -1,1 +1,36 @@
- 
+.mainBrand {
+    @apply flex flex-row flex-1 h-full gap-4;
+}
+
+.contentAddBrand {
+    @apply p-5 rounded bg-blue-chalk-100 flex flex-col flex-1 max-w-[30%];
+}
+
+.contentAddBrand Form {
+    @apply overflow-auto flex flex-col justify-between h-full;
+}
+
+.buttonHeader {
+    @apply w-[150px];
+}
+
+.buttonHeader {
+    @apply flex justify-between;
+}
+
+.headerAddBrand,
+.headerBrand {
+    @apply text-2xl font-bold text-bossa-nova-900 mb-4;
+}
+
+.contentBrand {
+    @apply p-5 rounded bg-blue-chalk-100 flex flex-col flex-1 max-w-[70%];
+}
+
+.bodyCategory {
+    @apply flex flex-col flex-1 justify-between overflow-hidden relative;
+}
+
+.footerPagination {
+    @apply absolute bottom-0 flex justify-center items-center pt-2 w-full bg-blue-chalk-100;
+}

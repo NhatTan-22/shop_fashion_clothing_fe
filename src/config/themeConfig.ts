@@ -14,15 +14,15 @@ const themeConfig: ThemeConfig = {
             bodyBg: '#d0d3d9 ',
         },
         Menu: {
-            colorItemBg: '#f5ebfa',
+            itemBg: '#f5ebfa',
             colorPrimary: '#8a4db7',
             colorBgContainer: '#f4e5fa',
 
-            colorItemText: '#6b3f7a',
-            colorItemBgSelected: '#b081d9',
-            colorItemTextSelected: '#6b3f7a',
-            colorItemTextHover: '#8a4db7',
-            colorItemBgHover: '#c083f8',
+            itemColor: '#6b3f7a',
+            itemSelectedBg: '#b081d9',
+            itemSelectedColor: '#6b3f7a',
+            itemHoverColor: '#8a4db7',
+            itemHoverBg: '#c083f8',
 
             subMenuItemBg: '#f5ebfa',
             popupBg: '#f5ebfa',

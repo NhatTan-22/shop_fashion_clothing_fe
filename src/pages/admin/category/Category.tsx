@@ -202,8 +202,8 @@ const Category = (props: Props) => {
                     </div>
                 </div>
                 <Form layout='vertical' form={form} onFinish={handleAddCategory}>
-                    <Row style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-                        <Col span={4} style={{ display: 'flex', justifyContent: 'end' }}>
+                    <div>
+                        <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <div>
                                 <Upload
                                     name='logo'
@@ -232,8 +232,8 @@ const Category = (props: Props) => {
                                     />
                                 )}
                             </div>
-                        </Col>
-                        <Col span={8}>
+                        </Row>
+                        <Row>
                             <Form.Item
                                 name='name'
                                 label={t('admin_add_category_name_label_input')}
@@ -248,36 +248,36 @@ const Category = (props: Props) => {
                                     onChange={handleGetInput}
                                 />
                             </Form.Item>
-                        </Col>
-                        <Col span={8}>
+                        </Row>
+                        <Row>
                             <Form.Item
                                 name='description'
-                                label={t('admin_category_description_label_input')}
+                                label={t('admin_add_category_description_label_input')}
                                 rules={[{ required: true, message: `${t('admin_add_product_description_required')}` }]}
                                 style={{ width: '100%' }}
                             >
                                 <TextArea
                                     name='description'
-                                    rows={3}
+                                    rows={5}
                                     placeholder={t('admin_add_category_description_placeholder')}
                                     maxLength={255}
                                     onChange={handleGetInput}
                                 />
                             </Form.Item>
-                        </Col>
-                        <Col>
-                            <div className={cx('buttonHeader')}>
-                                <BaseButton
-                                    styleButton={ButtonStyleEnum.TEXT}
-                                    onClick={handleClear}
-                                    nameButton={`${t('common_clear')}`}
-                                />
+                        </Row>
+                    </div>
+                    <Row justify={'end'} style={{ display: 'flex', alignItems: 'end' }}>
+                        <div className={cx('buttonHeader')}>
+                            <BaseButton
+                                styleButton={ButtonStyleEnum.TEXT}
+                                onClick={handleClear}
+                                nameButton={`${t('common_clear')}`}
+                            />
 
-                                <Button size='large' type='primary' onClick={handleAddCategory}>
-                                    {`${t('common_submit')}`}
-                                </Button>
-                            </div>
-                        </Col>
+                            <Button size='large' type='primary' onClick={handleAddCategory}>
+                                {`${t('common_submit')}`}
+                            </Button>
+                        </div>
                     </Row>
                 </Form>
             </div>
