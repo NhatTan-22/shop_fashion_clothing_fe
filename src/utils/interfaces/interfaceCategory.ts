@@ -3,7 +3,7 @@ export interface ICategory extends IAddCategory {
 }
 
 export interface IAddCategory {
-    logo: string;
+    image: string;
     name: string;
     description: string;
 }

@@ -5,7 +5,7 @@ export interface IBrand extends IAddBrand {
 
 export interface IAddBrand {
     name: string;
-    logo: string;
+    image: string;
     description: string;
     country: string;
     website: string;

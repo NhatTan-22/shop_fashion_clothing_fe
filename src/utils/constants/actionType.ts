@@ -13,6 +13,10 @@ export const GET_CATEGORY = 'GET_CATEGORY';
 export const SEARCH_CATEGORY = 'SEARCH_CATEGORY';
 export const ADD_CATEGORY = 'ADD_CATEGORY';
 
+export const GET_BRAND = 'GET_BRAND';
+export const SEARCH_BRAND = 'SEARCH_BRAND';
+export const ADD_BRAND = 'ADD_BRAND';
+
 export const urlApiAuth = {
     login: 'auth/login',
     register: 'auth/register',
@@ -35,4 +39,10 @@ export const urlApiCategory = {
     getAllCategory: '/categories',
     getSearchCategory: '/categories/select',
     addCategory: '/categories/add-new',
+};
+
+export const urlApiBrand = {
+    getAllBrand: '/brands',
+    getSearchBrand: '/brands/select',
+    addBrand: '/brands/add-new',
 };

@@ -18,21 +18,21 @@ import {
     UploadFile,
     UploadProps,
 } from 'antd';
-// Components, Layouts, Pages
-// Others
-// Styles, Images, icons
-import styles from './Brand.module.scss';
-import { baseURL } from '~/utils/constants/env';
-import { BaseButton } from '~/components';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useRef, useState } from 'react';
-import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { UploadChangeParam } from 'antd/es/upload';
+// Components, Layouts, Pages
+import { BaseButton } from '~/components';
+// Others
 import { IAddBrand, IBrand } from '~/utils/interfaces/interfaceBrand';
 import { COUNTRY_LIST } from '~/utils/constants/common';
 import { useAppDispatch } from '~/redux/hooks';
 import { searchSupplierThunk } from '~/thunks/supplier/supplierThunk';
+import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { baseURL } from '~/utils/constants/env';
+// Styles, Images, icons
+import styles from './Brand.module.scss';
 
 type Props = {};
 const { TextArea } = Input;
@@ -66,11 +66,11 @@ const Brand = (props: Props) => {
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<string>('');
 
-    const [optionCategory, setOptionCategory] = useState([]);
+    const [optionSupplier, setOptionSupplier] = useState([]);
     const [domain, setDomain] = useState<string>('.com');
     const [addBrand, setAddBrand] = useState<IAddBrand>({
         name: '',
-        logo: '',
+        image: '',
         description: '',
         country: '',
         website: '',
@@ -99,7 +99,7 @@ const Brand = (props: Props) => {
             .unwrap()
             .then((response) => {
                 if (response) {
-                    setOptionCategory(response);
+                    setOptionSupplier(response);
                 }
             })
             .catch((error) => {
@@ -250,7 +250,7 @@ const Brand = (props: Props) => {
                                     optionFilterProp='label'
                                     onChange={(value) => handleChangeSelect(value, 'suppliers')}
                                     onSearch={onSearchCategory}
-                                    options={optionCategory}
+                                    options={optionSupplier}
                                 />
                             </Form.Item>
                         </Row>
@@ -314,12 +314,12 @@ const Brand = (props: Props) => {
                 </div>
 
                 <>
-                    {brand.length ? (
+                    {/* {brand.length ? (
                         <div className={cx('bodyBrand')}>
                             <Table
                                 bordered={false}
                                 tableLayout='auto'
-                                // columns={columns}
+                                columns={columns}
                                 dataSource={brand}
                                 pagination={false}
                                 scroll={{ x: 400, y: 390 }}
@@ -333,9 +333,9 @@ const Brand = (props: Props) => {
                                 onChange={handleChangePage}
                             />
                         </div>
-                    ) : (
-                        <Empty className={cx('bodyEmptyBrand')} />
-                    )}
+                    ) : ( */}
+                    <Empty className={cx('bodyEmptyBrand')} />
+                    {/* )} */}
                 </>
             </div>
         </div>
