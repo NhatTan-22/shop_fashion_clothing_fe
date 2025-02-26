@@ -14,3 +14,16 @@ export const listHeader = [
         path: '/contact',
     },
 ];
+
+export const COUNTRY_LIST = [
+    { label: 'UNITED STATES', value: 'USA' },
+    { label: 'UNITED KINGDOM', value: 'UK' },
+    { label: 'CANADA', value: 'CANADA' },
+    { label: 'GERMANY', value: 'GERMANY' },
+    { label: 'FRANCE', value: 'FRANCE' },
+    { label: 'ITALY', value: 'ITALY' },
+    { label: 'JAPAN', value: 'JAPAN' },
+    { label: 'SOUTH KOREA', value: 'SOUTH_KOREA' },
+    { label: 'CHINA', value: 'CHINA' },
+    { label: 'AUSTRALIA', value: 'AUSTRALIA' },
+];
