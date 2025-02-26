@@ -3,13 +3,13 @@ import classNames from 'classnames/bind';
 import {
     Avatar,
     Button,
-    Col,
     Dropdown,
     Empty,
     Form,
     GetProp,
     Image,
     Input,
+    message,
     Pagination,
     Row,
     Table,
@@ -19,20 +19,24 @@ import {
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { FormInstance, useForm } from 'antd/es/form/Form';
-import { useState } from 'react';
-// Components, Layouts, Pages
-// Others
-import { IAddCategory, ICategory } from '~/utils/interfaces/interfaceCategory';
-// Styles, Images, icons
-import styles from './Category.module.scss';
-import { baseURL } from '~/utils/constants/env';
+import { useContext, useEffect, useState } from 'react';
 import { UploadChangeParam } from 'antd/es/upload';
+// Components, Layouts, Pages
 import { BaseButton, IconSVG } from '~/components';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { icons } from '~/assets';
+// Others
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { renderFormatValue } from '~/utils/constants/helper';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { IAddCategory, ICategory } from '~/utils/interfaces/interfaceCategory';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
+import { baseURL } from '~/utils/constants/env';
+import { addCategoryThunk, getCategoryThunk } from '~/thunks/category/categoryThunk';
+import { LoadingContext } from '~/context';
+// Styles, Images, icons
+import styles from './Category.module.scss';
+import { icons } from '~/assets';
+import { categoryActions } from '~/thunks/category/categorySlice';
 
 type Props = {};
 
@@ -56,18 +60,19 @@ const Category = (props: Props) => {
     //#region Declare Hook
     const { t } = useTranslation();
     const [form] = useForm<FormInstance>();
+    const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
+    const isRefreshTable = useAppSelector((state) => state.category.refreshTable);
     const columns: Columns<ICategory, DataType<ICategory>>[] = [
         {
             title: t('admin_category_logo_label_table'),
-            dataIndex: 'logo',
-            key: 'logo',
+            dataIndex: 'image',
+            key: 'image',
             render: (_, record) => {
-                if (record?.logo) {
-                    return <Avatar src={`${baseURL}/${record.logo}`} alt={record.name} />;
-                }
+                if (record) return <Avatar src={`${baseURL}/${record.image}`} alt={record.name} />;
             },
         },
         {
@@ -83,9 +88,7 @@ const Category = (props: Props) => {
             dataIndex: 'description',
             key: 'description',
             render: (_, record) => {
-                if (record?.description) {
-                    return <p>{`${record.description ?? renderFormatValue(record.description)}`}</p>;
-                }
+                return <p>{`${record.description ?? renderFormatValue(record.description)}`}</p>;
             },
         },
         {
@@ -137,7 +140,7 @@ const Category = (props: Props) => {
 
     const [addCategory, setAddCategory] = useState<IAddCategory>({
         name: '',
-        logo: '',
+        image: '',
         description: '',
     });
     const [category, setCategory] = useState<ICategory[]>([]);
@@ -153,7 +156,28 @@ const Category = (props: Props) => {
     //#endregion Declare State
 
     //#region Implement Hook
-
+    useEffect(() => {
+        loadingContext?.show();
+        dispatch(getCategoryThunk(paramsPage))
+            .unwrap()
+            .then((response) => {
+                if (response) {
+                    const pagination = response?.pagination;
+                    setCategory(response?.data);
+                    setCurrentPage({
+                        lengthPage: pagination.lengthPage,
+                        currentPage: pagination.currentPage,
+                    });
+                }
+            })
+            .catch((error) => {
+                message.error(error?.message);
+            })
+            .finally(() => {
+                loadingContext?.hide();
+                dispatch(categoryActions.resetRefreshTable());
+            });
+    }, [paramsPage, paramsPage.currentPage, isRefreshTable]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -168,9 +192,9 @@ const Category = (props: Props) => {
 
     function handleChangeImage({ file }: UploadChangeParam<UploadFile<any>>): void {
         if (file.status === 'done') {
-            setAddCategory((prevSupplier) => ({
-                ...prevSupplier,
-                logo: file.response?.url || file.originFileObj || null,
+            setAddCategory((prev) => ({
+                ...prev,
+                image: file.response.url || file.originFileObj || null,
             }));
         }
     }
@@ -183,7 +207,37 @@ const Category = (props: Props) => {
         }));
     }
 
-    function handleAddCategory() {}
+    async function handleAddCategory() {
+        try {
+            await form.validateFields();
+            const formData = new FormData();
+
+            Object.entries(addCategory).forEach(([key, value]) => {
+                if (key === 'image' && value instanceof File) {
+                    formData.append(key, value);
+                } else if (value !== undefined && value !== null) {
+                    formData.append(key, value.toString());
+                }
+            });
+
+            loadingContext?.show();
+            dispatch(addCategoryThunk(formData))
+                .unwrap()
+                .then((response) => {
+                    message.success(response.message);
+                    form.resetFields();
+                    dispatch(categoryActions.setRefreshTableTrue());
+                })
+                .catch((error) => {
+                    message.error(error.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                });
+        } catch (error) {
+            message.error(`${error}`);
+        }
+    }
     function handleClear() {
         form.resetFields();
     }
@@ -201,12 +255,12 @@ const Category = (props: Props) => {
                         <h1>{`${t('admin_category_add_title')}`}</h1>
                     </div>
                 </div>
-                <Form layout='vertical' form={form} onFinish={handleAddCategory}>
+                <Form layout='vertical' form={form} initialValues={{}} onFinish={handleAddCategory}>
                     <div>
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                            <div>
+                            <Form.Item>
                                 <Upload
-                                    name='logo'
+                                    name='image'
                                     listType='picture-circle'
                                     customRequest={(options: any) => {
                                         options.onSuccess?.({}, options.file);
@@ -231,7 +285,7 @@ const Category = (props: Props) => {
                                         src={previewImage}
                                     />
                                 )}
-                            </div>
+                            </Form.Item>
                         </Row>
                         <Row>
                             <Form.Item
@@ -290,18 +344,20 @@ const Category = (props: Props) => {
                     {category.length ? (
                         <div className={cx('bodyCategory')}>
                             <Table
+                                rowKey={(record) => record.name}
                                 bordered={false}
                                 tableLayout='auto'
                                 columns={columns}
                                 dataSource={category}
                                 pagination={false}
-                                scroll={{ x: 400, y: 390 }}
+                                scroll={{ x: 400, y: 600 }}
                             />
                             <Pagination
                                 className={cx('footerPagination')}
                                 align='center'
-                                defaultCurrent={currentPage.currentPage}
+                                pageSize={paramsPage.limitPage}
                                 total={currentPage.lengthPage}
+                                current={currentPage.currentPage}
                                 showSizeChanger={false}
                                 onChange={handleChangePage}
                             />

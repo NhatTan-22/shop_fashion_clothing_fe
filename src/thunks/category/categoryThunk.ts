@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import categoryApi from '~/apis/category';
 import { ADD_CATEGORY, GET_CATEGORY, SEARCH_CATEGORY } from '~/utils/constants/actionType';
 import { IParamsPagination } from '~/utils/interfaces/common';
-import { ICategory } from '~/utils/interfaces/interfaceCategory';
+import { IAddCategory } from '~/utils/interfaces/interfaceCategory';
 
 export const getCategoryThunk = createAsyncThunk(
     GET_CATEGORY,
@@ -28,11 +28,14 @@ export const searchCategoryThunk = createAsyncThunk(
     }
 );
 
-export const addCategoryThunk = createAsyncThunk(ADD_CATEGORY, async (body: ICategory, { rejectWithValue }) => {
-    try {
-        const response = await categoryApi.addCategory(body);
-        return response;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data);
+export const addCategoryThunk = createAsyncThunk(
+    ADD_CATEGORY,
+    async (formData: IAddCategory | FormData, { rejectWithValue }) => {
+        try {
+            const response = await categoryApi.addCategory(formData);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data);
+        }
     }
-});
+);

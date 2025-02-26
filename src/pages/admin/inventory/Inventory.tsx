@@ -4,8 +4,8 @@ import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Button, Dropdown, Empty, message, Pagination, Table, Tag } from 'antd';
 // Components, Layouts, Pages
-import { BaseTable, IconSVG } from '~/components';
-import { useAppDispatch } from '~/redux/hooks';
+import { IconSVG } from '~/components';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { FormAddProduct } from '~/form';
 // Others
@@ -13,12 +13,13 @@ import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import { renderFormatValue } from '~/utils/constants/helper';
-// Styles, Images, icons
-import styles from './Inventory.module.scss';
 import { getProductThunk } from '~/thunks/product/productThunk';
 import { baseURL } from '~/utils/constants/env';
 import { ICategory } from '~/utils/interfaces/interfaceCategory';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
+import { productActions } from '~/thunks/product/productSlice';
+// Styles, Images, icons
+import styles from './Inventory.module.scss';
 import { icons } from '~/assets';
 
 type Props = {
@@ -39,6 +40,8 @@ const Inventory = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
+    const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
+
     const columns: Columns<IProduct, DataType<IProduct>>[] = [
         {
             title: t('admin_products_code_label_table'),
@@ -225,8 +228,9 @@ const Inventory = (props: Props) => {
             })
             .finally(() => {
                 loadingContext?.hide();
+                dispatch(productActions.setRefreshTableFalse());
             });
-    }, [paramsPage.currentPage]);
+    }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -313,7 +317,7 @@ const Inventory = (props: Props) => {
                     {data.length ? (
                         <div className={cx('bodyInventory')}>
                             <Table
-                                bordered={false}
+                                rowKey={(record) => record.sku}
                                 tableLayout='auto'
                                 columns={columns}
                                 dataSource={data}
@@ -323,8 +327,9 @@ const Inventory = (props: Props) => {
                             <Pagination
                                 className={cx('footerPagination')}
                                 align='center'
-                                defaultCurrent={currentPage.currentPage}
+                                pageSize={paramsPage.limitPage}
                                 total={currentPage.lengthPage}
+                                current={currentPage.currentPage}
                                 showSizeChanger={false}
                                 onChange={handleChangePage}
                             />

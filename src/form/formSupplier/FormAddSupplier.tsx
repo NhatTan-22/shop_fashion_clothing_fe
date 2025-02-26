@@ -408,8 +408,8 @@ const FormAddSupplier = (props: Props) => {
 
     function handleChangeImage({ file }: UploadChangeParam<UploadFile<any>>): void {
         if (file.status === 'done') {
-            setSupplier((prevSupplier) => ({
-                ...prevSupplier,
+            setSupplier((prev) => ({
+                ...prev,
                 image: file.response?.url || file.originFileObj || null,
             }));
         }
