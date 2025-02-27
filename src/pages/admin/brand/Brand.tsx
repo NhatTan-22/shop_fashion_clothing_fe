@@ -2,7 +2,9 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import {
+    Avatar,
     Button,
+    Dropdown,
     Empty,
     Form,
     FormInstance,
@@ -19,20 +21,26 @@ import {
     UploadProps,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { UploadChangeParam } from 'antd/es/upload';
 // Components, Layouts, Pages
-import { BaseButton } from '~/components';
+import { BaseButton, IconSVG } from '~/components';
 // Others
 import { IAddBrand, IBrand } from '~/utils/interfaces/interfaceBrand';
 import { COUNTRY_LIST } from '~/utils/constants/common';
-import { useAppDispatch } from '~/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { searchSupplierThunk } from '~/thunks/supplier/supplierThunk';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
+import { addBrandThunk, getBrandThunk } from '~/thunks/brand/brandThunk';
+import { LoadingContext } from '~/context';
+import { brandActions } from '~/thunks/brand/brandSlice';
+import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
+import { renderFormatValue } from '~/utils/constants/helper';
 // Styles, Images, icons
 import styles from './Brand.module.scss';
+import { icons } from '~/assets';
 
 type Props = {};
 const { TextArea } = Input;
@@ -57,9 +65,93 @@ const Brand = (props: Props) => {
     const { t } = useTranslation();
     const [form] = useForm<FormInstance>();
     const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
+    const isRefreshTable = useAppSelector((state) => state.brand.refreshTable);
+    const columns: Columns<IBrand, DataType<IBrand>>[] = [
+        {
+            title: t('admin_category_logo_label_table'),
+            dataIndex: 'image',
+            key: 'image',
+            render: (_, record) => {
+                if (record) return <Avatar src={`${baseURL}/${record.image}`} alt={record.name} />;
+            },
+        },
+        {
+            title: t('admin_category_name_label_table'),
+            dataIndex: 'name',
+            key: 'name',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            title: t('admin_category_description_label_table'),
+            dataIndex: 'description',
+            key: 'description',
+            render: (_, record) => {
+                return <p>{`${record.description ?? renderFormatValue(record.description)}`}</p>;
+            },
+        },
+        {
+            title: t('admin_category_name_label_table'),
+            dataIndex: 'country',
+            key: 'country',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            title: t('admin_category_name_label_table'),
+            dataIndex: 'website',
+            key: 'website',
+            render: (text, _) => {
+                return <a href={`${text ?? renderFormatValue(text)}`}>{`${text ?? renderFormatValue(text)}`}</a>;
+            },
+        },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => {
+                if (record) {
+                    return (
+                        <Dropdown
+                            menu={{
+                                items: [
+                                    {
+                                        key: `common_detail_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_detail')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.eyeIcon} />,
+                                        // onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `common_edit_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_edit')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.editIcon} />,
+                                        // onClick: () => handleEditSupplier(record),
+                                    },
+                                    {
+                                        key: `common_delete_${record._id}`,
+                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_delete')}`}</p>,
+                                        icon: <IconSVG IconComponent={icons.deleteIcon} />,
+                                        // onClick: () => handleDeleteSupplier(record),
+                                    },
+                                ],
+                            }}
+                            trigger={['click']}
+                        >
+                            <div>
+                                <IconSVG IconComponent={icons.dotVerticalIcon} />
+                            </div>
+                        </Dropdown>
+                    );
+                }
+            },
+        },
+    ];
     //#endregion Selector
 
     //#region Declare State
@@ -91,6 +183,29 @@ const Brand = (props: Props) => {
     useEffect(() => {
         getSearchSuppliers('');
     }, []);
+
+    useEffect(() => {
+        loadingContext?.show();
+        dispatch(getBrandThunk(paramsPage))
+            .unwrap()
+            .then((response) => {
+                if (response) {
+                    const pagination = response?.pagination;
+                    setBrand(response?.data);
+                    setCurrentPage({
+                        lengthPage: pagination.lengthPage,
+                        currentPage: pagination.currentPage,
+                    });
+                }
+            })
+            .catch((error) => {
+                message.error(error?.message);
+            })
+            .finally(() => {
+                loadingContext?.hide();
+                dispatch(brandActions.resetRefreshTable());
+            });
+    }, [paramsPage, paramsPage.currentPage, isRefreshTable]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -130,7 +245,7 @@ const Brand = (props: Props) => {
         if (file.status === 'done') {
             setAddBrand((prevSupplier) => ({
                 ...prevSupplier,
-                logo: file.response?.url || file.originFileObj || null,
+                image: file.response?.url || file.originFileObj || null,
             }));
         }
     }
@@ -152,8 +267,40 @@ const Brand = (props: Props) => {
         }
     };
 
-    function handleAddBrand() {
-        console.log(addBrand);
+    async function handleAddBrand() {
+        try {
+            await form.validateFields();
+            const formData = new FormData();
+
+            Object.entries(addBrand).forEach(([key, value]) => {
+                if (key === 'image' && value !== null) {
+                    formData.append(key, value);
+                } else if (key === 'suppliers' && Array.isArray(value)) {
+                    formData.append(key, JSON.stringify(value));
+                } else if (value !== undefined && value !== null) {
+                    formData.append(key, value.toString());
+                }
+            });
+
+            loadingContext?.show();
+            dispatch(addBrandThunk(formData))
+                .unwrap()
+                .then((response) => {
+                    message.success(response.message);
+                    form.resetFields();
+                    dispatch(brandActions.setRefreshTableTrue());
+                })
+                .catch(() => {})
+                .finally(() => {
+                    loadingContext?.hide();
+                });
+        } catch (error) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
+        }
     }
     function handleClear() {
         form.resetFields();
@@ -170,7 +317,13 @@ const Brand = (props: Props) => {
                 <div className={cx('headerAddBrand')}>
                     <h1>{t('admin_brand_add_title')}</h1>
                 </div>
-                <Form layout='vertical' form={form} initialValues={{ country: 'USA' }} onFinish={handleAddBrand}>
+                <Form
+                    layout='vertical'
+                    style={{ padding: '0 40px' }}
+                    form={form}
+                    initialValues={{ country: 'USA' }}
+                    onFinish={handleAddBrand}
+                >
                     <div>
                         <Row style={{ display: 'flex', justifyContent: 'center' }}>
                             <div>
@@ -279,7 +432,7 @@ const Brand = (props: Props) => {
                                     size='large'
                                     name='website'
                                     placeholder={t('admin_add_brand_website_placeholder')}
-                                    addonBefore='http://'
+                                    addonBefore='https://'
                                     addonAfter={
                                         <Select defaultValue={'.com'} onChange={(value) => setDomain(value)}>
                                             <Option value='.com'>.com</Option>
@@ -314,15 +467,16 @@ const Brand = (props: Props) => {
                 </div>
 
                 <>
-                    {/* {brand.length ? (
+                    {brand.length ? (
                         <div className={cx('bodyBrand')}>
                             <Table
+                                rowKey={(record) => record.name}
                                 bordered={false}
                                 tableLayout='auto'
                                 columns={columns}
                                 dataSource={brand}
                                 pagination={false}
-                                scroll={{ x: 400, y: 390 }}
+                                scroll={{ x: 400, y: 600 }}
                             />
                             <Pagination
                                 className={cx('footerPagination')}
@@ -333,9 +487,9 @@ const Brand = (props: Props) => {
                                 onChange={handleChangePage}
                             />
                         </div>
-                    ) : ( */}
-                    <Empty className={cx('bodyEmptyBrand')} />
-                    {/* )} */}
+                    ) : (
+                        <Empty className={cx('bodyEmptyBrand')} />
+                    )}
                 </>
             </div>
         </div>

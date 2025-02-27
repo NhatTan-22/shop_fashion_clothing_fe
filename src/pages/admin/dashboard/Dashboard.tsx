@@ -1,9 +1,11 @@
 // Libs
 import React from 'react';
 import classNames from 'classnames/bind';
+import { List } from 'antd';
+import { useTranslation } from 'react-i18next';
+import Card from 'antd/es/card/Card';
 // Components, Layouts, Pages
 // Others
-import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 // Styles, Images, icons
 import styles from './Dashboard.module.scss';
 
@@ -14,167 +16,117 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Dashboard = (props: Props) => {
-    interface User {
-        key: string;
-        name: string;
-        age: number;
-        address: string;
-        tags: string[];
-    }
+    //#region Destructuring Props
+    const { content = 'Example Component' } = props;
+    //#endregion Destructuring Props
 
-    const columns: Columns<User, DataType<User>>[] = [
+    //#region Declare Hook
+    const { t } = useTranslation();
+    //#endregion Declare Hook
+
+    //#region Selector
+    const data = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: `${t('admin_inventory_categories_title')}`,
+            children: {
+                data: 14,
+                date: 'Last 7 days',
+            },
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: `${t('admin_inventory_total_products_title')}`,
+            children: [
+                {
+                    data: 868,
+                    date: `Last ${7} days`,
+                },
+                {
+                    data: `$${25000}`,
+                    date: `Revenue`,
+                },
+            ],
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: `${t('admin_inventory_top_selling_title')}`,
+            children: [
+                {
+                    data: 5,
+                    date: `Last ${7} days`,
+                },
+                {
+                    data: `$${25000}`,
+                    date: `Cost`,
+                },
+            ],
         },
         {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (_, record) => (
-                <div>
-                    {record.tags.map((tag, index) => {
-                        return <p key={index}>{tag}</p>;
-                    })}
-                </div>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            dataIndex: 'action',
-            render: () => (
-                <div>
-                    <a>Invite</a>
-                    <a>Delete</a>
-                </div>
-            ),
+            title: `${t('admin_inventory_low_stocks_title')}`,
+            children: [
+                {
+                    data: 12,
+                    date: `Ordered`,
+                },
+                {
+                    data: `${2}`,
+                    date: `Not in stock`,
+                },
+            ],
         },
     ];
+    //#endregion Selector
 
-    const data: User[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '4',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '5',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '6',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '7',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '8',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '9',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '10',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '11',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '12',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '13',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '14',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '15',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
+    //#region Declare State
+    //#endregion Declare State
+
+    //#region Implement Hook
+    //#endregion Implement Hook
+
+    //#region Handle Function
+    //#endregion Handle Function
 
     return (
-        <div className={cx('dashBoard')}>
-            <div>
-                {/* <BaseTable columns={columns} dataSource={data} /> */}
+        <div id='dashBoardPage' className={cx('mainDashBoard')}>
+            <div className={cx('boxBashBoard')}>
+                <div className={cx('headerTitle')}>
+                    <h1>{t('admin_overall_inventory_header')}</h1>
+                </div>
+                <List
+                    className={cx('listDashBoard')}
+                    grid={{ gutter: 24, sm: 1, lg: 2, xl: 3, xxl: 4 }}
+                    dataSource={data}
+                    renderItem={(item) => (
+                        <List.Item>
+                            <Card title={item.title} style={{ textAlign: 'center' }}>
+                                {Array.isArray(item.children) ? (
+                                    <div className={cx('columnOverall')}>
+                                        {item.children.map((itemChildren, index) => (
+                                            <div key={index} className={cx('description')}>
+                                                <h3>{itemChildren.data}</h3>
+                                                <span>{itemChildren.date}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                )}
+                            </Card>
+                        </List.Item>
+                    )}
+                />
+            </div>
+            <div className='grid grid-flow-col gap-5'>
+                <div className='grid grid-flow-col col-span-7 bg-blue-chalk-100 rounded-lg'></div>
+                <div className='grid grid-flow-col col-span-5 bg-blue-chalk-100 rounded-lg'></div>
+            </div>
+            <div className='grid grid-flow-col gap-5'>
+                <div className='grid grid-flow-col col-span-7 bg-blue-chalk-100 rounded-lg'></div>
+                <div className='grid grid-flow-col col-span-5 bg-blue-chalk-100 rounded-lg'></div>
+            </div>
+            <div className='bg-blue-chalk-100 grid grid-flow-row'>
+
             </div>
         </div>
     );
