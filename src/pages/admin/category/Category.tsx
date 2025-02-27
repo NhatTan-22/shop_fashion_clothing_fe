@@ -235,7 +235,11 @@ const Category = (props: Props) => {
                     loadingContext?.hide();
                 });
         } catch (error) {
-            message.error(`${error}`);
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
         }
     }
     function handleClear() {

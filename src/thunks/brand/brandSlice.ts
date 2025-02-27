@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { addBrandThunk, getBrandThunk, searchBrandThunk } from './brandThunk';
 
 export interface IBrand {
+    brand: IBrand[];
     refreshTable: boolean;
 }
 
 const initialState: IBrand = {
+    brand: [],
     refreshTable: false,
 };
 
