@@ -1,23 +1,38 @@
 // Libs
 import React from 'react';
 import classNames from 'classnames/bind';
-import { List } from 'antd';
+import { DatePicker, List } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Card from 'antd/es/card/Card';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
 import styles from './Dashboard.module.scss';
+import {
+    Area,
+    AreaChart,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Legend,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
+import { dataSales, fashionSalesData } from '~/utils/constants/mockData';
 
 type Props = {
     content?: string;
 };
 
+const { RangePicker } = DatePicker;
+
 const cx = classNames.bind(styles);
 
 const Dashboard = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
+    // const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -25,54 +40,54 @@ const Dashboard = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
-    const data = [
+    const data1 = [
         {
-            title: `${t('admin_inventory_categories_title')}`,
+            icon: '🛍️',
             children: {
-                data: 14,
-                date: 'Last 7 days',
+                data: '₹ 832',
+                date: 'Total Orders',
             },
         },
         {
-            title: `${t('admin_inventory_total_products_title')}`,
-            children: [
-                {
-                    data: 868,
-                    date: `Last ${7} days`,
-                },
-                {
-                    data: `$${25000}`,
-                    date: `Revenue`,
-                },
-            ],
+            icon: '💵',
+            children: {
+                data: '₹ 18,300',
+                date: 'Total Revenue',
+            },
         },
         {
-            title: `${t('admin_inventory_top_selling_title')}`,
-            children: [
-                {
-                    data: 5,
-                    date: `Last ${7} days`,
-                },
-                {
-                    data: `$${25000}`,
-                    date: `Cost`,
-                },
-            ],
+            icon: '📊',
+            children: {
+                data: '₹ 868',
+                date: 'Net Profit',
+            },
         },
         {
-            title: `${t('admin_inventory_low_stocks_title')}`,
-            children: [
-                {
-                    data: 12,
-                    date: `Ordered`,
-                },
-                {
-                    data: `${2}`,
-                    date: `Not in stock`,
-                },
-            ],
+            icon: '📦',
+            children: {
+                data: '₹ 17,432',
+                date: 'Total Cost',
+            },
         },
     ];
+
+    const data2 = [
+        {
+            icon: '👗',
+            children: {
+                data: 868,
+                date: 'Products in Stock',
+            },
+        },
+        {
+            icon: '🚚',
+            children: {
+                data: 200,
+                date: 'Incoming Stock',
+            },
+        },
+    ];
+
     //#endregion Selector
 
     //#region Declare State
@@ -86,47 +101,133 @@ const Dashboard = (props: Props) => {
 
     return (
         <div id='dashBoardPage' className={cx('mainDashBoard')}>
-            <div className={cx('boxBashBoard')}>
-                <div className={cx('headerTitle')}>
-                    <h1>{t('admin_overall_inventory_header')}</h1>
-                </div>
-                <List
-                    className={cx('listDashBoard')}
-                    grid={{ gutter: 24, sm: 1, lg: 2, xl: 3, xxl: 4 }}
-                    dataSource={data}
-                    renderItem={(item) => (
-                        <List.Item>
-                            <Card title={item.title} style={{ textAlign: 'center' }}>
-                                {Array.isArray(item.children) ? (
-                                    <div className={cx('columnOverall')}>
-                                        {item.children.map((itemChildren, index) => (
-                                            <div key={index} className={cx('description')}>
-                                                <h3>{itemChildren.data}</h3>
-                                                <span>{itemChildren.date}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
+            <div className={cx('rowDashBoard')}>
+                <div className={cx('colOneDashBoard')}>
+                    <div className={cx('headerTitle')}>
+                        <h1>{t('Sales Overview')}</h1>
+                    </div>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 2, xl: 3, xxl: 4 }}
+                        dataSource={data1}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
                                     <div className={cx('description')}>
                                         <h3>{item.children.data}</h3>
                                         <div className='text-gray-400'>{item.children.date}</div>
                                     </div>
-                                )}
-                            </Card>
-                        </List.Item>
-                    )}
-                />
-            </div>
-            <div className='grid grid-flow-col gap-5'>
-                <div className='grid grid-flow-col col-span-7 bg-blue-chalk-100 rounded-lg'></div>
-                <div className='grid grid-flow-col col-span-5 bg-blue-chalk-100 rounded-lg'></div>
-            </div>
-            <div className='grid grid-flow-col gap-5'>
-                <div className='grid grid-flow-col col-span-7 bg-blue-chalk-100 rounded-lg'></div>
-                <div className='grid grid-flow-col col-span-5 bg-blue-chalk-100 rounded-lg'></div>
-            </div>
-            <div className='bg-blue-chalk-100 grid grid-flow-row'>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
 
+                <div className={cx('colTwoDashBoard')}>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 1, xl: 2, xxl: 2 }}
+                        dataSource={data2}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+            </div>
+            <div className={cx('rowDashBoard')}>
+                <div className={cx('colOneDashBoard')}>
+                    <div className={cx('headerTitle')}>
+                        <h1>{t('Purchase Overview')}</h1>
+                    </div>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 2, xl: 3, xxl: 4 }}
+                        dataSource={data1}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+
+                <div className={cx('colTwoDashBoard')}>
+                    <div className={cx('headerTitle')}>
+                        <h1>{t('Product Summary')}</h1>
+                    </div>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 1, xl: 2, xxl: 2 }}
+                        dataSource={data2}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+            </div>
+            <div className='w-full grid grid-flow-col col-span-2 gap-5'>
+                <div className='w-full bg-blue-chalk-100 p-3 rounded-lg'>
+                    <div className='flex justify-between mb-5'>
+                        <div className='text-xl font-bold mb-4'>Sales & Purchase</div>
+                        <RangePicker picker='month' />
+                    </div>
+                    <ResponsiveContainer width={'100%'} height={200}>
+                        <BarChart data={dataSales} margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray='3 3' />
+                            <XAxis dataKey='month' />
+                            <YAxis type='number' />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey='revenue' fill='#c083f8' />
+                            <Bar dataKey='cost' fill='#76a9fa' />
+                            <Bar dataKey='profit' fill='#ff7300' />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className='w-full bg-blue-chalk-100 p-3 rounded-lg'>
+                    <h2 className='text-xl font-bold mb-4'>Order Summary</h2>
+                    <ResponsiveContainer width={'100%'} height={200}>
+                        <AreaChart data={fashionSalesData} margin={{ top: 0, right: 30, left: 0, bottom: -20 }}>
+                            <defs>
+                                <linearGradient id='colorSales' x1='0' y1='0' x2='0' y2='1'>
+                                    <stop offset='5%' stopColor='#c083f8' stopOpacity={0.8} />
+                                    <stop offset='95%' stopColor='#c083f8' stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <XAxis dataKey='month' />
+                            <YAxis />
+                            <CartesianGrid strokeDasharray='3 3' />
+                            <Tooltip />
+                            <Legend />
+                            <Area
+                                type='monotone'
+                                dataKey='revenue'
+                                stroke='#c083f8'
+                                fillOpacity={1}
+                                fill='url(#colorSales)'
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </div>
     );

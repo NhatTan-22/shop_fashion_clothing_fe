@@ -1,5 +1,5 @@
 .mainDashBoard {
-    @apply w-full h-full overflow-auto font-nunito grid grid-flow-row gap-5;
+    @apply h-full overflow-auto font-nunito grid grid-flow-row gap-5;
 }
 
 .dashBoard::-webkit-scrollbar {
@@ -10,33 +10,31 @@
     background: transparent;
 }
 
-.boxBashBoard {
-    @apply bg-blue-chalk-100 p-3 rounded-lg;
+.rowDashBoard {
+    @apply grid grid-flow-col col-span-2 gap-5 overflow-hidden;
+}
+
+.colOneDashBoard {
+    @apply grid-flow-col col-span-8 bg-blue-chalk-100 p-3 rounded-lg content-end;
+}
+
+.colTwoDashBoard {
+    @apply grid-flow-col col-span-2 bg-blue-chalk-100 p-3 rounded-lg content-end;
+}
+
+.listDashBoard {
+    @apply px-5;
 }
 
 .headerTitle {
-    @apply text-xl font-bold text-bossa-nova-900 mb-2;
+    @apply text-xl font-bold text-bossa-nova-900 pb-5;
 }
 
 .columnOverall {
-    @apply grid grid-cols-2 gap-8;
-}
-
-.description {
-    @apply text-center grid grid-flow-row gap-2;
+    @apply grid grid-cols-2;
 }
 
 @media screen and (max-width: 768px) {
-    .boxBashBoard {
-        @apply min-h-[30%] overflow-hidden;
-    }
-
-    .boxBashBoard .listDashBoard {
-        @apply overflow-y-scroll;
-    }
-}
-
-@media screen and (min-width: 992px) and (max-width: 1600px) {
     .boxBashBoard {
         @apply min-h-[30%] overflow-hidden;
     }
