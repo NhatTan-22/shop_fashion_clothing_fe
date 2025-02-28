@@ -36,7 +36,6 @@ import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
 import styles from './FormAddProduct.module.scss';
-import { icons } from '~/assets';
 
 type Props = {
     isShowModal?: boolean;
@@ -424,7 +423,7 @@ const FormAddProduct = (props: Props) => {
 
     const nextStep = async () => {
         try {
-            // await form.validateFields();
+            await form.validateFields();
             setCurrentStep(currentStep + 1);
         } catch (error) {
             message.error(String(error));
@@ -582,7 +581,6 @@ const FormAddProduct = (props: Props) => {
             });
 
             loadingContext?.show();
-
             dispatch(addProductThunk(formData))
                 .unwrap()
                 .then((response) => {
@@ -615,7 +613,11 @@ const FormAddProduct = (props: Props) => {
             footer={
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton='Clear' />
+                        <BaseButton
+                            styleButton={ButtonStyleEnum.TEXT}
+                            onClick={handleClear}
+                            nameButton={`${t('common_clear')}`}
+                        />
                     </div>
                     <div style={{ display: 'flex', gap: 20 }}>
                         {currentStep > 0 && (

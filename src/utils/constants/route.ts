@@ -2,6 +2,8 @@ import { GridProduct, ListProduct } from '~/components';
 import { IRouteModel } from '../interfaces/common';
 import {
     BlogPage,
+    Brand,
+    Category,
     ContactPage,
     Dashboard,
     HomePage,
@@ -25,6 +27,9 @@ export const adminRoute = {
     base: '/admin',
     dashboard: '/dash-board',
     inventory: '/inventory',
+    products: '/products',
+    categories: '/categories',
+    brands: '/brands',
     reports: '/reports',
     suppliers: '/suppliers',
     orders: '/orders',
@@ -64,8 +69,16 @@ export const privateAdminRoutes: IRouteModel[] = [
         component: Dashboard,
     },
     {
-        path: `${adminRoute.base}${adminRoute.inventory}`,
+        path: `${adminRoute.base}${adminRoute.inventory}${adminRoute.products}`,
         component: Inventory,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.inventory}${adminRoute.categories}`,
+        component: Category,
+    },
+    {
+        path: `${adminRoute.base}${adminRoute.inventory}${adminRoute.brands}`,
+        component: Brand,
     },
     {
         path: `${adminRoute.base}${adminRoute.reports}`,

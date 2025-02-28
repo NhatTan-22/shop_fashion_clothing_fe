@@ -49,7 +49,7 @@
 }
 
 .information {
-    @apply flex gap-2;
+    @apply flex gap-2 items-center;
 }
 
 .iconNotification {
@@ -61,5 +61,5 @@
 }
 
 .contentAdmin {
-    @apply m-4  rounded overflow-hidden flex-1;
+    @apply m-4 rounded overflow-hidden h-[calc(100vh-80px)];
 }

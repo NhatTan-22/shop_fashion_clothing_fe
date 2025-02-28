@@ -382,10 +382,10 @@ const FormAddSupplier = (props: Props) => {
 
     const nextStep = async () => {
         try {
-            // await form.validateFields();
+            await form.validateFields();
             setCurrentStep(currentStep + 1);
         } catch (error) {
-            console.log('Validation failed:', error);
+            message.warning(`${error}`);
         }
     };
 
@@ -408,8 +408,8 @@ const FormAddSupplier = (props: Props) => {
 
     function handleChangeImage({ file }: UploadChangeParam<UploadFile<any>>): void {
         if (file.status === 'done') {
-            setSupplier((prevSupplier) => ({
-                ...prevSupplier,
+            setSupplier((prev) => ({
+                ...prev,
                 image: file.response?.url || file.originFileObj || null,
             }));
         }
@@ -429,8 +429,6 @@ const FormAddSupplier = (props: Props) => {
             [field]: value.format('YYYY-MM-DDTHH:mm:ss'),
         }));
     }
-
-    console.log(supplier);
 
     function handleChange(value: string | string[] | null, field: keyof IAddSupplier) {
         setSupplier((prev) => ({
@@ -493,7 +491,11 @@ const FormAddSupplier = (props: Props) => {
             footer={
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                        <BaseButton styleButton={ButtonStyleEnum.TEXT} onClick={handleClear} nameButton='Clear' />
+                        <BaseButton
+                            styleButton={ButtonStyleEnum.TEXT}
+                            onClick={handleClear}
+                            nameButton={`${t('common_clear')}`}
+                        />
                     </div>
                     <div style={{ display: 'flex', gap: 20 }}>
                         {currentStep > 0 && <BaseButton onClick={prevStep} nameButton='Previous' />}

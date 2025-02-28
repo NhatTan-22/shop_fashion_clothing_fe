@@ -1,6 +1,9 @@
-export interface ICategory {
+export interface ICategory extends IAddCategory {
     _id: Object;
-    logo: string;
+}
+
+export interface IAddCategory {
+    image: string;
     name: string;
     description: string;
 }

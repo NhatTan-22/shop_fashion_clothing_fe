@@ -1,5 +1,4 @@
 import { IOrder } from '../interfaces/interfaceOrder';
-import { IProduct } from '../interfaces/interfaceProduct';
 
 // export const products: IProduct[] = [
 //     {
@@ -317,4 +316,34 @@ export const orders: IOrder[] = [
         sellingPrice: 450000,
         quantity: 2,
     },
+];
+
+export const fashionSalesData = [
+    { month: 'Jan', revenue: 50000 },
+    { month: 'Feb', revenue: 48000 },
+    { month: 'Mar', revenue: 52000 },
+    { month: 'Apr', revenue: 45000 },
+    { month: 'May', revenue: 47000 },
+    { month: 'Jun', revenue: 49000 },
+    { month: 'Jul', revenue: 53000 },
+    { month: 'Aug', revenue: 51000 },
+    { month: 'Sep', revenue: 49500 },
+    { month: 'Oct', revenue: 52000 },
+    { month: 'Nov', revenue: 54000 },
+    { month: 'Dec', revenue: 56000 },
+];
+
+export const dataSales = [
+    { month: 'Jan', revenue: 50000, cost: 30000, profit: 20000 },
+    { month: 'Feb', revenue: 48000, cost: 29000, profit: 19000 },
+    { month: 'Mar', revenue: 52000, cost: 31000, profit: 21000 },
+    { month: 'Apr', revenue: 45000, cost: 28000, profit: 17000 },
+    { month: 'May', revenue: 47000, cost: 29000, profit: 18000 },
+    { month: 'Jun', revenue: 49000, cost: 30500, profit: 18500 },
+    { month: 'Jul', revenue: 53000, cost: 32000, profit: 21000 },
+    { month: 'Aug', revenue: 51000, cost: 31500, profit: 19500 },
+    { month: 'Sep', revenue: 49500, cost: 31000, profit: 18500 },
+    { month: 'Oct', revenue: 52000, cost: 33000, profit: 19000 },
+    { month: 'Nov', revenue: 54000, cost: 33500, profit: 20500 },
+    { month: 'Dec', revenue: 56000, cost: 34000, profit: 22000 },
 ];

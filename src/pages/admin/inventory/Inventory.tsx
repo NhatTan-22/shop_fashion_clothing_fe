@@ -2,10 +2,10 @@
 import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Dropdown, Empty, message, Pagination, Tag } from 'antd';
+import { Avatar, Button, Card, Dropdown, Empty, List, message, Pagination, Table, Tag } from 'antd';
 // Components, Layouts, Pages
-import { BaseTable, IconSVG } from '~/components';
-import { useAppDispatch } from '~/redux/hooks';
+import { IconSVG } from '~/components';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { FormAddProduct } from '~/form';
 // Others
@@ -13,12 +13,13 @@ import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import { renderFormatValue } from '~/utils/constants/helper';
-// Styles, Images, icons
-import styles from './Inventory.module.scss';
 import { getProductThunk } from '~/thunks/product/productThunk';
 import { baseURL } from '~/utils/constants/env';
 import { ICategory } from '~/utils/interfaces/interfaceCategory';
 import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
+import { productActions } from '~/thunks/product/productSlice';
+// Styles, Images, icons
+import styles from './Inventory.module.scss';
 import { icons } from '~/assets';
 
 type Props = {
@@ -39,6 +40,57 @@ const Inventory = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
+    const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
+
+    const data = [
+        {
+            title: `${t('admin_inventory_categories_title')}`,
+            children: {
+                data: 14,
+                date: 'Last 7 days',
+            },
+        },
+        {
+            title: `${t('admin_inventory_total_products_title')}`,
+            children: [
+                {
+                    data: 868,
+                    date: `Last ${7} days`,
+                },
+                {
+                    data: `$${25000}`,
+                    date: `Revenue`,
+                },
+            ],
+        },
+        {
+            title: `${t('admin_inventory_top_selling_title')}`,
+            children: [
+                {
+                    data: 5,
+                    date: `Last ${7} days`,
+                },
+                {
+                    data: `$${25000}`,
+                    date: `Cost`,
+                },
+            ],
+        },
+        {
+            title: `${t('admin_inventory_low_stocks_title')}`,
+            children: [
+                {
+                    data: 12,
+                    date: `Ordered`,
+                },
+                {
+                    data: `${2}`,
+                    date: `Not in stock`,
+                },
+            ],
+        },
+    ];
+
     const columns: Columns<IProduct, DataType<IProduct>>[] = [
         {
             title: t('admin_products_code_label_table'),
@@ -198,7 +250,7 @@ const Inventory = (props: Props) => {
         currentPage: 1,
         limitPage: 10,
     });
-    const [data, setData] = useState<IProduct[]>([]);
+    const [inventory, setInventory] = useState<IProduct[]>([]);
     const [currentPage, setCurrentPage] = useState<IPagination>({
         lengthPage: 0,
         currentPage: 1,
@@ -213,7 +265,7 @@ const Inventory = (props: Props) => {
             .then((response) => {
                 if (response) {
                     const pagination = response?.pagination;
-                    setData(response?.data);
+                    setInventory(response?.data);
                     setCurrentPage({
                         lengthPage: pagination.lengthPage,
                         currentPage: pagination.currentPage,
@@ -225,8 +277,9 @@ const Inventory = (props: Props) => {
             })
             .finally(() => {
                 loadingContext?.hide();
+                dispatch(productActions.setRefreshTableFalse());
             });
-    }, [paramsPage.currentPage]);
+    }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -249,52 +302,32 @@ const Inventory = (props: Props) => {
                 <div className={cx('headerTitle')}>
                     <h1>{t('admin_overall_inventory_header')}</h1>
                 </div>
-                <div className={cx('bodyOverall')}>
-                    <div className={cx('columnsBodyOverall')}>
-                        <div className={cx('titleCategories')}>{t('admin_inventory_categories_title')}</div>
-                        <h3>14</h3>
-                        <div className='text-gray-400'>Last 7 days</div>
-                    </div>
-                    <div className={cx('columnsBodyOverall')}>
-                        <div className={cx('titleTotalProduct')}>{t('admin_inventory_total_products_title')}</div>
-                        <div className={cx('columnOverall')}>
-                            <div className={cx('description')}>
-                                <h3>868</h3>
-                                <span>Last 7 days</span>
-                            </div>
-                            <div className={cx('description')}>
-                                <h3>$25000</h3>
-                                <span>Revenue</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={cx('columnsBodyOverall')}>
-                        <div className={cx('titleTopSelling')}>{t('admin_inventory_top_selling_title')}</div>
-                        <div className={cx('columnOverall')}>
-                            <div className={cx('description')}>
-                                <h3>5</h3>
-                                <span>Last 7 days</span>
-                            </div>
-                            <div className={cx('description')}>
-                                <h3>$2500</h3>
-                                <span>Cost</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={cx('columnsBodyOverall')}>
-                        <div className={cx('titleLowStocks')}>{t('admin_inventory_low_stocks_title')}</div>
-                        <div className={cx('columnOverall')}>
-                            <div className={cx('description')}>
-                                <h3>12</h3>
-                                <span>Ordered</span>
-                            </div>
-                            <div className={cx('description')}>
-                                <h3>2</h3>
-                                <span>Not in stock</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <List
+                    className={cx('listOverall')}
+                    grid={{ gutter: 16, sm: 1, lg: 2, xl: 3, xxl: 4 }}
+                    dataSource={data}
+                    renderItem={(item) => (
+                        <List.Item>
+                            <Card title={item.title} style={{ textAlign: 'center' }}>
+                                {Array.isArray(item.children) ? (
+                                    <div className={cx('columnOverall')}>
+                                        {item.children.map((itemChildren, index) => (
+                                            <div key={index} className={cx('description')}>
+                                                <h3>{itemChildren.data}</h3>
+                                                <span>{itemChildren.date}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                )}
+                            </Card>
+                        </List.Item>
+                    )}
+                />
             </div>
             <div className={cx('contentProductsInventory')}>
                 <div className={cx('headerInventory')}>
@@ -312,17 +345,23 @@ const Inventory = (props: Props) => {
                 <>
                     {data.length ? (
                         <div className={cx('bodyInventory')}>
-                            <BaseTable columns={columns} dataSource={data} />
-                            <div className={cx('footerPagination')}>
-                                <Pagination
-                                    className={cx('footerPagination')}
-                                    align='center'
-                                    defaultCurrent={currentPage.currentPage}
-                                    total={currentPage.lengthPage}
-                                    showSizeChanger={false}
-                                    onChange={handleChangePage}
-                                />
-                            </div>
+                            <Table
+                                rowKey={(record) => record.sku}
+                                tableLayout='auto'
+                                columns={columns}
+                                dataSource={inventory}
+                                pagination={false}
+                                scroll={{ x: 400, y: 390 }}
+                            />
+                            <Pagination
+                                className={cx('footerPagination')}
+                                align='center'
+                                pageSize={paramsPage.limitPage}
+                                total={currentPage.lengthPage}
+                                current={currentPage.currentPage}
+                                showSizeChanger={false}
+                                onChange={handleChangePage}
+                            />
                         </div>
                     ) : (
                         <Empty className={cx('bodyEmptySupplier')} />

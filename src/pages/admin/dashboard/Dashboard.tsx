@@ -1,180 +1,233 @@
 // Libs
 import React from 'react';
 import classNames from 'classnames/bind';
+import { DatePicker, List } from 'antd';
+import { useTranslation } from 'react-i18next';
+import Card from 'antd/es/card/Card';
 // Components, Layouts, Pages
 // Others
-import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 // Styles, Images, icons
 import styles from './Dashboard.module.scss';
+import {
+    Area,
+    AreaChart,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Legend,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
+import { dataSales, fashionSalesData } from '~/utils/constants/mockData';
 
 type Props = {
     content?: string;
 };
 
+const { RangePicker } = DatePicker;
+
 const cx = classNames.bind(styles);
 
 const Dashboard = (props: Props) => {
-    interface User {
-        key: string;
-        name: string;
-        age: number;
-        address: string;
-        tags: string[];
-    }
+    //#region Destructuring Props
+    // const { content = 'Example Component' } = props;
+    //#endregion Destructuring Props
 
-    const columns: Columns<User, DataType<User>>[] = [
+    //#region Declare Hook
+    const { t } = useTranslation();
+    //#endregion Declare Hook
+
+    //#region Selector
+    const data1 = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            icon: '🛍️',
+            children: {
+                data: '₹ 832',
+                date: 'Total Orders',
+            },
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            icon: '💵',
+            children: {
+                data: '₹ 18,300',
+                date: 'Total Revenue',
+            },
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            icon: '📊',
+            children: {
+                data: '₹ 868',
+                date: 'Net Profit',
+            },
         },
         {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (_, record) => (
-                <div>
-                    {record.tags.map((tag, index) => {
-                        return <p key={index}>{tag}</p>;
-                    })}
-                </div>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            dataIndex: 'action',
-            render: () => (
-                <div>
-                    <a>Invite</a>
-                    <a>Delete</a>
-                </div>
-            ),
+            icon: '📦',
+            children: {
+                data: '₹ 17,432',
+                date: 'Total Cost',
+            },
         },
     ];
 
-    const data: User[] = [
+    const data2 = [
         {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
+            icon: '👗',
+            children: {
+                data: 868,
+                date: 'Products in Stock',
+            },
         },
         {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '4',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '5',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '6',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '7',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '8',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '9',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '10',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '11',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '12',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-        {
-            key: '13',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '14',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '15',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
+            icon: '🚚',
+            children: {
+                data: 200,
+                date: 'Incoming Stock',
+            },
         },
     ];
+
+    //#endregion Selector
+
+    //#region Declare State
+    //#endregion Declare State
+
+    //#region Implement Hook
+    //#endregion Implement Hook
+
+    //#region Handle Function
+    //#endregion Handle Function
 
     return (
-        <div className={cx('dashBoard')}>
-            <div>
-                {/* <BaseTable columns={columns} dataSource={data} /> */}
+        <div id='dashBoardPage' className={cx('mainDashBoard')}>
+            <div className={cx('rowDashBoard')}>
+                <div className={cx('colOneDashBoard')}>
+                    <div className={cx('headerTitle')}>
+                        <h1>{t('Sales Overview')}</h1>
+                    </div>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 2, xl: 3, xxl: 4 }}
+                        dataSource={data1}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+
+                <div className={cx('colTwoDashBoard')}>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 1, xl: 2, xxl: 2 }}
+                        dataSource={data2}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+            </div>
+            <div className={cx('rowDashBoard')}>
+                <div className={cx('colOneDashBoard')}>
+                    <div className={cx('headerTitle')}>
+                        <h1>{t('Purchase Overview')}</h1>
+                    </div>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 2, xl: 3, xxl: 4 }}
+                        dataSource={data1}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+
+                <div className={cx('colTwoDashBoard')}>
+                    <div className={cx('headerTitle')}>
+                        <h1>{t('Product Summary')}</h1>
+                    </div>
+                    <List
+                        className={cx('listDashBoard')}
+                        grid={{ gutter: 24, sm: 1, lg: 1, xl: 2, xxl: 2 }}
+                        dataSource={data2}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Card title={item.icon} style={{ textAlign: 'center' }}>
+                                    <div className={cx('description')}>
+                                        <h3>{item.children.data}</h3>
+                                        <div className='text-gray-400'>{item.children.date}</div>
+                                    </div>
+                                </Card>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+            </div>
+            <div className='w-full grid grid-flow-col col-span-2 gap-5'>
+                <div className='w-full bg-blue-chalk-100 p-3 rounded-lg'>
+                    <div className='flex justify-between mb-5'>
+                        <div className='text-xl font-bold mb-4'>Sales & Purchase</div>
+                        <RangePicker picker='month' />
+                    </div>
+                    <ResponsiveContainer width={'100%'} height={200}>
+                        <BarChart data={dataSales} margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray='3 3' />
+                            <XAxis dataKey='month' />
+                            <YAxis type='number' />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey='revenue' fill='#c083f8' />
+                            <Bar dataKey='cost' fill='#76a9fa' />
+                            <Bar dataKey='profit' fill='#ff7300' />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className='w-full bg-blue-chalk-100 p-3 rounded-lg'>
+                    <h2 className='text-xl font-bold mb-4'>Order Summary</h2>
+                    <ResponsiveContainer width={'100%'} height={200}>
+                        <AreaChart data={fashionSalesData} margin={{ top: 0, right: 30, left: 0, bottom: -20 }}>
+                            <defs>
+                                <linearGradient id='colorSales' x1='0' y1='0' x2='0' y2='1'>
+                                    <stop offset='5%' stopColor='#c083f8' stopOpacity={0.8} />
+                                    <stop offset='95%' stopColor='#c083f8' stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <XAxis dataKey='month' />
+                            <YAxis />
+                            <CartesianGrid strokeDasharray='3 3' />
+                            <Tooltip />
+                            <Legend />
+                            <Area
+                                type='monotone'
+                                dataKey='revenue'
+                                stroke='#c083f8'
+                                fillOpacity={1}
+                                fill='url(#colorSales)'
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </div>
     );

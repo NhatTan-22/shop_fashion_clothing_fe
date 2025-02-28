@@ -82,7 +82,7 @@ const ProductsPage = (props: Props) => {
                             <h1>{`Price: ${valuePrice[0]} - ${valuePrice[1]}`}</h1>
                             <BaseButton
                                 styleButton={ButtonStyleEnum.TEXT}
-                                nameButton='Clear'
+                                nameButton={`${t('common_clear')}`}
                                 onClick={() => setValuePrice([0, 0])}
                             />
                         </div>

@@ -3,7 +3,7 @@
 }
 
 .contentInventory {
-    @apply p-5 rounded bg-blue-chalk-100 flex flex-col h-[200px];
+    @apply p-5 rounded bg-blue-chalk-100 flex flex-col h-[250px] overflow-hidden;
 }
 
 .contentProductsInventory {
@@ -11,7 +11,7 @@
 }
 
 .bodyInventory {
-    @apply flex flex-col flex-1 justify-between min-h-[20%];
+    @apply flex flex-col flex-1 justify-between min-h-[30%] overflow-hidden relative;
 }
 
 .headerInventory {
@@ -20,14 +20,6 @@
 
 .headerTitle {
     @apply text-2xl font-bold text-bossa-nova-900 mb-4;
-}
-
-.bodyOverall {
-    @apply w-full grid grid-cols-4 gap-10;
-}
-
-.columnsBodyOverall {
-    @apply w-full text-base font-nunito grid grid-rows-1 text-center gap-2;
 }
 
 .columnOverall {
@@ -67,7 +59,7 @@ h3 {
 }
 
 .columnsBodyOverall {
-    @apply py-1 rounded-2xl bg-gray-50;
+    @apply py-1 rounded-2xl;
 }
 
 .headerButtons {
@@ -75,7 +67,7 @@ h3 {
 }
 
 .footerPagination {
-    @apply pt-4;
+    @apply absolute bottom-0 flex justify-center items-center pt-2 w-full bg-blue-chalk-100;
 }
 
 .avatar {
@@ -84,10 +76,20 @@ h3 {
 
 @media screen and (max-width: 768px) {
     .contentInventory {
-        @apply min-h-[600px];
+        @apply min-h-[30%] overflow-hidden;
     }
 
-    .bodyOverall {
-        @apply h-full w-full grid grid-cols-2 gap-8;
+    .contentInventory .listOverall {
+        @apply overflow-y-scroll;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1600px) {
+    .contentInventory {
+        @apply min-h-[30%] overflow-hidden;
+    }
+
+    .contentInventory .listOverall {
+        @apply overflow-y-scroll;
     }
 }

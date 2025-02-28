@@ -1,30 +1,30 @@
-import { urlApiCategory } from '~/utils/constants/actionType';
+import { urlApiBrand } from '~/utils/constants/actionType';
 import axiosClient from './axiosClient';
 import { IParamsPagination } from '~/utils/interfaces/common';
-import { IAddCategory, ICategory } from '~/utils/interfaces/interfaceCategory';
+import { IAddBrand } from '~/utils/interfaces/interfaceBrand';
 
-const categoryApi = {
-    async getAllCategory(params: IParamsPagination) {
-        const url = `${urlApiCategory.getAllCategory}`;
+const brandApi = {
+    async getAllBrand(params: IParamsPagination) {
+        const url = `${urlApiBrand.getAllBrand}`;
         const response = await axiosClient.get(url, { params });
         return response.data;
     },
 
-    async searchAllCategory(search: string) {
-        const url = `${urlApiCategory.getSearchCategory}`;
+    async searchAllBrand(search: string) {
+        const url = `${urlApiBrand.getSearchBrand}`;
         const response = await axiosClient.get(url, { params: { search } });
         return response.data;
     },
 
-    async addCategory(body: IAddCategory | FormData) {
+    async addBrand(body: IAddBrand | FormData) {
         const headers =
             body instanceof FormData
                 ? { 'Content-Type': 'multipart/form-data' }
                 : { 'Content-Type': 'application/json' };
-        const url = `${urlApiCategory.addCategory}`;
+        const url = `${urlApiBrand.addBrand}`;
         const response = await axiosClient.post(url, body, { headers });
         return response.data;
     },
 };
 
-export default categoryApi;
+export default brandApi;

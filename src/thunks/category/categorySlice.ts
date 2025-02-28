@@ -4,17 +4,26 @@ import { addCategoryThunk, getCategoryThunk, searchCategoryThunk } from './categ
 export interface ICategory {
     label?: string;
     isCheck?: boolean;
+    refreshTable: boolean;
 }
 
 const initialState: ICategory = {
     label: '',
     isCheck: false,
+    refreshTable: false,
 };
 
 const categorySlice = createSlice({
     name: 'category',
     initialState,
-    reducers: {},
+    reducers: {
+        setRefreshTableTrue: (state) => {
+            state.refreshTable = true;
+        },
+        resetRefreshTable: (state) => {
+            state.refreshTable = false;
+        },
+    },
     extraReducers(builder) {
         builder
             .addCase(getCategoryThunk.pending, (state, action) => {})
