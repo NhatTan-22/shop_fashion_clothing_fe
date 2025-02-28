@@ -33,10 +33,10 @@ import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { baseURL } from '~/utils/constants/env';
 import { addCategoryThunk, getCategoryThunk } from '~/thunks/category/categoryThunk';
 import { LoadingContext } from '~/context';
+import { categoryActions } from '~/thunks/category/categorySlice';
 // Styles, Images, icons
 import styles from './Category.module.scss';
 import { icons } from '~/assets';
-import { categoryActions } from '~/thunks/category/categorySlice';
 
 type Props = {};
 
