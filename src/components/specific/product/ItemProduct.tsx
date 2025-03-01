@@ -54,7 +54,7 @@ const ItemProduct = (props: Props) => {
                     />
                 </div>
             </div>
-            <Link to={`/products/details/${product._id}`}>
+            <Link to={`/products/details/${product.slug}`}>
                 <div className={cx('description')}>
                     <h1 className={cx('nameProduct')}>{product.name}</h1>
                     <h3 className={cx('tileProduct')}>{product.title}</h3>

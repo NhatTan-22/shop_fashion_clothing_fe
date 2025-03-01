@@ -264,7 +264,7 @@ export const subBanners = [
     },
 ];
 
-export const orders: IOrder[] = [
+export const orders = [
     {
         _id: '63e4b1c9f5a10a0012aabc01',
         _idProduct: '63e4a1c9f5a10a0012aabc01',

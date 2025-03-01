@@ -9,6 +9,7 @@ import {
     HomePage,
     Inventory,
     Login,
+    Order,
     OrderPage,
     ProductsPage,
     Register,
@@ -44,7 +45,6 @@ export const userRoute = {
     list: '/list',
     blog: '/blog',
     cart: '/cart',
-    order: '/order',
     contact: '/contact',
 };
 
@@ -90,7 +90,7 @@ export const privateAdminRoutes: IRouteModel[] = [
     },
     {
         path: `${adminRoute.base}${adminRoute.orders}`,
-        component: Report,
+        component: Order,
     },
     {
         path: `${adminRoute.base}${adminRoute.manageStore}`,
@@ -131,7 +131,7 @@ export const publicUserRoutes: IRouteModel[] = [
 
 export const privateUserRoutes: IRouteModel[] = [
     {
-        path: `${userRoute.products}${userRoute.order}`,
+        path: `${userRoute.products}${userRoute.cart}`,
         component: OrderPage,
     },
 ];
