@@ -10,6 +10,7 @@ export { default as Category } from './admin/category/Category';
 export { default as Brand } from './admin/brand/Brand';
 export { default as Report } from './admin/report/Report';
 export { default as Supplier } from './admin/supplier/Supplier';
+export { default as Order } from './admin/order/Order';
 //#endregion Admin Page
 
 //#region User Page

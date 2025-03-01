@@ -111,6 +111,16 @@ const AdminLayout = (props: Props) => {
             ),
             onClick: () => navigate('/admin/suppliers'),
         },
+        {
+            key: '/admin/orders',
+            label: `${t('admin_orders')}`,
+            icon: (
+                <div>
+                    <IconSVG IconComponent={icons.orderIcon} />
+                </div>
+            ),
+            onClick: () => navigate('/admin/orders'),
+        },
     ];
 
     const handleResize = () => {

@@ -28,29 +28,24 @@ const ProtectedRoute = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
+    console.log(user)
     //#endregion Declare State
 
     //#region Implement Hook
-    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
-    const storedToken = localStorage.getItem('accessToken');
-
-    const finalUser = user || storedUser;
-    const finalAuth = isAuthenticated || storedToken;
-
     useEffect(() => {
-        if (typeof finalUser?.role === 'number') {
-            const route = navigateLogin(finalUser.role);
+        if (typeof user?.role === 'number') {
+            const route = navigateLogin(user.role);
             if (location.pathname === '/' || location.pathname === '/auth/login') {
                 if (location.pathname !== route) {
                     navigate(route, { replace: true });
                 }
             }
-        } else if (!finalUser) {
+        } else if (!user) {
             navigate(userRoute.home, { replace: true });
-        } else if (!finalAuth) {
+        } else if (!isAuthenticated) {
             navigate('/auth/login');
         }
-    }, [finalAuth, finalUser, location.pathname, navigate]);
+    }, [isAuthenticated, user, location.pathname, navigate]);
 
     //#endregion Implement Hook
 

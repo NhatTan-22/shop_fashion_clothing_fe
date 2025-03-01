@@ -40,35 +40,35 @@ const OrderPage = (props: Props) => {
 
     //#region Selector
     const columns: Columns<IOrder, DataType<IOrder>>[] = [
-        {
-            title: t('user_products_code_label_table'),
-            dataIndex: 'productDetails',
-            key: 'productDetails',
-            render: (_, record) => {
-                if (record?.productImage && record?.productName && record?.productSize && record?.productColor) {
-                    return (
-                        <div className={cx('columnsProduct')}>
-                            <img src={`${record.productImage ?? `${baseURL}/${record.productImage}`}`} alt='' />
-                            <div>
-                                <div className={cx('nameProduct')}>{`${
-                                    record.productName ?? renderFormatValue(record.productName)
-                                }`}</div>
-                                <div className={cx('typeProduct')}>
-                                    <div className='flex'>
-                                        {t('user_order_type_size_products_label')}
-                                        <p>{`${record.productSize ?? renderFormatValue(record.productSize)}`}</p>
-                                    </div>
-                                    <div className='flex'>
-                                        {t('user_order_type_color_products_label')}
-                                        <p>{`${record.productColor ?? renderFormatValue(record.productColor)}`}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    );
-                }
-            },
-        },
+        // {
+        //     title: t('user_products_code_label_table'),
+        //     dataIndex: 'productDetails',
+        //     key: 'productDetails',
+        //     render: (_, record) => {
+        //         if (record?.img && record?.name && record?.size && record?.color) {
+        //             return (
+        //                 <div className={cx('columnsProduct')}>
+        //                     <img src={`${record.img ?? `${baseURL}/${record.img}`}`} alt='' />
+        //                     <div>
+        //                         <div className={cx('nameProduct')}>{`${
+        //                             record.name ?? renderFormatValue(record.name)
+        //                         }`}</div>
+        //                         <div className={cx('typeProduct')}>
+        //                             <div className='flex'>
+        //                                 {t('user_order_type_size_products_label')}
+        //                                 <p>{`${record.size ?? renderFormatValue(record.size)}`}</p>
+        //                             </div>
+        //                             <div className='flex'>
+        //                                 {t('user_order_type_color_products_label')}
+        //                                 <p>{`${record.color ?? renderFormatValue(record.color)}`}</p>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             );
+        //         }
+        //     },
+        // },
         {
             title: t('user_products_price_label_table'),
             dataIndex: 'sellingPrice',
@@ -91,17 +91,17 @@ const OrderPage = (props: Props) => {
                 );
             },
         },
-        {
-            title: t('user_products_subtotal_label_table'),
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, record) => {
-                if (record?.sellingPrice && record?.quantity) {
-                    const total = record.sellingPrice * record.quantity;
-                    return <p>{`${total ?? renderFormatValue(total)}`}</p>;
-                }
-            },
-        },
+        // {
+        //     title: t('user_products_subtotal_label_table'),
+        //     dataIndex: 'status',
+        //     key: 'status',
+        //     render: (_, record) => {
+        //         if (record?.sellingPrice && record?.quantity) {
+        //             const total = record.sellingPrice * record.quantity;
+        //             return <p>{`${total ?? renderFormatValue(total)}`}</p>;
+        //         }
+        //     },
+        // },
         {
             title: '',
             dataIndex: '_id',

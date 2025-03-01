@@ -8,6 +8,7 @@
     "common_add_supplier": "Add Supplier",
     "common_filters": "Filters",
     "common_delete": "Delete",
+    "common_cancel": "Cancel",
     "common_detail": "Detail",
     "common_edit": "Edit",
     "common_update": "Update",
@@ -16,6 +17,9 @@
     "common_next": "Next",
     "common_clear": "Clear",
     "common_previous": "Previous",
+
+    "common_confirm_title": "Confirm deletion",
+    "common_confirm_content": "Are you sure you want to delete?",
 
     "gender_male": "MALE",
     "gender_female": "FEMALE",
@@ -64,6 +68,7 @@
     "admin_inventory_brands": "Brand",
     "admin_reports": "Reports",
     "admin_suppliers": "Suppliers",
+    "admin_orders": "Orders",
 
     "admin_overall_inventory_header": "Overall Inventory",
     "admin_products_header": "Products",
@@ -201,6 +206,18 @@
     "admin_category_logo_label_table": "Logo",
     "admin_category_name_label_table": "Category Name",
     "admin_category_description_label_table": "Description",
+
+    "admin_order_title": "Order",
+    "admin_order_client_label_table": "Client",
+    "admin_order_image_label_table": "Image",
+    "admin_order_product_name_label_table": "Product Name",
+    "admin_order_color_label_table": "Color",
+    "admin_order_size_label_table": "Size",
+    "admin_order_quantity_label_table": "Quantity",
+    "admin_order_discount_label_table": "Discount",
+    "admin_order_total_price_label_table": "Total Price",
+    "admin_order_status_label_table": "Status",
+    "admin_order_payment_status_label_table": "Payment Status",
 
     "_user": "User",
     "_user_layout_home": "layout_home",

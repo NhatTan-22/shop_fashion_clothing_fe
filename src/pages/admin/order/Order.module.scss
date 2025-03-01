@@ -1,0 +1,35 @@
+.mainOrder {
+    @apply h-full p-5 rounded bg-blue-chalk-100 flex flex-col flex-1 font-nunito;
+}
+
+.headerOrder {
+    @apply flex justify-between pb-4;
+}
+
+.headerTitle {
+    @apply text-2xl font-bold text-bossa-nova-900;
+}
+
+.headerButtons {
+    @apply flex gap-4;
+}
+
+.bodyOrder {
+    @apply flex flex-col flex-1 justify-between min-h-[80%] font-nunito overflow-hidden relative;
+}
+
+.footerPagination {
+    @apply absolute bottom-0 flex justify-center items-center pt-2 w-full bg-blue-chalk-100;
+}
+
+// .pending {
+//     @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-yellow-400;
+// }
+
+// .success {
+//     @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-green-500;
+// }
+
+// .waiting {
+//     @apply w-fit text-purple-50 text-sm items-center py-[1px] px-2 flex rounded-full font-nunito bg-red-500;
+// }

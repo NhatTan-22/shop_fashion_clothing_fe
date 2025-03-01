@@ -17,6 +17,8 @@ export const GET_BRAND = 'GET_BRAND';
 export const SEARCH_BRAND = 'SEARCH_BRAND';
 export const ADD_BRAND = 'ADD_BRAND';
 
+export const GET_ORDER= 'GET_ORDER';
+
 export const urlApiAuth = {
     login: 'auth/login',
     register: 'auth/register',
@@ -45,4 +47,9 @@ export const urlApiBrand = {
     getAllBrand: '/brands',
     getSearchBrand: '/brands/select',
     addBrand: '/brands/add-new',
+};
+
+export const urlApiOrder= {
+    getAllOrder: '/orders',
+    addOrder: '/orders/add-new',
 };

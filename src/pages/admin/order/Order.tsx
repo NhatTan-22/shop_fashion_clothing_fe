@@ -2,24 +2,22 @@
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect, useState } from 'react';
-import { Avatar, Button, Dropdown, Empty, message, Modal, Pagination, Table, Tag } from 'antd';
+import { Avatar, Button, Dropdown, Empty, message, Pagination, Table, Tag } from 'antd';
 // Components, Layouts, Pages
-import { DetailSupplier, IconSVG } from '~/components';
-import FormAddSupplier from '~/form/formSupplier/FormAddSupplier';
+import { IconSVG } from '~/components';
 // Others
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { supplierActions } from '~/thunks/supplier/supplierSlice';
 import { LoadingContext } from '~/context';
-import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
 import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
-import { deleteSupplierThunk, getSupplierThunk } from '~/thunks/supplier/supplierThunk';
-import { renderFormatDate, renderFormatValue } from '~/utils/constants/helper';
-import { ICategory } from '~/utils/interfaces/interfaceCategory';
+import { getOrderThunk } from '~/thunks/order/orderThunk';
+import { renderFormatValue } from '~/utils/constants/helper';
 import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
-import styles from './Supplier.module.scss';
+import styles from './Order.module.scss';
 import { icons } from '~/assets';
+import { IOrder } from '~/utils/interfaces/interfaceOrder';
 
 type Props = {
     content?: string;
@@ -27,7 +25,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const Supplier = (props: Props) => {
+const Order = (props: Props) => {
     //#region Destructuring Props
     // const { content = 'Supplier Component' } = props;
     //#endregion Destructuring Props
@@ -41,10 +39,10 @@ const Supplier = (props: Props) => {
     //#region Selector
     const isRefreshTable = useAppSelector((state) => state.supplier.isRefreshSupplier);
 
-    const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
+    const columns: Columns<IOrder, DataType<IOrder>>[] = [
         {
             key: 'sku',
-            title: `${t('admin_supplier_sku_label_table')}`,
+            title: `${t('admin_order_client_label_table')}`,
             dataIndex: 'sku',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
@@ -52,89 +50,93 @@ const Supplier = (props: Props) => {
         },
         {
             key: 'image',
-            title: `${t('admin_supplier_image_label_table')}`,
+            title: `${t('admin_order_image_label_table')}`,
             dataIndex: 'image',
             render: (_, record) => {
-                if (record) {
-                    return <Avatar src={`${baseURL}/${record.image}`} alt={record.supplierName} />;
+                if (record.products.length) {
+                    return record.products.map((product) => (
+                        <Avatar src={`${baseURL}/${product.image}`} alt={product.name} />
+                    ));
                 }
             },
         },
         {
             key: 'supplierName',
-            title: `${t('admin_supplier_name_label_table')}`,
+            title: `${t('admin_order_product_name_label_table')}`,
             dataIndex: 'supplierName',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
-            align: 'left',
         },
         {
             key: 'contactPerson',
-            title: `${t('admin_supplier_contact_person_label_table')}`,
+            title: `${t('admin_order_color_label_table')}`,
             dataIndex: 'contactPerson',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
-            align: 'left',
         },
         {
             key: 'phone',
-            title: `${t('admin_supplier_phone_label_table')}`,
+            title: `${t('admin_order_size_label_table')}`,
             dataIndex: 'phone',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'categories',
-            title: `${t('admin_supplier_categories_provided_label_table')}`,
-            dataIndex: 'categories',
+            key: 'quantity',
+            title: `${t('admin_order_quantity_label_table')}`,
+            dataIndex: 'quantity',
             render: (_, record) => {
-                if (record.categories.length) {
-                    return <p>{record.categories.map((category) => (category as ICategory).name).join(', ')}</p>;
-                } else {
-                    return <p>{`${renderFormatValue('')}`}</p>;
+                if (record.products.length) {
+                    return record.products.map((product) => (
+                        <p>{`${product.quantity ?? renderFormatValue(product.quantity)}`}</p>
+                    ));
                 }
             },
         },
         {
-            key: 'orderQuantity',
-            title: `${t('admin_supplier_quantity_imported_label_table')}`,
-            dataIndex: 'orderQuantity',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
-        {
-            key: 'importPrice',
-            title: `${t('admin_supplier_imported_price_label_table')}`,
-            dataIndex: 'importPrice',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
-        {
-            key: 'restockStatus',
-            title: `${t('admin_supplier_type_label_table')}`,
-            dataIndex: 'restockStatus',
+            key: 'discount',
+            title: `${t('admin_order_discount_label_table')}`,
+            dataIndex: 'discount',
             render: (_, record) => {
-                if (record?.restockStatus.toUpperCase() === 'PENDING') {
+                return <p>{`${record.discount ?? renderFormatValue(record.discount)}`}</p>;
+            },
+        },
+        {
+            key: 'totalPrice',
+            title: `${t('admin_order_total_price_label_table')}`,
+            dataIndex: 'totalPrice',
+            render: (text, _) => {
+                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            },
+        },
+        {
+            key: 'status',
+            title: `${t('admin_order_status_label_table')}`,
+            dataIndex: 'status',
+            render: (_, record) => {
+                if (record?.status.toUpperCase() === 'PENDING') {
                     return <Tag color='gold'>{`${t('admin_supplier_type_pending_label_table')}`}</Tag>;
-                } else if (record?.restockStatus.toUpperCase() === 'SHIPPED') {
+                } else if (record?.status.toUpperCase() === 'SHIPPED') {
                     return <Tag color='blue'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
+                } else if (record?.status.toUpperCase() === 'DELIVERED') {
+                    return <Tag color='green'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
                 } else {
-                    return <Tag color='green'>{`${t('admin_supplier_type_received_label_table')}`}</Tag>;
+                    return <Tag color='red'>{`${t('admin_supplier_type_received_label_table')}`}</Tag>;
                 }
             },
         },
         {
-            key: 'lastRestockDate',
-            title: `${t('admin_supplier_last_restock_date_label_table')}`,
-            dataIndex: 'lastRestockDate',
+            key: 'paymentStatus',
+            title: `${t('admin_order_payment_status_label_table')}`,
+            dataIndex: 'paymentStatus',
             render: (_, record) => {
-                if (record.lastRestockDate) {
-                    return <p>{`${renderFormatDate(record.lastRestockDate)}`}</p>;
+                if (record?.paymentStatus.toUpperCase() === 'PAID') {
+                    return <Tag color='green'>{`${t('admin_supplier_type_pending_label_table')}`}</Tag>;
+                } else if (record?.paymentStatus.toUpperCase() === 'UNPAID') {
+                    return <Tag color='grey'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
                 }
             },
         },
@@ -152,19 +154,13 @@ const Supplier = (props: Props) => {
                                         key: `${t('common_detail')}`,
                                         label: <p style={{ marginLeft: '2px' }}>{`${t('common_detail')}`}</p>,
                                         icon: <IconSVG IconComponent={icons.eyeIcon} />,
-                                        onClick: () => handleDetailSupplier(record.slug),
+                                        onClick: () => handleDetailSupplier(record.sku),
                                     },
                                     {
                                         key: `${t('common_edit')}`,
                                         label: <p style={{ marginLeft: '2px' }}>{`${t('common_edit')}`}</p>,
                                         icon: <IconSVG IconComponent={icons.editIcon} />,
                                         // onClick: () => handleEditSupplier(record),
-                                    },
-                                    {
-                                        key: `${t('common_delete')}`,
-                                        label: <p style={{ marginLeft: '2px' }}>{`${t('common_delete')}`}</p>,
-                                        icon: <IconSVG IconComponent={icons.deleteIcon} />,
-                                        onClick: () => handleDeleteSupplier(record),
                                     },
                                 ],
                             }}
@@ -184,9 +180,7 @@ const Supplier = (props: Props) => {
 
     //#region Declare State
     const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
-    const [openModalAddSupplier, setOpenModalAddSupplier] = useState<boolean>(false);
-    const [supplier, setSupplier] = useState<ISupplier[]>([]);
-    const [slug, setSlug] = useState<string>('');
+    const [order, setOrder] = useState<IOrder[]>([]);
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
         currentPage: 1,
         limitPage: 10,
@@ -200,12 +194,12 @@ const Supplier = (props: Props) => {
     //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
-        dispatch(getSupplierThunk(paramsPage))
+        dispatch(getOrderThunk(paramsPage))
             .unwrap()
             .then((response) => {
                 if (response) {
                     const pagination = response?.pagination;
-                    setSupplier(response?.data);
+                    setOrder(response?.data);
                     setCurrentPage((prev) => ({
                         ...prev,
                         lengthPage: pagination.lengthPage,
@@ -224,42 +218,8 @@ const Supplier = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleDetailSupplier = (slug: string) => {
-        setSlug(slug);
+    const handleDetailSupplier = (sku: string) => {
         setOpenDrawerDetail(true);
-    };
-
-    const handleDeleteSupplier = (data: DataType<ISupplier>) => {
-        Modal.confirm({
-            title: `${t('common_confirm_title')}`,
-            icon: <IconSVG IconComponent={icons.deleteIcon} colorIcon='red' />,
-            content: `${t('common_confirm_content')}`,
-            okText: `${t('common_delete')}`,
-            okType: 'danger',
-            cancelText: `${t('common_cancel')}`,
-            onOk: () => {
-                loadingContext?.show();
-                dispatch(deleteSupplierThunk(data._id))
-                    .unwrap()
-                    .then((response) => {
-                        if (response) {
-                            setOpenDrawerDetail(false);
-                            message.success(response.message);
-                            dispatch(supplierActions.setRefreshTableTrue());
-                        }
-                    })
-                    .catch((error) => {
-                        message.error(error.message);
-                    })
-                    .finally(() => {
-                        loadingContext?.hide();
-                    });
-            },
-        });
-    };
-
-    const handleIsOpenAddSupplier = () => {
-        setOpenModalAddSupplier(!openModalAddSupplier);
     };
 
     const handleChangePage = (e: number) => {
@@ -268,26 +228,23 @@ const Supplier = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div id='supplierComponent' className={cx('mainSupplier')}>
-            <div className={cx('headerSupplier')}>
+        <div id='orderComponent' className={cx('mainOrder')}>
+            <div className={cx('headerOrder')}>
                 <div className={cx('headerTitle')}>
-                    <h1>{t('admin_suppliers_header')}</h1>
+                    <h1>{t('admin_order_title')}</h1>
                 </div>
                 <div className={cx('headerButtons')}>
-                    <Button size='large' type='primary' onClick={handleIsOpenAddSupplier}>
-                        {`${t('common_add_supplier')}`}
-                    </Button>
                     <Button size='large' type='primary'>{`${t('common_filters')}`}</Button>
                 </div>
             </div>
             <>
-                {supplier.length ? (
-                    <div className={cx('bodySupplier')}>
+                {order.length ? (
+                    <div className={cx('bodyOrder')}>
                         <Table
-                            rowKey={(record) => record.supplierName}
+                            rowKey={(record) => record.sku}
                             tableLayout='auto'
                             columns={columns}
-                            dataSource={supplier}
+                            dataSource={order}
                             pagination={false}
                             scroll={{ x: 400, y: 590 }}
                         />
@@ -302,20 +259,11 @@ const Supplier = (props: Props) => {
                         />
                     </div>
                 ) : (
-                    <Empty className={cx('bodyEmptySupplier')} />
+                    <Empty className={cx('bodyEmptyOrder')} />
                 )}
             </>
-            <>
-                <DetailSupplier
-                    openDrawerDetail={openDrawerDetail}
-                    setOpenDrawerDetail={setOpenDrawerDetail}
-                    slug={slug}
-                />
-            </>
-
-            <FormAddSupplier isShowModal={openModalAddSupplier} onClose={handleIsOpenAddSupplier} />
         </div>
     );
 };
 
-export default Supplier;
+export default Order;

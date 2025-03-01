@@ -1,10 +1,24 @@
-export interface IOrder {
-    _id?: Object,
-    _idProduct?: Object;
-    productImage?: string;
-    productName?: string;
-    productColor?: string;
-    productSize?: string;
-    sellingPrice?: number;
-    quantity?: number;
+export interface IOrder extends IAddOrder {
+    _id: Object;
+    sku: string;
+    status: string;
+    paymentStatus: string;
+    shippingId: Object;
+}
+
+export interface IAddOrder {
+    userId: Object;
+    products: [
+        {
+            productId: object;
+            image: string;
+            name: string;
+            color: string;
+            size: string;
+            quantity: number;
+            price: number;
+        }
+    ];
+    totalPrice: number;
+    discount: Object;
 }

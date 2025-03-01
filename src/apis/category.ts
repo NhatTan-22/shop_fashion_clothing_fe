@@ -1,7 +1,7 @@
 import { urlApiCategory } from '~/utils/constants/actionType';
 import axiosClient from './axiosClient';
 import { IParamsPagination } from '~/utils/interfaces/common';
-import { IAddCategory, ICategory } from '~/utils/interfaces/interfaceCategory';
+import { IAddCategory } from '~/utils/interfaces/interfaceCategory';
 
 const categoryApi = {
     async getAllCategory(params: IParamsPagination) {
