@@ -33,3 +33,9 @@
 .colLeftHeaderProduct {
     @apply flex gap-3;
 }
+
+@media screen and (max-width: 1200px) {
+    .sideBarProduct {
+        @apply hidden;
+    }
+}

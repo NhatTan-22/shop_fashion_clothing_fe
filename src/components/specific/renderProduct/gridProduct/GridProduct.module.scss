@@ -1,15 +1,39 @@
 .mainGridProduct {
-    @apply w-full min-h-[80%];
+    @apply w-full h-full relative;
 }
 
 .contentGridProduct {
-    @apply grid grid-cols-4 gap-6;
+    @apply grid grid-cols-4 gap-6 mb-8 pb-8;
 }
 
-.paginationGridProduct {
-    @apply mt-8;
+.footerPagination {
+    @apply absolute bottom-[-30px] w-full content-end;
 }
 
 .emptyGridProduct {
     @apply min-h-screen flex justify-center items-center;
+}
+
+@media screen and (min-width: 1201px) {
+    .contentGridProduct {
+        @apply grid grid-cols-4 gap-6;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .contentGridProduct {
+        @apply grid grid-cols-3 gap-6;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .contentGridProduct {
+        @apply grid grid-cols-2 gap-6;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .contentGridProduct {
+        @apply grid grid-cols-1 gap-6;
+    }
 }

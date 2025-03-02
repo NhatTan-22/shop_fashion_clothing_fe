@@ -42,6 +42,7 @@ export const userRoute = {
     base: '/',
     home: '/home',
     products: '/products',
+    detail: '/detail',
     list: '/list',
     blog: '/blog',
     cart: '/cart',
@@ -132,6 +133,10 @@ export const publicUserRoutes: IRouteModel[] = [
 export const privateUserRoutes: IRouteModel[] = [
     {
         path: `${userRoute.products}${userRoute.cart}`,
+        component: OrderPage,
+    },
+    {
+        path: `${userRoute.products}${userRoute.detail}/:slug`,
         component: OrderPage,
     },
 ];

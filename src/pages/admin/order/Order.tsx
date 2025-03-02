@@ -242,7 +242,7 @@ const Order = (props: Props) => {
                     <div className={cx('bodyOrder')}>
                         <Table
                             rowKey={(record) => record.sku}
-                            tableLayout='auto'
+                            tableLayout='fixed'
                             columns={columns}
                             dataSource={order}
                             pagination={false}

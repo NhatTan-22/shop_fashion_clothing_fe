@@ -13,20 +13,6 @@ const themeConfig: ThemeConfig = {
             siderBg: '#f5ebfa',
             bodyBg: '#d0d3d9 ',
         },
-        Menu: {
-            itemBg: '#f5ebfa',
-            colorPrimary: '#8a4db7',
-            colorBgContainer: '#f4e5fa',
-
-            itemColor: '#6b3f7a',
-            itemSelectedBg: '#b081d9',
-            itemSelectedColor: '#6b3f7a',
-            itemHoverColor: '#8a4db7',
-            itemHoverBg: '#c083f8',
-
-            subMenuItemBg: '#f5ebfa',
-            popupBg: '#f5ebfa',
-        },
         Select: {
             controlItemBgHover: '#e6d3f0',
             controlItemBgActive: '#c083f8',
@@ -48,6 +34,8 @@ const themeConfig: ThemeConfig = {
         Table: {
             headerBg: '#c083f8',
             rowHoverBg: '#f5ebfa',
+            colorBgContainer: '#f5ebfa',
+            borderColor: '#f5ebfa',
         },
     },
 };

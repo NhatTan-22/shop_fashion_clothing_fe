@@ -14,7 +14,7 @@ type Props = {
 
 const IconSVG = (props: Props) => {
     //#region Destructuring Props
-    const { IconComponent, width = 24, height = 30, colorIcon = 'currentColor', onClick } = props;
+    const { IconComponent, width = 24, height = 24, colorIcon = 'currentColor', onClick } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook

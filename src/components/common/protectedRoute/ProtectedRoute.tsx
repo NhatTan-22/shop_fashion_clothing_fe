@@ -1,5 +1,5 @@
 // Libs
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '~/redux/hooks';
 import { navigateLogin } from '~/utils/constants/helper';
@@ -28,30 +28,35 @@ const ProtectedRoute = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    console.log(user)
+    const [isMounted, setIsMounted] = useState(false);
     //#endregion Declare State
 
     //#region Implement Hook
     useEffect(() => {
         if (typeof user?.role === 'number') {
             const route = navigateLogin(user.role);
+            if (location.pathname.startsWith('/admin') && user.role !== 0) {
+                navigate(userRoute.home, { replace: true });
+            }
+
             if (location.pathname === '/' || location.pathname === '/auth/login') {
                 if (location.pathname !== route) {
                     navigate(route, { replace: true });
                 }
             }
-        } else if (!user) {
-            navigate(userRoute.home, { replace: true });
-        } else if (!isAuthenticated) {
+        } else if (!user || !isAuthenticated) {
             navigate('/auth/login');
         }
+        setTimeout(() => {
+            setIsMounted(true);
+        }, 1);
     }, [isAuthenticated, user, location.pathname, navigate]);
 
     //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function
-
+    if (!isMounted) return;
     return children;
 };
 

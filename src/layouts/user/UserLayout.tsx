@@ -142,7 +142,7 @@ const UserLayout = (props: Props) => {
                                 <div className='relative'>
                                     <Link to={`${userRoute.products}${userRoute.cart}`}>
                                         <IconSVG IconComponent={icons.cartIcon} />
-                                        <div className='absolute top-2 left-4 rounded-full bg-wisteria-600'>
+                                        <div className='absolute bottom-[-5px] left-4 rounded-full bg-wisteria-600'>
                                             <span className='px-2 text-white'>0</span>
                                         </div>
                                     </Link>

@@ -3,7 +3,7 @@
 }
 
 .contentInventory {
-    @apply p-5 rounded bg-blue-chalk-100 flex flex-col h-[250px] overflow-hidden;
+    @apply p-5 rounded bg-blue-chalk-100 flex flex-col min-h-[250px] overflow-hidden;
 }
 
 .contentProductsInventory {

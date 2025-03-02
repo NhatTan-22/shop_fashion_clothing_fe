@@ -174,7 +174,7 @@ const ProductsPage = (props: Props) => {
         });
     };
 
-    console.log(selectedKeys);
+    // console.log(selectedKeys);
 
     function handleSizeChange(e: any) {
         setSelectedSize(e.target.value);
