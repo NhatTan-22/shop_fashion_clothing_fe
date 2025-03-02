@@ -10,19 +10,14 @@ import {
     userRoute,
 } from './utils/constants/route';
 import { NotFoundPage, ProtectedRoute } from './components';
+import { ConfigProvider } from 'antd';
+import baseThemeConfig from './config/baseThemeConfig';
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route
-                    path='/'
-                    element={
-                            <ProtectedRoute>
-                                <Navigate to={userRoute.home} replace />
-                            </ProtectedRoute>
-                    }
-                />
+                <Route path='/' element={<Navigate to={userRoute.home} replace />} />
 
                 <Route element={<AuthLayout />}>
                     {publicAuthRoutes.map((route, index) => {
@@ -77,7 +72,7 @@ const App = () => {
                     element={
                         <ProtectedRoute>
                             <UserLayout />
-                         </ProtectedRoute>
+                        </ProtectedRoute>
                     }
                 >
                     {privateUserRoutes.map((route, index) => {
@@ -105,9 +100,11 @@ const App = () => {
                 <Route
                     path={adminRoute.base}
                     element={
-                        <ProtectedRoute>
-                            <AdminLayout />
-                        </ProtectedRoute>
+                        <ConfigProvider theme={baseThemeConfig}>
+                            <ProtectedRoute>
+                                <AdminLayout />
+                            </ProtectedRoute>
+                        </ConfigProvider>
                     }
                 >
                     {privateAdminRoutes.map((route, index) => {

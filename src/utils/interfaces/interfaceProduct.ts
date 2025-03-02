@@ -1,9 +1,10 @@
 export interface IProduct extends IAddProduct {
-    _id: Object;
-    sku: string;
+    _id: string;
+    slug: string;
     ratings: number;
     status: string;
     availability: string;
+    brand?: string;
 }
 
 export interface IAddProduct {
@@ -19,9 +20,6 @@ export interface IAddProduct {
     stock: number;
     sizes: string[];
     colors: string[];
-    brand: string;
     gender?: string;
     supplier: string;
 }
-
-// export type ISupplierCreate = Omit<IProduct, '_id'>;

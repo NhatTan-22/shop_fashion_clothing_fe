@@ -1,5 +1,5 @@
 export interface ICategory extends IAddCategory {
-    _id: Object;
+    _id: string;
 }
 
 export interface IAddCategory {

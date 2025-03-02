@@ -350,7 +350,7 @@ const Category = (props: Props) => {
                             <Table
                                 rowKey={(record) => record.name}
                                 bordered={false}
-                                tableLayout='auto'
+                                tableLayout='fixed'
                                 columns={columns}
                                 dataSource={category}
                                 pagination={false}

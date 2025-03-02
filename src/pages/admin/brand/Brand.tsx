@@ -472,7 +472,7 @@ const Brand = (props: Props) => {
                             <Table
                                 rowKey={(record) => record.name}
                                 bordered={false}
-                                tableLayout='auto'
+                                tableLayout='fixed'
                                 columns={columns}
                                 dataSource={brand}
                                 pagination={false}

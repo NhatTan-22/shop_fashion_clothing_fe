@@ -285,7 +285,7 @@ const Supplier = (props: Props) => {
                     <div className={cx('bodySupplier')}>
                         <Table
                             rowKey={(record) => record.supplierName}
-                            tableLayout='auto'
+                            tableLayout='fixed'
                             columns={columns}
                             dataSource={supplier}
                             pagination={false}

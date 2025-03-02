@@ -1,5 +1,5 @@
 export interface ISupplier extends IAddSupplier {
-    _id: Object;
+    _id: string;
     slug: string;
     sku: string;
     restockStatus: string;

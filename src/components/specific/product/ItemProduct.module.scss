@@ -1,5 +1,5 @@
 .itemProduct {
-    @apply rounded-md bg-snuff-200 shadow-xl;
+    @apply rounded-md min-w-[250px] bg-snuff-200 shadow-xl overflow-hidden;
 }
 
 .itemProduct:hover img {
@@ -15,7 +15,7 @@
 }
 
 .imageProduct img {
-    @apply w-full h-[200px];
+    @apply w-full h-[250px] mb-8;
 }
 
 .description {
@@ -28,7 +28,7 @@
 
 .nameProduct,
 .tileProduct {
-    @apply line-clamp-2;
+    @apply line-clamp-1;
 }
 
 .price {
@@ -57,9 +57,9 @@
 }
 
 .optionButtons {
-    @apply absolute top-0 right-[5%];
+    @apply absolute top-5 right-[5%];
 }
 
 .buttonAddCart {
-    @apply w-[80%] absolute bottom-[5%] right-[10%] left-[10%];
+    @apply w-[80%] absolute bottom-0 right-[10%] left-[10%];
 }

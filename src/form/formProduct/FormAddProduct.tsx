@@ -20,7 +20,7 @@ import {
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FormInstance, useForm } from 'antd/es/form/Form';
+import { useForm } from 'antd/es/form/Form';
 import { UploadChangeParam } from 'antd/es/upload';
 // Components, Layouts, Pages
 import { BaseButton } from '~/components';
@@ -63,7 +63,7 @@ const FormAddProduct = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
-    const [form] = useForm<FormInstance>();
+    const [form] = useForm<IAddProduct>();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
@@ -98,7 +98,7 @@ const FormAddProduct = (props: Props) => {
         sizes: [],
         colors: [],
         gender: '',
-        brand: '',
+        // brand: '',
         supplier: '',
     });
     //#endregion Declare State
@@ -127,6 +127,7 @@ const FormAddProduct = (props: Props) => {
                                 style={{ width: '100%' }}
                             >
                                 <Input
+                                    autoFocus
                                     size='large'
                                     name='name'
                                     placeholder={t('admin_add_product_name_placeholder')}
@@ -141,7 +142,6 @@ const FormAddProduct = (props: Props) => {
                                     size='large'
                                     placeholder={t('admin_add_product_category_placeholder')}
                                     optionFilterProp='label'
-                                    defaultValue={'UNISEX'}
                                     onChange={(value) => handleChangeSelect(value, 'gender')}
                                     options={[
                                         { value: 'MALE', label: t('gender_male') },
@@ -355,22 +355,26 @@ const FormAddProduct = (props: Props) => {
                                     onPressEnter={() => handleInputConfirm('sizes')}
                                 />
                             </Form.Item>
-                            <Flex gap='4px 0' wrap>
-                                {addProduct.sizes.map((size, index) => (
-                                    <Tag
-                                        key={`${index}-${size}`}
-                                        bordered={false}
-                                        closable
-                                        onClose={(e) => {
-                                            e.preventDefault();
-                                            const remove = addProduct.sizes.filter((sizeFilter) => sizeFilter !== size);
-                                            setAddProduct((prev) => ({ ...prev, sizes: remove }));
-                                        }}
-                                    >
-                                        {`${size}`}
-                                    </Tag>
-                                ))}
-                            </Flex>
+                            <div className='w-full h-[200px] rounded-md border border-slate-500 p-2'>
+                                <Flex gap='4px 0' wrap>
+                                    {addProduct.sizes.map((size, index) => (
+                                        <Tag
+                                            key={`${index}-${size}`}
+                                            bordered={false}
+                                            closable
+                                            onClose={(e) => {
+                                                e.preventDefault();
+                                                const remove = addProduct.sizes.filter(
+                                                    (sizeFilter) => sizeFilter !== size
+                                                );
+                                                setAddProduct((prev) => ({ ...prev, sizes: remove }));
+                                            }}
+                                        >
+                                            {`${size}`}
+                                        </Tag>
+                                    ))}
+                                </Flex>
+                            </div>
                         </Col>
                         <Col span={11}>
                             <Form.Item
@@ -393,25 +397,27 @@ const FormAddProduct = (props: Props) => {
                                     onPressEnter={() => handleInputConfirm('colors')}
                                 />
                             </Form.Item>
-                            <Flex gap='4px 0' wrap>
-                                {addProduct.colors.map((color, index) => (
-                                    <Tag
-                                        key={`${index}-${color}`}
-                                        color={`${color}`}
-                                        bordered={false}
-                                        closable
-                                        onClose={(e) => {
-                                            e.preventDefault();
-                                            const remove = addProduct.colors.filter(
-                                                (colorFilter) => colorFilter !== color
-                                            );
-                                            setAddProduct((prev) => ({ ...prev, colors: remove }));
-                                        }}
-                                    >
-                                        {`${color}`}
-                                    </Tag>
-                                ))}
-                            </Flex>
+                            <div className='w-full h-[200px] bg-slate-400 rounded-md border border-slate-500 p-2'>
+                                <Flex gap='4px 0' wrap>
+                                    {addProduct.colors.map((color, index) => (
+                                        <Tag
+                                            key={`${index}-${color}`}
+                                            color={`${color}`}
+                                            bordered={false}
+                                            closable
+                                            onClose={(e) => {
+                                                e.preventDefault();
+                                                const remove = addProduct.colors.filter(
+                                                    (colorFilter) => colorFilter !== color
+                                                );
+                                                setAddProduct((prev) => ({ ...prev, colors: remove }));
+                                            }}
+                                        >
+                                            {`${color}`}
+                                        </Tag>
+                                    ))}
+                                </Flex>
+                            </div>
                         </Col>
                     </Row>
                 </>
@@ -425,8 +431,8 @@ const FormAddProduct = (props: Props) => {
         try {
             await form.validateFields();
             setCurrentStep(currentStep + 1);
-        } catch (error) {
-            message.error(String(error));
+        } catch (error: any) {
+            error.errorFields.map((errorField: any) => message.error(errorField.errors[0]));
         }
     };
 
@@ -539,19 +545,19 @@ const FormAddProduct = (props: Props) => {
     }
 
     function handleInputConfirm(type: 'sizes' | 'colors') {
-        if (type === 'sizes' && sizeInput && !addProduct.sizes.includes(sizeInput)) {
+        if (type === 'sizes' && sizeInput.trim() && !addProduct.sizes.includes(sizeInput.trim())) {
             setAddProduct((prev) => ({
                 ...prev,
                 sizes: [...prev.sizes, sizeInput],
             }));
-            setSizeInput('');
+            form.setFieldValue('sizes', '');
         }
-        if (type === 'colors' && colorInput && !addProduct.colors.includes(colorInput)) {
+        if (type === 'colors' && colorInput.trim() && !addProduct.colors.includes(colorInput.trim())) {
             setAddProduct((prev) => ({
                 ...prev,
                 colors: [...prev.colors, colorInput],
             }));
-            setColorInput('');
+            form.setFieldValue('colors', '');
         }
     }
 
@@ -585,14 +591,16 @@ const FormAddProduct = (props: Props) => {
                 .unwrap()
                 .then((response) => {
                     message.success(response.message);
-                    form.resetFields();
                     setFileList([]);
+                    form.resetFields();
+                    setCurrentStep(0);
                     dispatch(productActions.setRefreshTableTrue());
                 })
                 .catch((error) => {
                     message.error(error.message);
                 })
                 .finally(() => {
+                    setAddProduct((prev) => ({ ...prev, sizes: [], colors: [] }));
                     loadingContext?.hide();
                     onCancel();
                 });

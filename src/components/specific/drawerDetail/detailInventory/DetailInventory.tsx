@@ -85,7 +85,7 @@ const DetailInventory = (props: Props) => {
                     <li>
                         <div className={cx('itemDrawer')}>
                             <span className={cx('titleItemDrawer')}>{t('admin_supplier_code_product_label')}</span>
-                            <span>{dataProduct?.sku ?? '--'}</span>
+                            <span>{dataProduct?.slug ?? '--'}</span>
                         </div>
                     </li>
                     {/* <li>

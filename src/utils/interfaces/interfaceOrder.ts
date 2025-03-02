@@ -1,5 +1,5 @@
 export interface IOrder extends IAddOrder {
-    _id: Object;
+    _id: string;
     sku: string;
     status: string;
     paymentStatus: string;
