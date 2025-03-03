@@ -40,9 +40,9 @@ export const addSupplierThunk = createAsyncThunk(
     }
 );
 
-export const deleteSupplierThunk = createAsyncThunk(DELETE_SUPPLIER, async (payload: Object, { rejectWithValue }) => {
+export const deleteSupplierThunk = createAsyncThunk(DELETE_SUPPLIER, async (_id: string, { rejectWithValue }) => {
     try {
-        const response = await supplierApi.deleteSupplier(payload);
+        const response = await supplierApi.deleteSupplier(_id);
         return response;
     } catch (error: any) {
         return rejectWithValue(error.response.data);

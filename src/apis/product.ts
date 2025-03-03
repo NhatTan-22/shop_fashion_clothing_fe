@@ -10,6 +10,12 @@ const productApi = {
         return response.data;
     },
 
+    async getDetailProduct(slug: string) {
+        const url = `${urlApiProduct.getDetailProduct(slug)}`;
+        const response = await axiosClient.get(url);
+        return response.data;
+    },
+
     async addProduct(body: IAddProduct | FormData) {
         const headers =
             body instanceof FormData
@@ -17,6 +23,12 @@ const productApi = {
                 : { 'Content-Type': 'application/json' };
         const url = `${urlApiProduct.addProduct}`;
         const response = await axiosClient.post(url, body, { headers });
+        return response.data;
+    },
+
+    async deleteProduct(_id: string) {
+        const url = `${urlApiProduct.getDeleteProduct(_id)}`;
+        const response = await axiosClient.delete(url);
         return response.data;
     },
 };

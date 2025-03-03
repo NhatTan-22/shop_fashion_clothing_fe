@@ -259,26 +259,34 @@ const Inventory = (props: Props) => {
 
     //#region Implement Hook
     useEffect(() => {
-        loadingContext?.show();
-        dispatch(getProductThunk(paramsPage))
-            .unwrap()
-            .then((response) => {
-                if (response) {
-                    const pagination = response?.pagination;
-                    setInventory(response?.data);
-                    setCurrentPage({
-                        lengthPage: pagination.lengthPage,
-                        currentPage: pagination.currentPage,
-                    });
-                }
-            })
-            .catch((error) => {
-                message.error(error?.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                dispatch(productActions.setRefreshTableFalse());
-            });
+        try {
+            loadingContext?.show();
+            dispatch(getProductThunk(paramsPage))
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        const pagination = response?.pagination;
+                        setInventory(response?.data);
+                        setCurrentPage({
+                            lengthPage: pagination.lengthPage,
+                            currentPage: pagination.currentPage,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    message.error(error?.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    dispatch(productActions.setRefreshTableFalse());
+                });
+        } catch (error) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
+        }
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 

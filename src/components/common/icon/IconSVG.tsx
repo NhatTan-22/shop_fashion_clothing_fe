@@ -48,7 +48,7 @@ const IconSVG = (props: Props) => {
 
     return (
         <div>
-            <IconComponent width={width} height={height} ref={svgRef} onClick={onClick} />
+            <IconComponent width={width} height={height} ref={svgRef} onClick={() => onClick} />
         </div>
     );
 };

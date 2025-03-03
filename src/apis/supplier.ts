@@ -26,9 +26,10 @@ const supplierApi = {
         return response.data;
     },
 
-    async deleteSupplier(payload: Object) {
-        const url = `${urlApiSupplier.deleteSupplier(payload)}`;
-        const response = await axiosClient.delete(url, payload);
+    async deleteSupplier(_id: string) {
+        const url = `${urlApiSupplier.deleteSupplier(_id)}`;
+        const response = await axiosClient.delete(url);
+        console.log(response.data);
         return response.data;
     },
 };
