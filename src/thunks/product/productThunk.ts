@@ -1,12 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import productApi from '~/apis/product';
-import { ADD_PRODUCT, GET_PRODUCT } from '~/utils/constants/actionType';
+import { ADD_PRODUCT, DELETE_PRODUCT, GET_DETAIL_PRODUCT, GET_PRODUCT } from '~/utils/constants/actionType';
 import { IParamsPagination } from '~/utils/interfaces/common';
 import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 
 export const getProductThunk = createAsyncThunk(GET_PRODUCT, async (params: IParamsPagination, { rejectWithValue }) => {
     try {
         const response = await productApi.getAllProduct(params);
+        return response.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
+export const getDetailProductThunk = createAsyncThunk(GET_DETAIL_PRODUCT, async (slug: string, { rejectWithValue }) => {
+    try {
+        const response = await productApi.getDetailProduct(slug);
         return response.data;
     } catch (error: any) {
         return rejectWithValue(error.response.data);
@@ -24,3 +33,12 @@ export const addProductThunk = createAsyncThunk(
         }
     }
 );
+
+export const deleteProductThunk = createAsyncThunk(DELETE_PRODUCT, async (_id: string, { rejectWithValue }) => {
+    try {
+        const response = await productApi.deleteProduct(_id);
+        return response;
+    } catch (error: any) {
+        return rejectWithValue(error.response.data);
+    }
+});

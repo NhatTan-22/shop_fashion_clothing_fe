@@ -1,24 +1,24 @@
 // Libs
 import classNames from 'classnames/bind';
+import { Empty, Pagination } from 'antd';
 import { useOutletContext } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
-import { Empty, message, Pagination } from 'antd';
-import ItemProduct from '../../product/ItemProduct';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
 import styles from './GridProduct.module.scss';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '~/redux/hooks';
-import { LoadingContext } from '~/context';
-import { getProductThunk } from '~/thunks/product/productThunk';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
-import { productActions } from '~/thunks/product/productSlice';
+import ItemProduct from '../../product/ItemProduct';
 
 type Props = {
-    products: string;
+    // products: string;
 };
+interface IOutletContextType {
+    dataProduct: IProduct[];
+    currentPage: IPagination;
+    setParamsPage: React.Dispatch<React.SetStateAction<IParamsPagination>>;
+}
 
 const cx = classNames.bind(styles);
 
@@ -29,54 +29,21 @@ const GridProduct = (props: Props) => {
     //#region Declare Hook
     // const { products } = useOutletContext<any>();
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
-    const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
+    const { dataProduct, currentPage, setParamsPage } = useOutletContext<IOutletContextType>();
     //#endregion Selector
 
     //#region Declare State
-    const [dataProduct, setDataProduct] = useState<IProduct[]>([]);
-    const [paramsPage, setParamsPage] = useState<IParamsPagination>({
-        currentPage: 1,
-        limitPage: 10,
-    });
-    const [currentPage, setCurrentPage] = useState<IPagination>({
-        lengthPage: 0,
-        currentPage: 1,
-    });
     //#endregion Declare State
 
     //#region Implement Hook
-    useEffect(() => {
-        loadingContext?.show();
-        dispatch(getProductThunk(paramsPage))
-            .unwrap()
-            .then((response) => {
-                if (response) {
-                    const pagination = response?.pagination;
-                    setDataProduct(response?.data);
-                    setCurrentPage({
-                        lengthPage: pagination.lengthPage,
-                        currentPage: pagination.currentPage,
-                    });
-                }
-            })
-            .catch((error) => {
-                message.error(error?.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                dispatch(productActions.setRefreshTableFalse());
-            });
-    }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
     //#region Handle Function
     const handleChangePage = (e: number) => {
-        setParamsPage({ ...paramsPage, currentPage: e });
+        setParamsPage((prev) => ({ ...prev, currentPage: e }));
     };
     //#endregion Handle Function
 
@@ -94,7 +61,7 @@ const GridProduct = (props: Props) => {
                     <Pagination
                         className={cx('footerPagination')}
                         align='end'
-                        pageSize={paramsPage.limitPage}
+                        pageSize={12}
                         total={currentPage.lengthPage}
                         current={currentPage.currentPage}
                         showSizeChanger={false}

@@ -1,1 +1,15 @@
- 
+.mainListProduct {
+    @apply w-full h-full relative;
+}
+
+.contentListProduct {
+    @apply grid grid-flow-row gap-6 mb-8 pb-8;
+}
+
+.footerPagination {
+    @apply absolute bottom-[-30px] w-full content-end;
+}
+
+.emptyGridProduct {
+    @apply min-h-screen flex justify-center items-center;
+}

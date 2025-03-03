@@ -6,6 +6,7 @@ import {
     Category,
     ContactPage,
     Dashboard,
+    Detail,
     HomePage,
     Inventory,
     Login,
@@ -137,7 +138,7 @@ export const privateUserRoutes: IRouteModel[] = [
     },
     {
         path: `${userRoute.products}${userRoute.detail}/:slug`,
-        component: OrderPage,
+        component: Detail,
     },
 ];
 //#endregion Patient Routes

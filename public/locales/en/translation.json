@@ -16,6 +16,7 @@
     "common_apply": "Apply",
     "common_next": "Next",
     "common_clear": "Clear",
+    "common_buy_product": "Buy product",
     "common_previous": "Previous",
 
     "common_confirm_title": "Confirm deletion",
@@ -242,6 +243,7 @@
     "user_title_products_navigation": "Products",
     "user_title_blog_navigation": "Blog",
     "user_title_contact_navigation": "Contact",
+    "user_title_detail_navigation": "Detail",
 
     "user_label_classic_exclusive_slider": "Classic Exclusive",
     "user_title_women_collection_slider": "Women's Collection",
@@ -298,6 +300,12 @@
     "user_sidebar_price_label_product": "Filter By Price",
     "user_sidebar_color_label_product": "Filter By Color",
     "user_sidebar_size_label_product": "Filter By Size",
+
+    "_user_detail": "Detail",
+    "user_detail_size_products_label": "Size",
+    "user_detail_color_products_label": "Color",
+    "user_detail_stock_products_label": "Quantity",
+    "user_relate_products_title": "Related Products",
 
     "_user_order": "Order",
     "user_order_checkout_tile": "Checkout",

@@ -3,7 +3,7 @@
 }
 
 .contentGridProduct {
-    @apply grid grid-cols-4 gap-6 mb-8 pb-8;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 pb-8;
 }
 
 .footerPagination {
@@ -12,28 +12,4 @@
 
 .emptyGridProduct {
     @apply min-h-screen flex justify-center items-center;
-}
-
-@media screen and (min-width: 1201px) {
-    .contentGridProduct {
-        @apply grid grid-cols-4 gap-6;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .contentGridProduct {
-        @apply grid grid-cols-3 gap-6;
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    .contentGridProduct {
-        @apply grid grid-cols-2 gap-6;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .contentGridProduct {
-        @apply grid grid-cols-1 gap-6;
-    }
 }
