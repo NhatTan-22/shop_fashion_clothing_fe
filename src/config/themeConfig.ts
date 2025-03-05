@@ -37,6 +37,13 @@ const themeConfig: ThemeConfig = {
             colorBgContainer: '#f5ebfa',
             borderColor: '#f5ebfa',
         },
+        Button: {
+            colorLink: '#c083f8',
+            colorLinkHover: '#8a4db7',
+            colorText: '#c083f8',
+            colorBgTextActive: 'transparent',
+            colorInfoTextActive: '#8a4db7',
+        },
     },
 };
 

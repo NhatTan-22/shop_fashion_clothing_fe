@@ -6,15 +6,27 @@ import { useEffect, useRef } from 'react';
 
 type Props = {
     IconComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
+    className?: string;
     width?: number | string;
     height?: number | string;
     colorIcon?: string;
+    border?: string;
+    bgColor?: string;
     onClick?: React.MouseEventHandler<SVGSVGElement>;
 };
 
 const IconSVG = (props: Props) => {
     //#region Destructuring Props
-    const { IconComponent, width = 24, height = 24, colorIcon = 'currentColor', onClick } = props;
+    const {
+        IconComponent,
+        width = 24,
+        height = 24,
+        colorIcon = 'currentColor',
+        border,
+        className,
+        bgColor,
+        onClick,
+    } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -47,9 +59,16 @@ const IconSVG = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div>
-            <IconComponent width={width} height={height} ref={svgRef} onClick={() => onClick} />
-        </div>
+        <span className='inline-flex items-center justify-center'>
+            <IconComponent
+                width={width}
+                height={height}
+                ref={svgRef}
+                onClick={onClick}
+                className={`${border || ''} ${className || ''}`}
+                style={{ stroke: colorIcon, fill: 'none' }}
+            />
+        </span>
     );
 };
 

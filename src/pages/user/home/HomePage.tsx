@@ -3,20 +3,20 @@ import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { message } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, ItemProduct, Slider } from '~/components';
 // Others
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { baseURL } from '~/utils/constants/env';
-import { subBanners } from '~/utils/constants/mockData';
-// Styles, Images, icons
-import styles from './HomePage.module.scss';
-import { icons } from '~/assets';
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { getProductThunk } from '~/thunks/product/productThunk';
 import { LoadingContext } from '~/context';
-import { message } from 'antd';
 import { productActions } from '~/thunks/product/productSlice';
+import { IProduct } from '~/utils/interfaces/interfaceProduct';
+import { getUniqueCategoryProducts } from '~/utils/constants/helper';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
+// Styles, Images, icons
+import styles from './HomePage.module.scss';
+import { icons } from '~/assets';
 
 type Props = {
     content?: string;
@@ -26,7 +26,7 @@ const cx = classNames.bind(styles);
 
 const HomePage = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
+    // const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -40,23 +40,18 @@ const HomePage = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<IProduct[]>([]);
     //#endregion Declare State
 
     //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
-        dispatch(
-            getProductThunk({
-                currentPage: 1,
-                limitPage: 8,
-            })
-        )
+        dispatch(getProductThunk({}))
             .unwrap()
             .then((response) => {
                 if (response) {
-                    const pagination = response?.pagination;
-                    setData(response?.data);
+                    const popular = getUniqueCategoryProducts(response?.data as IProduct[]);
+                    setData(popular);
                 }
             })
             .catch((error) => {
@@ -70,6 +65,7 @@ const HomePage = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
+
     //#endregion Handle Function
 
     return (

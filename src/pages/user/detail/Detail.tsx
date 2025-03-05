@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Flex, Image, InputNumber, message, Rate, Tabs, TabsProps, Tag, Typography } from 'antd';
 // Components, Layouts, Pages
-import { Advertisement, Breadcrumb, IconSVG, ItemProduct } from '~/components';
+import { Advertisement, Breadcrumb, IconSVG, ItemProduct, Review } from '~/components';
 // Others
 import { baseURL } from '~/utils/constants/env';
 import { useAppDispatch } from '~/redux/hooks';
@@ -35,38 +35,6 @@ const Detail = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
-    const detailBreadcrumbs = [
-        {
-            to: '/products',
-            title: `${t('user_title_products_navigation')}`,
-        },
-        {
-            to: '',
-            title: `${t('user_title_detail_navigation')}`,
-        },
-        {
-            to: '',
-            title: `${params.slug}`,
-        },
-    ];
-
-    const items: TabsProps['items'] = [
-        {
-            key: '1',
-            label: 'Tab 1',
-            children: 'Content of Tab Pane 1',
-        },
-        {
-            key: '2',
-            label: 'Tab 2',
-            children: 'Content of Tab Pane 2',
-        },
-        {
-            key: '3',
-            label: 'Tab 3',
-            children: 'Content of Tab Pane 3',
-        },
-    ];
     //#endregion Selector
 
     //#region Declare State
@@ -107,13 +75,90 @@ const Detail = (props: Props) => {
             }
         }
     }, [params.slug]);
-
     //#endregion Implement Hook
 
+    //#region Create Variables
+    const detailBreadcrumbs = [
+        {
+            to: '/products',
+            title: `${t('user_title_products_navigation')}`,
+        },
+        {
+            to: '',
+            title: `${t('user_title_detail_navigation')}`,
+        },
+        {
+            to: '',
+            title: `${params.slug}`,
+        },
+    ];
+
+    const items: TabsProps['items'] = [
+        {
+            key: '1',
+            label: `${t('user_detail_description_products_label')}`,
+            children: <Typography.Paragraph>{detail?.description}</Typography.Paragraph>,
+        },
+        {
+            key: '2',
+            label: `${t('user_detail_additional_information_products_label')}`,
+            children: (
+                <>
+                    {detail?.stock && detail?.stock > 0 && (
+                        <div className='flex items-center gap-2'>
+                            <Typography.Text strong className='text-xl'>
+                                {t('user_detail_stock_products_label')}
+                            </Typography.Text>
+                            <span className='text-base'>{detail?.stock}</span>
+                        </div>
+                    )}
+
+                    {detail?.colors && detail?.colors.length > 0 && (
+                        <div className='flex items-center gap-2'>
+                            <Typography.Text className='text-xl' strong>
+                                {t('user_detail_color_products_label')}
+                            </Typography.Text>
+                            <div className='flex gap-1 text-base mt-2'>
+                                {detail?.colors.reduce((acc: JSX.Element[], color: string, index: number) => {
+                                    if (index > 0) acc.push(<span key={`comma-${index}`}>,</span>);
+
+                                    acc.push(<label key={color}>{color}</label>);
+                                    return acc;
+                                }, [])}
+                            </div>
+                        </div>
+                    )}
+
+                    {detail?.sizes && detail?.sizes.length > 0 && (
+                        <div className='flex items-center gap-2'>
+                            <Typography.Text strong className='text-xl'>
+                                {t('user_detail_size_products_label')}
+                            </Typography.Text>
+                            <div className='flex gap-1 text-base mt-2'>
+                                {detail?.sizes.reduce(
+                                    (acc: JSX.Element[], size: string, index: number, array: string[]) => {
+                                        if (index > 0) acc.push(<span key={`comma-${index}`}>,</span>);
+
+                                        acc.push(<label key={size}>{size}</label>);
+                                        return acc;
+                                    },
+                                    []
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </>
+            ),
+        },
+        {
+            key: '3',
+            label: `${t('user_detail_reviews_products_label')}`,
+            children: <Review />,
+        },
+    ];
+    //#endregion Create Variables
+
     //#region Handle Function
-    const onChangeTabs = (key: string) => {
-        console.log(key);
-    };
     //#endregion Handle Function
 
     return (
@@ -156,7 +201,7 @@ const Detail = (props: Props) => {
                             {/* <Typography.Text type='secondary'>Girls Pink Moana Printed Dress</Typography.Text> */}
                             <div className='flex items-center gap-2 mt-2'>
                                 <Rate allowHalf value={Number(detail?.ratings)} disabled />
-                                {/* <Typography.Text type='secondary'>(121 Reviews)</Typography.Text> */}
+                                <Typography.Text type='secondary'>{`(${detail?.ratings} Reviews)`}</Typography.Text>
                             </div>
                             <div className={cx('priceProduct')}>
                                 <Typography.Title level={3}>{`$${detail?.pricing.promotionPrice}`}</Typography.Title>
@@ -196,7 +241,7 @@ const Detail = (props: Props) => {
                                 ))}
                             </div>
                             <Typography.Text strong className='mt-4 block text-xl'>
-                                {t('user_detail_stock_products_label')}: <span>{detail?.stock}</span>
+                                {t('user_detail_stock_products_label')} <span>{detail?.stock}</span>
                             </Typography.Text>
 
                             <div className='flex items-center gap-4 mt-6'>
@@ -211,18 +256,14 @@ const Detail = (props: Props) => {
                                 <Button size='large' type='primary' className='bg-black text-white px-8'>
                                     {t('common_buy_product')}
                                 </Button>
-                                <Button
-                                    size='large'
-                                    shape='circle'
-                                    icon={<IconSVG IconComponent={icons.heartIcon} />}
-                                />
+                                <Button size='large' icon={<IconSVG IconComponent={icons.heartIcon} />} />
                             </div>
                         </div>
                         <div>
                             <Tag
                                 bordered={false}
                                 style={{ padding: 8 }}
-                                color={`${detail?.availability === 'IN_STOCK' ? 'green' : 'rec'}`}
+                                color={`${detail?.availability === 'IN_STOCK' ? 'green' : 'red'}`}
                             >
                                 {detail?.availability}
                             </Tag>
@@ -231,10 +272,10 @@ const Detail = (props: Props) => {
                 </div>
                 <div className='flex flex-col gap-10 mt-10 mb-[-16px]'>
                     <div>
-                        <Tabs defaultActiveKey='1' items={items} onChange={onChangeTabs} />
+                        <Tabs defaultActiveKey='1' items={items} />
                     </div>
                     <div>
-                        <Typography.Title>{t('user_relate_products_title')}</Typography.Title>
+                        <Typography.Title>{t('user_detail_relate_products_title')}</Typography.Title>
                         <div className={cx('relatedProducts')}>
                             {relate?.map((product: IProduct) => (
                                 <ItemProduct titleAdd='Buy Now' product={product} />

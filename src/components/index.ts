@@ -19,4 +19,5 @@ export { default as DetailSupplier } from './specific/drawerDetail/detailSupplie
 export { default as Slider } from './specific/slider/SliderComponents';
 export { default as Breadcrumb } from './specific/breadcrumb/Breadcrumb';
 export { default as Advertisement } from './specific/advertisement/Advertisement';
+export { default as Review } from './specific/review/Review';
 //#endregion Specific Component

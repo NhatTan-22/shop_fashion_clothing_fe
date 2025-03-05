@@ -28,6 +28,12 @@ import { ReactComponent as DeliveryIcon } from '../icons/deliveryIcon.svg';
 import { ReactComponent as PaymentIcon } from '../icons/paymentIcon.svg';
 import { ReactComponent as DotVerticalIcon } from '../icons/dotVerticalIcon.svg';
 import { ReactComponent as EditIcon } from '../icons/editIcon.svg';
+import { ReactComponent as DislikeIcon } from '../icons/dislikeIcon.svg';
+import { ReactComponent as LikeIcon } from '../icons/likeIcon.svg';
+import { ReactComponent as ImageIcon } from '../icons/imageIcon.svg';
+import { ReactComponent as SendIcon } from '../icons/sendIcon.svg';
+import { ReactComponent as SmileIcon } from '../icons/smileIcon.svg';
+import { ReactComponent as SettingIcon } from '../icons/settingIcon.svg';
 
 const icons = {
     homeIcon: HomeIcon,
@@ -60,6 +66,12 @@ const icons = {
     paymentIcon: PaymentIcon,
     dotVerticalIcon: DotVerticalIcon,
     editIcon: EditIcon,
+    dislikeIcon: DislikeIcon,
+    likeIcon: LikeIcon,
+    imageIcon: ImageIcon,
+    sendIcon: SendIcon,
+    smileIcon: SmileIcon,
+    settingIcon: SettingIcon,
 };
 
 export default icons;

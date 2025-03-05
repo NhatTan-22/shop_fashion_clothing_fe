@@ -233,7 +233,7 @@ const Inventory = (props: Props) => {
                             trigger={['click']}
                         >
                             <div>
-                                <IconSVG IconComponent={icons.dotVerticalIcon} />
+                                <IconSVG IconComponent={icons.dotVerticalIcon} className='cursor-pointer' />
                             </div>
                         </Dropdown>
                     );
