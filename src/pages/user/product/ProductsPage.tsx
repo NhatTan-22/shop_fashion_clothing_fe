@@ -18,6 +18,7 @@ import { LoadingContext } from '~/context';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import { getProductThunk } from '~/thunks/product/productThunk';
 import { productActions } from '~/thunks/product/productSlice';
+import { getErrorMessage } from '~/utils/constants/helper';
 
 type Props = {
     content?: string;
@@ -174,26 +175,30 @@ const ProductsPage = (props: Props) => {
 
     //#region Implement Hook
     useEffect(() => {
-        loadingContext?.show();
-        dispatch(getProductThunk(paramsPage))
-            .unwrap()
-            .then((response) => {
-                if (response) {
-                    const pagination = response?.pagination;
-                    setDataProduct(response?.data);
-                    setCurrentPage({
-                        lengthPage: pagination.lengthPage,
-                        currentPage: pagination.currentPage,
-                    });
-                }
-            })
-            .catch((error) => {
-                message.error(error?.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                dispatch(productActions.setRefreshTableFalse());
-            });
+        try {
+            loadingContext?.show();
+            dispatch(getProductThunk(paramsPage))
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        const pagination = response?.pagination;
+                        setDataProduct(response?.data);
+                        setCurrentPage({
+                            lengthPage: pagination.lengthPage,
+                            currentPage: pagination.currentPage,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    message.error(getErrorMessage(error));
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    dispatch(productActions.setRefreshTableFalse());
+                });
+        } catch (error) {
+            message.error(getErrorMessage(error));
+        }
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
