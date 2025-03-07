@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 export interface IRouteModel {
     path: string;
     component: React.ElementType;
-    children?: IChildRouteModel[] | null;
+    children?: IChildRouteModel[];
     name?: string;
     index?: boolean;
 }

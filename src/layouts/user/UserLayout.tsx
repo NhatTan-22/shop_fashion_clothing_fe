@@ -16,6 +16,7 @@ import { icons, images } from '~/assets';
 import styles from './UserLayout.module.scss';
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 import { userRoute } from '~/utils/constants/route';
+import { Avatar, Badge, Button, Dropdown, Empty, Typography } from 'antd';
 
 type Props = {
     content?: string;
@@ -139,33 +140,106 @@ const UserLayout = (props: Props) => {
                                 <Link to='/wishlist'>
                                     <IconSVG IconComponent={icons.heartIcon} />
                                 </Link>
-                                <div className='relative'>
-                                    <Link to={`${userRoute.products}${userRoute.cart}`}>
-                                        <IconSVG IconComponent={icons.cartIcon} />
-                                        <div className='absolute bottom-[-5px] left-4 rounded-full bg-wisteria-600'>
-                                            <span className='px-2 text-white'>0</span>
-                                        </div>
-                                    </Link>
+                                <div>
+                                    <Dropdown
+                                        menu={{
+                                            items: [
+                                                {
+                                                    key: '1',
+                                                    label: (
+                                                        <Typography.Title level={4}>
+                                                            You have 0 item in your cart
+                                                        </Typography.Title>
+                                                    ),
+                                                },
+                                                {
+                                                    key: '2',
+                                                    label: <Empty description='No product in cart' />,
+                                                },
+                                                {
+                                                    key: '3',
+                                                    label: (
+                                                        <div className='flex flex-col gap-4 w-full'>
+                                                            <div className='w-full flex items-center justify-between'>
+                                                                <Typography.Title level={4} className='!m-0'>
+                                                                    Subtotal
+                                                                </Typography.Title>
+                                                                <Typography.Title level={4} className='!m-0'>
+                                                                    $200.00
+                                                                </Typography.Title>
+                                                            </div>
+                                                            <Link to={`${userRoute.products}${userRoute.cart}`}>
+                                                                <Button size='large' className='w-full' type='default'>
+                                                                    View Cart
+                                                                </Button>
+                                                            </Link>
+                                                            <Link to={`${userRoute.products}${userRoute.cart}`}>
+                                                                <Button size='large' className='w-full' type='primary'>
+                                                                    Checkout
+                                                                </Button>
+                                                            </Link>
+                                                        </div>
+                                                    ),
+                                                },
+                                            ],
+                                        }}
+                                        placement='bottomRight'
+                                        className='cursor-pointer'
+                                        arrow={{ pointAtCenter: true }}
+                                        trigger={['click']}
+                                    >
+                                        <Badge count={1} offset={[0, 20]} color='#c083f8'>
+                                            <IconSVG IconComponent={icons.cartIcon} />
+                                        </Badge>
+                                    </Dropdown>
                                 </div>
-                                <div className={cx('identityUser')}>
+                                <div>
                                     {!user ? (
                                         <Link to='/auth/login'>
                                             <BaseButton nameButton='Login' />
                                         </Link>
                                     ) : (
-                                        <>
-                                            <img
-                                                className='w-10 h-10 rounded-full'
-                                                src={user.photoUrl ? `${baseURL}/${user.photoUrl}` : `${user.photoUrl}`}
-                                                alt=''
+                                        <Dropdown
+                                            menu={{
+                                                items: [
+                                                    {
+                                                        key: '1',
+                                                        label: `Welcome, ${user.firstName} ${user.lastName}!`,
+                                                    },
+                                                    {
+                                                        key: '2',
+                                                        label: (
+                                                            <Link to='/profile' className='flex justify-center'>
+                                                                My Profile
+                                                            </Link>
+                                                        ),
+                                                    },
+                                                    {
+                                                        key: '3',
+                                                        label: (
+                                                            <Button
+                                                                className='w-full'
+                                                                type='text'
+                                                                onClick={handleLogout}
+                                                            >
+                                                                Logout
+                                                            </Button>
+                                                        ),
+                                                    },
+                                                ],
+                                            }}
+                                            placement='bottomRight'
+                                            className='cursor-pointer'
+                                            arrow={{ pointAtCenter: true }}
+                                            trigger={['click']}
+                                        >
+                                            <Avatar
+                                                size={'default'}
+                                                shape='circle'
+                                                src={user.photoUrl ?? `${baseURL}/${user.photoUrl}`}
+                                                alt={`${user.firstName} ${user.lastName}`}
                                             />
-                                            <BaseButton
-                                                width='100px'
-                                                styleButton={ButtonStyleEnum.TEXT}
-                                                onClick={handleLogout}
-                                                nameButton={`Welcome, ${user.firstName} ${user.lastName}!`}
-                                            />
-                                        </>
+                                        </Dropdown>
                                     )}
                                 </div>
                             </div>

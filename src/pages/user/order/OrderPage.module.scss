@@ -1,5 +1,5 @@
 .mainOrderPage {
-    @apply mx-auto max-w-[85%] w-screen h-full font-nunito;
+    @apply mx-auto max-w-[85%] w-screen h-full font-nunito pt-6 pb-8;
 }
 
 .headerOrder {
@@ -7,11 +7,7 @@
 }
 
 .contentOrder {
-    @apply grid grid-flow-col col-span-2 gap-6;
-}
-
-.columnsProduct {
-    @apply flex gap-6;
+    @apply flex justify-between gap-12;
 }
 
 .columnsProduct img {
@@ -27,7 +23,7 @@
 }
 
 .colTotalBill {
-    @apply max-h-max border rounded-md p-5;
+    @apply max-h-max w-[55%] border rounded-md p-5 mt-14;
 }
 
 .rowTotalBill {
@@ -38,24 +34,12 @@
     @apply flex justify-between;
 }
 
-.labelItem {
-    @apply font-bold;
-}
-
 .contentTotalBill {
     @apply border-y-2 my-6 py-6 grid grid-flow-row gap-5;
 }
 
-.emptyOrder img {
-    @apply flex mx-auto;
-}
-
 @media screen and (max-width: 768px) {
-    .tableOrderProduct {
-        @apply overflow-auto;
-    }
-
     .contentOrder {
-        @apply grid grid-flow-row;
+        @apply grid grid-flow-row w-full;
     }
 }

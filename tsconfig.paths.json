@@ -8,6 +8,7 @@
             "~redux/*": ["src/redux/*"],
             "~thunks/*": ["src/thunks/*"],
             "~components/*": ["src/components/*"],
+            "~utils/*": ["src/utils/*"]
         }
     }
 }

@@ -1,33 +1,19 @@
 // Libs
 import classNames from 'classnames/bind';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Button, Input, Space, Typography } from 'antd';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 // Components, Layouts, Pages
-import { BaseButton, BaseTable, IconSVG } from '~/components';
 // Others
-import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
-import { IOrder } from '~/utils/interfaces/interfaceOrder';
-import { renderFormatValue } from '~/utils/constants/helper';
-import { baseURL } from '~/utils/constants/env';
 // Styles, Images, icons
 import styles from './OrderPage.module.scss';
-import { icons } from '~/assets';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { Empty, Input, Space, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 type Props = {
-    content?: string;
+    // content?: string;
 };
 
 const cx = classNames.bind(styles);
-
-// const contactBreadcrumbs = [
-//     {
-//         to: '/orders',
-//         title: 'Your cart',
-//     },
-// ];
 
 const OrderPage = (props: Props) => {
     //#region Destructuring Props
@@ -36,151 +22,85 @@ const OrderPage = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const location = useLocation();
     //#endregion Declare Hook
 
     //#region Selector
-    const columns: Columns<IOrder, DataType<IOrder>>[] = [
-        // {
-        //     title: t('user_products_code_label_table'),
-        //     dataIndex: 'productDetails',
-        //     key: 'productDetails',
-        //     render: (_, record) => {
-        //         if (record?.img && record?.name && record?.size && record?.color) {
-        //             return (
-        //                 <div className={cx('columnsProduct')}>
-        //                     <img src={`${record.img ?? `${baseURL}/${record.img}`}`} alt='' />
-        //                     <div>
-        //                         <div className={cx('nameProduct')}>{`${
-        //                             record.name ?? renderFormatValue(record.name)
-        //                         }`}</div>
-        //                         <div className={cx('typeProduct')}>
-        //                             <div className='flex'>
-        //                                 {t('user_order_type_size_products_label')}
-        //                                 <p>{`${record.size ?? renderFormatValue(record.size)}`}</p>
-        //                             </div>
-        //                             <div className='flex'>
-        //                                 {t('user_order_type_color_products_label')}
-        //                                 <p>{`${record.color ?? renderFormatValue(record.color)}`}</p>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             );
-        //         }
-        //     },
-        // },
-        {
-            title: t('user_products_price_label_table'),
-            dataIndex: 'sellingPrice',
-            key: 'sellingPrice',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
-        {
-            title: t('user_products_quantity_label_table'),
-            dataIndex: 'quantity',
-            key: 'quantity',
-            render: (text, _) => {
-                return (
-                    <div className={cx('buttonCount')}>
-                        <IconSVG IconComponent={icons.arrowLeftIcon} />
-                        <p>{`${text ?? renderFormatValue(text)}`}</p>
-                        <IconSVG IconComponent={icons.arrowRightIcon} />
-                    </div>
-                );
-            },
-        },
-        // {
-        //     title: t('user_products_subtotal_label_table'),
-        //     dataIndex: 'status',
-        //     key: 'status',
-        //     render: (_, record) => {
-        //         if (record?.sellingPrice && record?.quantity) {
-        //             const total = record.sellingPrice * record.quantity;
-        //             return <p>{`${total ?? renderFormatValue(total)}`}</p>;
-        //         }
-        //     },
-        // },
-        {
-            title: '',
-            dataIndex: '_id',
-            key: '_id',
-            render: (text, _) => {
-                if (!text._id) {
-                    return (
-                        <IconSVG
-                            onClick={() => handleDelete(text._id)}
-                            colorIcon='red'
-                            IconComponent={icons.deleteIcon}
-                        />
-                    );
-                }
-            },
-        },
-    ];
     //#endregion Selector
 
     //#region Declare State
-    const [order, setOrder] = useState([]);
+    const [currentStep, setCurrentStep] = useState<number>(0);
     //#endregion Declare State
 
     //#region Implement Hook
+    useEffect(() => {
+        setCurrentStep(0);
+    }, [location.pathname]);
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleDelete = (id: string | any) => {};
+    function handlePlaceOrder() {
+        // Handle Place Order
+    }
     //#endregion Handle Function
 
     return (
         <div id='orderPageComponent' className={cx('mainOrderPage')}>
-            <div className={cx('headerOrder')}>
-                <h1>{t('user_order_checkout_tile')}</h1>
-            </div>
             <div className={cx('contentOrder')}>
-                <div className={cx('tableOrderProduct')}>
-                    {order.length ? (
-                        <BaseTable columns={columns} dataSource={order} />
-                    ) : (
-                        <Empty
-                            image='https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg'
-                            className={cx('emptyOrder')}
-                            description={
-                                <Typography.Text>
-                                    <span>{t('user_description_empty')}</span>{' '}
-                                    <Link to='/products'>
-                                        <BaseButton
-                                            styleButton={ButtonStyleEnum.TEXT}
-                                            nameButton={t('user_name_button_empty')}
-                                        />
-                                    </Link>
-                                </Typography.Text>
-                            }
-                        />
-                    )}
+                <div className='w-full'>
+                    <Outlet context={{ currentStep, setCurrentStep }} />
                 </div>
                 <div className={cx('colTotalBill')}>
                     <div className={cx('labelItem')}>
-                        <span>{t('user_products_subtotal_label')}</span>
+                        <Typography.Title level={4}>{t('user_products_subtotal_label')}</Typography.Title>
+                        <Typography.Title level={4} className='!m-0'>
+                            {
+                                // Tiền giá gốc
+                            }
+                        </Typography.Title>
                     </div>
                     <div className={cx('contentTotalBill')}>
                         <Space.Compact style={{ width: '100%' }}>
                             <Input placeholder={t('user_products_enter_discount_code_label')} />
-                            <BaseButton styleButton={ButtonStyleEnum.PRIMARY} nameButton={t('common_apply')} />
+                            <Button size='large' type='primary'>
+                                {t('common_apply')}
+                            </Button>
                         </Space.Compact>
                         <div className={cx('labelItem')}>
-                            <span>{t('user_products_delivery_charge_label')}</span>
-                            <span>$5.00</span>
+                            <Typography.Title level={4} className='!m-0'>
+                                {t('user_products_delivery_charge_label')}
+                            </Typography.Title>
+                            <Typography.Title level={4} className='!m-0'>
+                                {
+                                    // Phí giao hàng
+                                }
+                            </Typography.Title>
                         </div>
                     </div>
                     <div className={cx('rowTotalBill')}>
                         <div className={cx('labelItem')}>
-                            <span>{t('user_products_grand_total_label')}</span>
+                            <Typography.Title level={4} className='!m-0'>
+                                {t('user_products_grand_total_label')}
+                            </Typography.Title>
+                            <Typography.Title level={4} className='!m-0'>
+                                {
+                                    // Tiền trừ giảm giá
+                                }
+                            </Typography.Title>
                         </div>
-                        <BaseButton
-                            styleButton={ButtonStyleEnum.PRIMARY}
-                            nameButton={t('user_products_proceed_to_checkout_label_button')}
-                        />
+                        {location.pathname === '/products/cart' ? (
+                            <Link to='/products/cart/shipping-address'>
+                                <Button size='large' type='primary' className='w-full'>
+                                    {t('user_products_proceed_to_checkout_label_button')}
+                                </Button>
+                            </Link>
+                        ) : (
+                            currentStep === 3 && (
+                                <Button size='large' type='primary' className='w-full' onClick={handlePlaceOrder}>
+                                    {t('user_products_place_order_label_button')}
+                                </Button>
+                            )
+                        )}
                     </div>
                 </div>
             </div>
