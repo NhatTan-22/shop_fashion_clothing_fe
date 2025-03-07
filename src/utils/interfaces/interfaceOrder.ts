@@ -4,21 +4,30 @@ export interface IOrder extends IAddOrder {
     status: string;
     paymentStatus: string;
     shippingId: Object;
+    paymentMethod: string;
 }
 
 export interface IAddOrder {
     userId: Object;
-    products: [
-        {
-            productId: object;
-            image: string;
-            name: string;
-            color: string;
-            size: string;
-            quantity: number;
-            price: number;
-        }
-    ];
+    address: IAddress;
+    products: IProducts[];
     totalPrice: number;
-    discount: Object;
+    discount: string;
+}
+
+export interface IProducts {
+    productId: string;
+    image: string;
+    name: string;
+    color: string;
+    size: string;
+    quantity: number;
+    price: number;
+}
+
+export interface IAddress {
+    nameCustomer: string;
+    phone: string;
+    email: string;
+    address: string;
 }

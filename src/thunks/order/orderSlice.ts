@@ -1,16 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getOrderThunk, } from './orderThunk';
+import { getOrderThunk } from './orderThunk';
 import { IParamsPagination } from '~/utils/interfaces/common';
-import { IOrder } from '~/utils/interfaces/interfaceOrder';
+import { IAddress, IOrder, IProducts } from '~/utils/interfaces/interfaceOrder';
 
 export interface IListOrder {
     order: IOrder[];
+    products: IProducts[];
+    address: IAddress;
+    payment: string;
     pagination: IParamsPagination;
     isRefreshOrder: boolean;
 }
 
 const initialState: IListOrder = {
     order: [],
+    products: [],
+    address: {
+        nameCustomer: '',
+        phone: '',
+        email: '',
+        address: '',
+    },
+    payment: '',
     pagination: {},
     isRefreshOrder: false,
 };

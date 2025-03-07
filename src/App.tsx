@@ -68,7 +68,6 @@ const App = () => {
                 </Route>
 
                 <Route
-                    path={userRoute.base}
                     element={
                         <ProtectedRoute>
                             <UserLayout />
@@ -77,11 +76,13 @@ const App = () => {
                 >
                     {privateUserRoutes.map((route, index) => {
                         const Page = route.component || <NotFoundPage />;
+
+                        const children = route.children ?? [];
+
                         return (
                             <Route key={index} path={route.path} element={<Page />}>
-                                {route.children &&
-                                    route.children.length > 0 &&
-                                    route.children.map((childRoute, index) => {
+                                {children.length > 0 &&
+                                    children.map((childRoute, index) => {
                                         const ChildComponent = childRoute.component;
                                         return (
                                             <Route

@@ -320,6 +320,12 @@
     "user_products_quantity_label_table": "Quantity",
     "user_products_subtotal_label_table": "Subtotal",
 
+    "user_order_shipping_address_tile": "Shipping Address",
+    "user_order_select_address_tile": "Select a delivery address",
+    "user_order_select_address_description": "Is the address you'd like to use displayed below? If so, click the corresponding 'Deliver to this address' button. Or you can enter a new delivery address.",
+    "user_order_select_payment_method_tile": "Select a payment method",
+    "user_order_estimated_delivery_tile": "Estimate delivery:",
+
     "user_description_empty": "You have no items in your shopping cart.",
     "user_name_button_empty": "Continue shopping",
 
@@ -328,6 +334,7 @@
     "user_products_delivery_charge_label": "Delivery Charge",
     "user_products_grand_total_label": "Grand Total",
     "user_products_proceed_to_checkout_label_button": "Proceed To Checkout",
+    "user_products_place_order_label_button": "Place Order",
 
     "user_title_button_send_message": "Send Message"
 }

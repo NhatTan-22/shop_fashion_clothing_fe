@@ -154,6 +154,7 @@ const ItemProduct = (props: Props) => {
                                 }}
                             >{`${titleAdd}`}</Button>
                             <Button
+                                size='large'
                                 type='text'
                                 onClick={() => {
                                     handleAddToWishlist(product?.slug);
@@ -162,6 +163,7 @@ const ItemProduct = (props: Props) => {
                                 <IconSVG IconComponent={icons.heartIcon} />
                             </Button>
                             <Button
+                                size='large'
                                 type='text'
                                 onClick={() => {
                                     handleDetailProduct(product?.slug);

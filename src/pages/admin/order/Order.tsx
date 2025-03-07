@@ -101,7 +101,7 @@ const Order = (props: Props) => {
             title: `${t('admin_order_discount_label_table')}`,
             dataIndex: 'discount',
             render: (_, record) => {
-                return <p>{`${record.discount ?? renderFormatValue(record.discount)}`}</p>;
+                return <p>{`${record?.discount ?? renderFormatValue(record.discount)}`}</p>;
             },
         },
         {

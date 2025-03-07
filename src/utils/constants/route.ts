@@ -4,6 +4,7 @@ import {
     BlogPage,
     Brand,
     Category,
+    Checkout,
     ContactPage,
     Dashboard,
     Detail,
@@ -15,6 +16,7 @@ import {
     ProductsPage,
     Register,
     Report,
+    ShippingAddress,
     Supplier,
 } from '~/pages';
 
@@ -47,6 +49,7 @@ export const userRoute = {
     list: '/list',
     blog: '/blog',
     cart: '/cart',
+    address: '/shipping-address',
     contact: '/contact',
 };
 
@@ -135,6 +138,16 @@ export const privateUserRoutes: IRouteModel[] = [
     {
         path: `${userRoute.products}${userRoute.cart}`,
         component: OrderPage,
+        children: [
+            {
+                index: true,
+                component: Checkout,
+            },
+            {
+                path: `${userRoute.products}${userRoute.cart}${userRoute.address}`,
+                component: ShippingAddress,
+            },
+        ],
     },
     {
         path: `${userRoute.products}${userRoute.detail}/:slug`,

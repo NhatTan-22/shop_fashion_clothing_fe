@@ -16,6 +16,7 @@ import { LoadingContext } from '~/context';
 // Styles, Images, icons
 import styles from './Register.module.scss';
 import { icons } from '~/assets';
+import { authActions } from '~/thunks/auth/authSlice';
 
 type Props = {
     content?: string;
@@ -63,7 +64,6 @@ const Register = (props: Props) => {
         dispatch(authRegister(data))
             .unwrap()
             .then((response) => {
-                console.log(response);
                 message.success(`${t('register_success')}`);
             })
             .catch((error) => {
@@ -76,7 +76,6 @@ const Register = (props: Props) => {
             .finally(() => {
                 loadingContext?.hide();
             });
-        console.log(data);
     };
     //#endregion Handle Function
 
