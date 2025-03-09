@@ -1,9 +1,9 @@
 // Libs
 import classNames from 'classnames/bind';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Flex, Image, InputNumber, message, Rate, Tabs, TabsProps, Tag, Typography } from 'antd';
+import { Button, Image, InputNumber, message, Rate, Tabs, TabsProps, Tag, Typography } from 'antd';
 // Components, Layouts, Pages
 import { Advertisement, Breadcrumb, IconSVG, ItemProduct, Review } from '~/components';
 // Others
@@ -12,6 +12,8 @@ import { useAppDispatch } from '~/redux/hooks';
 import { LoadingContext } from '~/context';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import { getDetailProductThunk } from '~/thunks/product/productThunk';
+import { IProducts } from '~/utils/interfaces/interfaceOrder';
+import { orderActions } from '~/thunks/order/orderSlice';
 // Styles, Images, icons
 import styles from './Detail.module.scss';
 import { icons } from '~/assets';
@@ -30,6 +32,7 @@ const Detail = (props: Props) => {
     //#region Declare Hook
     const params = useParams();
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
@@ -40,10 +43,15 @@ const Detail = (props: Props) => {
     //#region Declare State
     const [detail, setDetail] = useState<IProduct>();
     const [relate, setRelate] = useState<IProduct[]>([]);
-    const [selectedImage, setSelectedImage] = useState('');
-    const [quantity, setQuantity] = useState<number>(1);
-    const [selectedColor, setSelectedColor] = useState('');
-    const [selectedSize, setSelectedSize] = useState('');
+    const [product, setProduct] = useState<IProducts>({
+        productId: '',
+        image: '',
+        name: '',
+        color: '',
+        size: '',
+        quantity: 1,
+        price: 0,
+    });
     //#endregion Declare State
 
     //#region Implement Hook
@@ -57,7 +65,16 @@ const Detail = (props: Props) => {
                         if (response) {
                             setDetail(response.data);
                             setRelate(response.relate);
-                            setSelectedImage(response.data.images[0]);
+                            setProduct((prev) => ({
+                                ...prev,
+                                color: response.data.colors[0],
+                                size: response.data.sizes[0],
+                                productId: response.data._id,
+                                image: response.data.images[0],
+                                name: response.data.name,
+                                quantity: 1,
+                                price: response.data.pricing.price,
+                            }));
                         }
                     })
                     .catch((error) => {
@@ -159,6 +176,31 @@ const Detail = (props: Props) => {
     //#endregion Create Variables
 
     //#region Handle Function
+    function onChangeQuantity(value: number) {
+        setProduct((prev) => ({
+            ...prev,
+            quantity: value,
+        }));
+    }
+
+    function handleSetSelected(value: string, type: string) {
+        if (type === 'color') {
+            setProduct((prev) => ({
+                ...prev,
+                color: value,
+            }));
+        } else if (type === 'size') {
+            setProduct((prev) => ({
+                ...prev,
+                size: value,
+            }));
+        }
+    }
+
+    function handleBuyProduct() {
+        dispatch(orderActions.addProduct(product));
+        navigate('/products/cart');
+    }
     //#endregion Handle Function
 
     return (
@@ -170,7 +212,7 @@ const Detail = (props: Props) => {
                         <div className='w-[500px] h-[500px] border-2 border-gray-300 rounded-lg overflow-hidden flex items-center justify-center cursor-pointer mb-5'>
                             <Image
                                 className={cx('imageContainer')}
-                                src={`${baseURL}/${selectedImage}`}
+                                src={`${baseURL}/${product.image}`}
                                 alt={detail?.name}
                             />
                         </div>
@@ -180,8 +222,8 @@ const Detail = (props: Props) => {
                                     {detail?.images.map((img, index) => (
                                         <div
                                             key={index}
-                                            className={cx('thumbnailContainer', { selected: selectedImage === img })}
-                                            onClick={() => setSelectedImage(img)}
+                                            className={cx('thumbnailContainer', { selected: product.image === img })}
+                                            onClick={() => setProduct((prev) => ({ ...prev, image: img }))}
                                         >
                                             <Image
                                                 src={`${baseURL}/${img}`}
@@ -221,8 +263,8 @@ const Detail = (props: Props) => {
                                         key={color}
                                         color={color}
                                         style={{ border: `2px solid #000` }}
-                                        className={cx('colorOption', { selected: selectedColor === color })}
-                                        onClick={() => setSelectedColor(color)}
+                                        className={cx('colorOption', { selected: product.color === color })}
+                                        onClick={() => handleSetSelected(color, 'color')}
                                     />
                                 ))}
                             </div>
@@ -233,8 +275,8 @@ const Detail = (props: Props) => {
                                 {detail?.sizes.map((size) => (
                                     <Button
                                         key={size}
-                                        type={selectedSize === size ? 'primary' : 'default'}
-                                        onClick={() => setSelectedSize(size)}
+                                        type={product.size === size ? 'primary' : 'default'}
+                                        onClick={() => handleSetSelected(size, 'size')}
                                     >
                                         {size}
                                     </Button>
@@ -249,11 +291,16 @@ const Detail = (props: Props) => {
                                     size='large'
                                     min={1}
                                     max={detail?.stock}
-                                    defaultValue={quantity}
-                                    onChange={(value) => setQuantity(value as number)}
+                                    defaultValue={product.quantity}
+                                    onChange={(value) => onChangeQuantity(value as number)}
                                     changeOnWheel
                                 />
-                                <Button size='large' type='primary' className='bg-black text-white px-8'>
+                                <Button
+                                    size='large'
+                                    type='primary'
+                                    className='bg-black text-white px-8'
+                                    onClick={handleBuyProduct}
+                                >
                                     {t('common_buy_product')}
                                 </Button>
                                 <Button size='large' icon={<IconSVG IconComponent={icons.heartIcon} />} />
@@ -278,7 +325,7 @@ const Detail = (props: Props) => {
                         <Typography.Title>{t('user_detail_relate_products_title')}</Typography.Title>
                         <div className={cx('relatedProducts')}>
                             {relate?.map((product: IProduct) => (
-                                <ItemProduct titleAdd='Buy Now' product={product} />
+                                <ItemProduct key={product._id} titleAdd='Buy Now' product={product} />
                             ))}
                         </div>
                     </div>

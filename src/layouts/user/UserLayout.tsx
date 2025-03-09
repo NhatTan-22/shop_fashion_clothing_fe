@@ -234,7 +234,7 @@ const UserLayout = (props: Props) => {
                                             trigger={['click']}
                                         >
                                             <Avatar
-                                                size={'default'}
+                                                className='w-14 h-14'
                                                 shape='circle'
                                                 src={user.photoUrl ?? `${baseURL}/${user.photoUrl}`}
                                                 alt={`${user.firstName} ${user.lastName}`}
