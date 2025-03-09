@@ -20,6 +20,7 @@ export const SEARCH_BRAND = 'SEARCH_BRAND';
 export const ADD_BRAND = 'ADD_BRAND';
 
 export const GET_ORDER = 'GET_ORDER';
+export const ADD_ORDER = 'ADD_ORDER';
 
 export const urlApiAuth = {
     login: 'auth/login',

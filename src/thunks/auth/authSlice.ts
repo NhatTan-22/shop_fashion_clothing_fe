@@ -6,13 +6,11 @@ import { IUser } from '~/utils/interfaces/auth';
 export interface AuthState {
     accessToken: string | null | undefined;
     user: IUser | null;
-    address: IUser[];
 }
 
 const initialState: AuthState = {
     user: JSON.parse(localStorage.getItem('user') || 'null'),
     accessToken: localStorage.getItem(StorageEnum.ACCESS_TOKEN) || null,
-    address: [],
 };
 
 const authSlice = createSlice({
@@ -31,7 +29,6 @@ const authSlice = createSlice({
             .addCase(authLoginThunk.fulfilled, (state, action) => {
                 const { data, token } = action.payload;
                 state.user = data;
-                state.address.push(data);
                 state.accessToken = token.access;
                 localStorage.setItem('user', JSON.stringify(data));
                 localStorage.setItem(StorageEnum.ACCESS_TOKEN, token.access);

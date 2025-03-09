@@ -1,7 +1,6 @@
 // Libs
 import classNames from 'classnames/bind';
 import { Button, Empty, Image, InputNumber, Table, Tag, Typography } from 'antd';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 // Components, Layouts, Pages
@@ -11,7 +10,9 @@ import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { renderFormatValue } from '~/utils/constants/helper';
 import { IProducts } from '~/utils/interfaces/interfaceOrder';
 import { baseURL } from '~/utils/constants/env';
-import { mockProducts } from '~/utils/constants/mockData';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
+import { orderActions } from '~/thunks/order/orderSlice';
+import { RootState } from '~/redux/store';
 // Styles, Images, icons
 import styles from './Checkout.module.scss';
 import { icons } from '~/assets';
@@ -29,22 +30,35 @@ const Checkout = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     //#endregion Declare Hook
 
     //#region Selector
+    const orderStore = useAppSelector((state: RootState) => state.order.order);
     //#endregion Selector
 
+    //#region Declare State
+    // const [product, setProduct] = useState<IProducts[]>(
+    //     localStorage.getItem('product') ? JSON.parse(localStorage.getItem('product')!) : []
+    // );
+    //#endregion Declare State
     //#region Create Variables
     const columns: Columns<IProducts, DataType<IProducts>>[] = [
         {
             title: t('user_products_code_label_table'),
-            dataIndex: 'products',
-            key: 'products',
+            dataIndex: 'productId',
+            key: 'productId',
             render: (_, record) => {
                 if (record?.image && record?.color && record?.size && record?.name) {
                     return (
                         <div className={cx('columnsProduct')}>
-                            <Image src={`${baseURL}/${record.image}`} alt={record.name} />
+                            <Image
+                                width={100}
+                                height={100}
+                                className='object-fill'
+                                src={`${baseURL}/${record.image}`}
+                                alt={record.name}
+                            />
                             <div>
                                 <Typography.Title level={5}>{`${
                                     record.name ?? renderFormatValue(record.name)
@@ -90,7 +104,7 @@ const Checkout = (props: Props) => {
                             size='large'
                             min={1}
                             defaultValue={record?.quantity}
-                            // onChange={(value) => setQuantity(value as number)}
+                            onChange={(value) => handleQuantityChange(value as number, record)}
                             changeOnWheel
                         />
                     );
@@ -112,12 +126,12 @@ const Checkout = (props: Props) => {
             title: '',
             dataIndex: 'productId',
             key: 'productId',
-            render: (text, _) => {
-                if (!text.productId) {
+            render: (_, record) => {
+                if (record?.productId) {
                     return (
                         <IconSVG
                             className='cursor-pointer'
-                            onClick={() => handleDelete(text.productId)}
+                            onClick={() => handleDelete(record)}
                             colorIcon='red'
                             IconComponent={icons.deleteIcon}
                         />
@@ -129,32 +143,47 @@ const Checkout = (props: Props) => {
     ];
     //#endregion Create Variables
 
-    //#region Declare State
-    const [order, setOrder] = useState(mockProducts);
-
-    //#endregion Declare State
-
     //#region Implement Hook
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleDelete = (id: string | any) => {};
+    const handleQuantityChange = (value: number | null, record: IProducts) => {
+        if (value && value > 0) {
+            dispatch(
+                orderActions.updateQuantity({
+                    id: record.productId,
+                    quantity: value,
+                    color: record.color,
+                    size: record.size,
+                })
+            );
+        }
+    };
 
+    const handleDelete = (record: IProducts) => {
+        dispatch(
+            orderActions.removeProduct({
+                id: record.productId,
+                color: record.color,
+                size: record.size,
+            })
+        );
+    };
     //#endregion Handle Function
 
     return (
         <div id='checkoutComponent' className={cx('mainCheckout')}>
             <Typography.Title level={2}>{t('user_order_checkout_tile')}</Typography.Title>
             <div className={cx('tableOrderProduct')}>
-                {order.length ? (
+                {orderStore.products && orderStore.products.length > 0 ? (
                     <Table
-                        rowKey={(record) => record.productId}
+                        rowKey={(record) => `${record.productId}_${Math.random().toString(36).substr(2, 5)}`}
                         tableLayout='auto'
                         bordered={false}
                         pagination={false}
                         className='w-full'
                         columns={columns}
-                        dataSource={order}
+                        dataSource={orderStore.products}
                     />
                 ) : (
                     <Empty

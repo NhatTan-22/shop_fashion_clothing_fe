@@ -4,6 +4,7 @@ import categoryReducer from '~/thunks/category/categorySlice';
 import productReducer from '~/thunks/product/productSlice';
 import supplierReducer from '~/thunks/supplier/supplierSlice';
 import brandReducer from '~/thunks/brand/brandSlice';
+import orderReducer from '~/thunks/order/orderSlice';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     product: productReducer,
     category: categoryReducer,
     brand: brandReducer,
+    order: orderReducer,
 });
 
 export function makeStore() {

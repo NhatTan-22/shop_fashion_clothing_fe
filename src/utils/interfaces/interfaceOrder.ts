@@ -1,17 +1,17 @@
 export interface IOrder extends IAddOrder {
-    _id: string;
+    _id?: string;
     sku: string;
     status: string;
+    shippingId: string | object;
     paymentStatus: string;
-    shippingId: Object;
-    paymentMethod: string;
 }
 
 export interface IAddOrder {
-    userId: Object;
+    userId: string | object;
     address: IAddress;
     products: IProducts[];
     totalPrice: number;
+    paymentMethod: string;
     discount: string;
 }
 
@@ -28,6 +28,5 @@ export interface IProducts {
 export interface IAddress {
     nameCustomer: string;
     phone: string;
-    email: string;
     address: string;
 }
