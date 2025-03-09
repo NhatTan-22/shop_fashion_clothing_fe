@@ -1,0 +1,15 @@
+.mainShippingAddress {
+    @apply h-full font-nunito flex flex-col gap-6;
+}
+
+.bodyShippingAddress {
+    @apply max-w-[100vh] w-full overflow-hidden;
+}
+
+.rowReview{
+    @apply w-full border-b-2 border-gray-100 py-5;
+}
+
+.columnsProduct {
+    @apply flex gap-6;
+}

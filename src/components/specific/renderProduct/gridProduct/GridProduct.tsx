@@ -1,19 +1,24 @@
 // Libs
 import classNames from 'classnames/bind';
+import { Empty, Pagination } from 'antd';
 import { useOutletContext } from 'react-router-dom';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
 import styles from './GridProduct.module.scss';
-import { Empty, Pagination } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import ItemProduct from '../../product/ItemProduct';
-import IconSVG from '~/components/common/icon/IconSVG';
-import { icons } from '~/assets';
-import { useEffect, useState } from 'react';
 
 type Props = {
-    products: string;
+    // products: string;
 };
+interface IOutletContextType {
+    dataProduct: IProduct[];
+    currentPage: IPagination;
+    setParamsPage: React.Dispatch<React.SetStateAction<IParamsPagination>>;
+}
 
 const cx = classNames.bind(styles);
 
@@ -22,37 +27,46 @@ const GridProduct = (props: Props) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
-    const { products } = useOutletContext<any>();
-    const [dataProduct, setDataProduct] = useState([]);
+    // const { products } = useOutletContext<any>();
+    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
+    const { dataProduct, currentPage, setParamsPage } = useOutletContext<IOutletContextType>();
     //#endregion Selector
 
     //#region Declare State
     //#endregion Declare State
 
     //#region Implement Hook
-    useEffect(() => {
-        setDataProduct(products);
-    }, [products]);
     //#endregion Implement Hook
 
     //#region Handle Function
+    const handleChangePage = (e: number) => {
+        setParamsPage((prev) => ({ ...prev, currentPage: e }));
+    };
     //#endregion Handle Function
 
     return (
         <div id='gridProductPage' className={cx('mainGridProduct')}>
-            {dataProduct && dataProduct.length > 0 ? (
+            {dataProduct.length > 0 ? (
                 <>
                     <div className={cx('contentGridProduct')}>
-                        {dataProduct.map((product: any, index: number) => (
-                            <ItemProduct key={index} product={product} />
+                        {dataProduct.map((product: IProduct) => (
+                            <div key={product.slug}>
+                                <ItemProduct product={product} titleAdd='Buy Now' />
+                            </div>
                         ))}
                     </div>
-                    <div className={cx('paginationGridProduct')}>
-                        <Pagination align='end' total={20} defaultCurrent={1} />
-                    </div>
+                    <Pagination
+                        className={cx('footerPagination')}
+                        align='end'
+                        pageSize={12}
+                        total={currentPage.lengthPage}
+                        current={currentPage.currentPage}
+                        showSizeChanger={false}
+                        onChange={handleChangePage}
+                    />
                 </>
             ) : (
                 <Empty description={false} className={cx('emptyGridProduct')} />

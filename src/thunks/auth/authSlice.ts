@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { authLoginThunk, authRegister } from '~/thunks/auth/authThunk';
 import { StorageEnum } from '~/utils/constants/enum';
 import { IUser } from '~/utils/interfaces/auth';
@@ -20,9 +20,7 @@ const authSlice = createSlice({
         handleLogout(state) {
             state.user = null;
             state.accessToken = null;
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            localStorage.removeItem('user');
+            localStorage.clear();
         },
     },
     extraReducers(builder) {

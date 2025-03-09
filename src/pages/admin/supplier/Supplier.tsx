@@ -139,9 +139,9 @@ const Supplier = (props: Props) => {
             },
         },
         {
-            key: 'action',
+            key: '_id',
             title: '',
-            dataIndex: 'action',
+            dataIndex: '_id',
             render: (_, record) => {
                 if (record) {
                     return (
@@ -164,7 +164,7 @@ const Supplier = (props: Props) => {
                                         key: `${t('common_delete')}`,
                                         label: <p style={{ marginLeft: '2px' }}>{`${t('common_delete')}`}</p>,
                                         icon: <IconSVG IconComponent={icons.deleteIcon} />,
-                                        onClick: () => handleDeleteSupplier(record),
+                                        onClick: () => handleDeleteSupplier(record._id),
                                     },
                                 ],
                             }}
@@ -199,27 +199,35 @@ const Supplier = (props: Props) => {
 
     //#region Implement Hook
     useEffect(() => {
-        loadingContext?.show();
-        dispatch(getSupplierThunk(paramsPage))
-            .unwrap()
-            .then((response) => {
-                if (response) {
-                    const pagination = response?.pagination;
-                    setSupplier(response?.data);
-                    setCurrentPage((prev) => ({
-                        ...prev,
-                        lengthPage: pagination.lengthPage,
-                        currentPage: pagination.currentPage,
-                    }));
-                }
-            })
-            .catch((error) => {
-                message.error(error?.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                dispatch(supplierActions.setRefreshTableFalse());
-            });
+        try {
+            loadingContext?.show();
+            dispatch(getSupplierThunk(paramsPage))
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        const pagination = response?.pagination;
+                        setSupplier(response?.data);
+                        setCurrentPage((prev) => ({
+                            ...prev,
+                            lengthPage: pagination.lengthPage,
+                            currentPage: pagination.currentPage,
+                        }));
+                    }
+                })
+                .catch((error) => {
+                    message.error(error?.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    dispatch(supplierActions.setRefreshTableFalse());
+                });
+        } catch (error) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
+        }
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
@@ -229,33 +237,43 @@ const Supplier = (props: Props) => {
         setOpenDrawerDetail(true);
     };
 
-    const handleDeleteSupplier = (data: DataType<ISupplier>) => {
-        Modal.confirm({
-            title: 'Xác nhận xóa',
-            // icon: <ExclamationCircleOutlined />,
-            content: 'Bạn có chắc chắn muốn xóa Supplier này không?',
-            okText: 'Xóa',
-            okType: 'danger',
-            cancelText: 'Hủy',
-            onOk: () => {
-                loadingContext?.show();
-                dispatch(deleteSupplierThunk(data._id))
-                    .unwrap()
-                    .then((response) => {
-                        if (response) {
-                            setOpenDrawerDetail(false);
-                            message.success(response.message);
-                            dispatch(supplierActions.setRefreshTableTrue());
-                        }
-                    })
-                    .catch((error) => {
-                        message.error(error.message);
-                    })
-                    .finally(() => {
-                        loadingContext?.hide();
-                    });
-            },
-        });
+    const handleDeleteSupplier = (_id: string) => {
+        console.log(_id);
+        try {
+            Modal.confirm({
+                title: `${t('common_confirm_title')}`,
+                icon: <IconSVG IconComponent={icons.deleteIcon} colorIcon='red' />,
+                content: `${t('common_confirm_content')}`,
+                okText: `${t('common_delete')}`,
+                okType: 'danger',
+                cancelText: `${t('common_cancel')}`,
+                onOk: () => {
+                    loadingContext?.show();
+                    dispatch(deleteSupplierThunk(_id))
+                        .unwrap()
+                        .then((response) => {
+                            if (response) {
+                                setOpenDrawerDetail(false);
+                                message.success(response.message);
+                                dispatch(supplierActions.setRefreshTableTrue());
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error.message);
+                            message.error(error.message);
+                        })
+                        .finally(() => {
+                            loadingContext?.hide();
+                        });
+                },
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
+        }
     };
 
     const handleIsOpenAddSupplier = () => {
@@ -285,11 +303,11 @@ const Supplier = (props: Props) => {
                     <div className={cx('bodySupplier')}>
                         <Table
                             rowKey={(record) => record.supplierName}
-                            tableLayout='auto'
+                            tableLayout='fixed'
                             columns={columns}
                             dataSource={supplier}
                             pagination={false}
-                            scroll={{ x: 400, y: 590 }}
+                            scroll={{ x: 400, y: 550 }}
                         />
                         <Pagination
                             className={cx('footerPagination')}

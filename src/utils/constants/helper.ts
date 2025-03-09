@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { adminRoute, userRoute } from './route';
+import { IProduct } from '../interfaces/interfaceProduct';
 
 export const navigateLogin = (role?: Number) => {
     switch (role) {
@@ -13,6 +15,20 @@ export const navigateLogin = (role?: Number) => {
     }
 };
 
+export const getErrorMessage = (error: unknown): string => {
+    if (axios.isAxiosError(error)) {
+        if (!error.response) {
+            return 'Unable to connect to the server. Please try again later!';
+        }
+        return error.response.data?.message || 'An unknown error occurred on the server!';
+    }
+
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return 'An unknown error has occurred!';
+};
 export const convertTypeSupplier = (type: number) => {
     switch (type) {
         case 1:
@@ -53,4 +69,25 @@ export const renderFormatDate = (
     let formattedDate = format.replace('DD', day).replace('MM', month).replace('YYYY', String(year));
 
     return callback ? callback(formattedDate) : formattedDate;
+};
+
+export const getUniqueCategoryProducts = (products: IProduct[]) => {
+    if (!Array.isArray(products)) return [];
+
+    const uniqueProducts = Array.from(
+        products
+            .reduce((map, product) => {
+                if (!product?.category) return map;
+
+                const categoryName = typeof product.category === 'object' ? product.category.name : undefined;
+
+                if (categoryName && !map.has(categoryName)) {
+                    map.set(categoryName, product);
+                }
+                return map;
+            }, new Map())
+            .values()
+    );
+
+    return uniqueProducts.slice(0, 8);
 };

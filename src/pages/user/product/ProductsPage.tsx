@@ -1,18 +1,24 @@
 // Libs
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Menu, Radio, Select, Slider } from 'antd';
+import { Checkbox, Menu, message, Radio, Select, Slider } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 // Components, Layouts, Pages
 import { Advertisement, BaseButton, Breadcrumb, IconSVG } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { IMenuItem } from '~/utils/interfaces/common';
+import { IMenuItem, IPagination, IParamsPagination } from '~/utils/interfaces/common';
 // Styles, Images, icons
 import styles from './ProductsPage.module.scss';
 import { icons } from '~/assets';
 import { subBanners } from '~/utils/constants/mockData';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
+import { LoadingContext } from '~/context';
+import { IProduct } from '~/utils/interfaces/interfaceProduct';
+import { getProductThunk } from '~/thunks/product/productThunk';
+import { productActions } from '~/thunks/product/productSlice';
+import { getErrorMessage } from '~/utils/constants/helper';
 
 type Props = {
     content?: string;
@@ -33,19 +39,29 @@ const ProductsPage = (props: Props) => {
 
     //#region Declare Hook
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
+    const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
     //#endregion Selector
 
     //#region Declare State
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
     const [valuePrice, setValuePrice] = useState<number[]>([0, 0]);
     const [selectedSize, setSelectedSize] = useState<string>('');
-    const [products, setProducts] = useState<any[]>([]);
+    const [dataProduct, setDataProduct] = useState<IProduct[]>([]);
+    const [paramsPage, setParamsPage] = useState<IParamsPagination>({
+        currentPage: 1,
+        limitPage: 12,
+    });
+    const [currentPage, setCurrentPage] = useState<IPagination>({
+        lengthPage: 0,
+        currentPage: 1,
+    });
     //#endregion Declare State
 
-    //#region Implement Hook
     const items: IMenuItem[] = [
         {
             key: 'category',
@@ -55,7 +71,7 @@ const ProductsPage = (props: Props) => {
                     key: 'Men',
                     label: (
                         <div className={cx('itemCategory')}>
-                            <Checkbox style={{ accentColor: 'red' }}>Men</Checkbox>
+                            <Radio style={{ accentColor: 'red' }}>Men</Radio>
                             <span>{`(4)`}</span>
                         </div>
                     ),
@@ -64,7 +80,7 @@ const ProductsPage = (props: Props) => {
                     key: 'Women',
                     label: (
                         <div className={cx('itemCategory')}>
-                            <Checkbox>Women</Checkbox>
+                            <Radio>Women</Radio>
                             <span>{`(20)`}</span>
                         </div>
                     ),
@@ -116,50 +132,74 @@ const ProductsPage = (props: Props) => {
                 {
                     key: '1',
                     label: (
-                        <Radio value='S' checked={selectedSize === 'S'} onChange={handleSizeChange}>
+                        <Checkbox value='S' checked={selectedSize === 'S'} onChange={handleSizeChange}>
                             S
-                        </Radio>
+                        </Checkbox>
                     ),
                 },
                 {
                     key: '2',
                     label: (
-                        <Radio value='M' checked={selectedSize === 'M'} onChange={handleSizeChange}>
+                        <Checkbox value='M' checked={selectedSize === 'M'} onChange={handleSizeChange}>
                             M
-                        </Radio>
+                        </Checkbox>
                     ),
                 },
                 {
                     key: '3',
                     label: (
-                        <Radio value='L' checked={selectedSize === 'L'} onChange={handleSizeChange}>
+                        <Checkbox value='L' checked={selectedSize === 'L'} onChange={handleSizeChange}>
                             L
-                        </Radio>
+                        </Checkbox>
                     ),
                 },
                 {
                     key: '4',
                     label: (
-                        <Radio value='XL' checked={selectedSize === 'XL'} onChange={handleSizeChange}>
+                        <Checkbox value='XL' checked={selectedSize === 'XL'} onChange={handleSizeChange}>
                             XL
-                        </Radio>
+                        </Checkbox>
                     ),
                 },
                 {
                     key: '5',
                     label: (
-                        <Radio value='XXL' checked={selectedSize === 'XXL'} onChange={handleSizeChange}>
+                        <Checkbox value='XXL' checked={selectedSize === 'XXL'} onChange={handleSizeChange}>
                             XXL
-                        </Radio>
+                        </Checkbox>
                     ),
                 },
             ],
         },
     ];
 
+    //#region Implement Hook
     useEffect(() => {
-        setProducts(subBanners);
-    }, [subBanners]);
+        try {
+            loadingContext?.show();
+            dispatch(getProductThunk(paramsPage))
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        const pagination = response?.pagination;
+                        setDataProduct(response?.data);
+                        setCurrentPage({
+                            lengthPage: pagination.lengthPage,
+                            currentPage: pagination.currentPage,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    message.error(getErrorMessage(error));
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    dispatch(productActions.setRefreshTableFalse());
+                });
+        } catch (error) {
+            message.error(getErrorMessage(error));
+        }
+    }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
     //#region Handle Function
@@ -174,12 +214,11 @@ const ProductsPage = (props: Props) => {
         });
     };
 
-    console.log(selectedKeys);
+    // console.log(selectedKeys);
 
     function handleSizeChange(e: any) {
         setSelectedSize(e.target.value);
     }
-
     //#endregion Handle Function
 
     return (
@@ -222,7 +261,7 @@ const ProductsPage = (props: Props) => {
                         </div>
                     </div>
                     <div className={cx('listProduct')}>
-                        <Outlet context={{ products }} />
+                        <Outlet context={{ dataProduct, currentPage, setParamsPage }} />
                     </div>
                 </div>
             </div>

@@ -1,0 +1,15 @@
+.mainCheckout {
+    @apply w-full h-full font-nunito overflow-auto;
+}
+
+.tableOrderProduct {
+    @apply w-[100%];
+}
+
+.columnsProduct {
+    @apply flex gap-6;
+}
+
+.emptyOrder img {
+    @apply flex mx-auto;
+}

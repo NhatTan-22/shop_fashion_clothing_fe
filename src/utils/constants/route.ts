@@ -4,15 +4,19 @@ import {
     BlogPage,
     Brand,
     Category,
+    Checkout,
     ContactPage,
     Dashboard,
+    Detail,
     HomePage,
     Inventory,
     Login,
+    Order,
     OrderPage,
     ProductsPage,
     Register,
     Report,
+    ShippingAddress,
     Supplier,
 } from '~/pages';
 
@@ -41,10 +45,11 @@ export const userRoute = {
     base: '/',
     home: '/home',
     products: '/products',
+    detail: '/detail',
     list: '/list',
     blog: '/blog',
     cart: '/cart',
-    order: '/order',
+    address: '/shipping-address',
     contact: '/contact',
 };
 
@@ -90,7 +95,7 @@ export const privateAdminRoutes: IRouteModel[] = [
     },
     {
         path: `${adminRoute.base}${adminRoute.orders}`,
-        component: Report,
+        component: Order,
     },
     {
         path: `${adminRoute.base}${adminRoute.manageStore}`,
@@ -131,8 +136,22 @@ export const publicUserRoutes: IRouteModel[] = [
 
 export const privateUserRoutes: IRouteModel[] = [
     {
-        path: `${userRoute.products}${userRoute.order}`,
+        path: `${userRoute.products}${userRoute.cart}`,
         component: OrderPage,
+        children: [
+            {
+                index: true,
+                component: Checkout,
+            },
+            {
+                path: `${userRoute.products}${userRoute.cart}${userRoute.address}`,
+                component: ShippingAddress,
+            },
+        ],
+    },
+    {
+        path: `${userRoute.products}${userRoute.detail}/:slug`,
+        component: Detail,
     },
 ];
 //#endregion Patient Routes

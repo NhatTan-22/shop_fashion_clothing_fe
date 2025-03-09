@@ -1,0 +1,103 @@
+.mainDetail {
+    @apply h-full p-5 rounded font-nunito;
+}
+
+.swapperContact {
+    @apply max-w-[85%] flex flex-col mx-auto mb-6;
+}
+
+.rowDetailProduct {
+    @apply grid grid-flow-row col-span-12 gap-5 items-start mx-auto mt-10;
+}
+
+.colImageProduct {
+    @apply col-span-5 flex flex-col items-center;
+}
+
+.imageContainer {
+    @apply max-w-[500px] max-h-[500px] object-contain rounded-lg;
+}
+
+.container {
+    @apply w-[500px] overflow-x-scroll flex gap-2 scrollbar-hide cursor-grab active:cursor-grabbing;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.thumbnailContainer {
+    @apply w-36 h-36 border-2 border-gray-300 overflow-hidden rounded-lg flex items-center justify-center cursor-pointer transition flex-shrink-0;
+
+    &:hover {
+        @apply border-gray-400;
+    }
+
+    &.selected {
+        @apply border-[#c083f8];
+    }
+}
+
+.colInformationProduct {
+    @apply col-span-7 flex flex-row justify-between ml-9;
+}
+
+.titleNameProduct {
+    @apply text-2xl font-bold;
+}
+
+.ratingProduct {
+    @apply flex items-center gap-2 mt-2;
+}
+
+.priceProduct {
+    @apply flex items-baseline gap-2 mt-2;
+}
+
+.colorOption {
+    @apply cursor-pointer px-6 py-4 rounded border transition-all;
+    border: 1px solid var(--color-main, #9333ea);
+
+    &.selected {
+        outline: 3px solid #9333ea;
+        outline-offset: 1.5px;
+    }
+}
+
+.relatedProducts {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 pb-8;
+}
+
+@media screen and (min-width: 1201px) {
+    .rowDetailProduct {
+        @apply grid grid-cols-12 gap-5 items-start content-center w-full mx-auto mt-10;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .rowDetailProduct {
+        @apply grid grid-cols-12 gap-5 items-start content-center w-full mx-auto mt-10;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .rowDetailProduct {
+        @apply grid grid-cols-6 items-start content-center w-full mx-auto mt-10 justify-center;
+    }
+    .colImageProduct {
+        @apply col-span-12 flex flex-col items-center justify-center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .rowDetailProduct {
+        @apply grid grid-cols-6 items-start content-center w-full mx-auto mt-10 justify-center;
+    }
+    .colImageProduct {
+        @apply col-span-12 flex flex-col items-center justify-center;
+    }
+}

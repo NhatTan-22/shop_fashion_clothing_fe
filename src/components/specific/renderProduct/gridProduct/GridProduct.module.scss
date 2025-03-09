@@ -1,13 +1,13 @@
 .mainGridProduct {
-    @apply w-full min-h-[80%];
+    @apply w-full h-full relative;
 }
 
 .contentGridProduct {
-    @apply grid grid-cols-4 gap-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 pb-8;
 }
 
-.paginationGridProduct {
-    @apply mt-8;
+.footerPagination {
+    @apply absolute bottom-[-30px] w-full content-end;
 }
 
 .emptyGridProduct {

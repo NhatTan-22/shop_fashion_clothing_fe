@@ -48,9 +48,9 @@ const DetailSupplier = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
-    const handleUpdateSupplier = (idSupplier: Object) => {
+    const handleUpdateSupplier = (_id: string) => {
         loadingContext?.show();
-        dispatch(deleteSupplierThunk(idSupplier))
+        dispatch(deleteSupplierThunk(_id))
             .unwrap()
             .then((response) => {
                 if (response) {

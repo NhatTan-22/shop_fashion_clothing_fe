@@ -1,16 +1,19 @@
+import { ICategory } from "./interfaceCategory";
+
 export interface IProduct extends IAddProduct {
-    _id: Object;
-    sku: string;
+    _id: string;
+    slug: string;
     ratings: number;
     status: string;
     availability: string;
+    brand?: string;
 }
 
 export interface IAddProduct {
     images: string[];
     name: string;
     description: string;
-    category: string;
+    category: ICategory |string;
     pricing: {
         price: number;
         promotionPrice: number;
@@ -19,9 +22,6 @@ export interface IAddProduct {
     stock: number;
     sizes: string[];
     colors: string[];
-    brand: string;
     gender?: string;
     supplier: string;
 }
-
-// export type ISupplierCreate = Omit<IProduct, '_id'>;

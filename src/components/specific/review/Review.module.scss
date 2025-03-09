@@ -1,0 +1,35 @@
+.mainReview {
+    @apply flex flex-col gap-5 w-full;
+}
+
+// .mainReview::-webkit-scrollbar {
+//     @apply w-3;
+// }
+
+// .mainReview::-webkit-scrollbar-thumb {
+//     @apply bg-wisteria-600 rounded-full;
+// }
+
+// .mainReview::-webkit-scrollbar-track {
+//     @apply bg-blue-chalk-100;
+// }
+
+.addReview {
+    @apply flex flex-col gap-4 border-b-2 border-gray-300 w-full pb-8;
+}
+
+.customReview {
+    @apply flex flex-col gap-4 w-full h-[800px] overflow-y-auto;
+}
+
+.customReview::-webkit-scrollbar {
+    @apply w-3;
+}
+
+.customReview::-webkit-scrollbar-thumb {
+    @apply bg-wisteria-600 rounded-full;
+}
+
+.customReview::-webkit-scrollbar-track {
+    @apply bg-blue-chalk-100;
+}

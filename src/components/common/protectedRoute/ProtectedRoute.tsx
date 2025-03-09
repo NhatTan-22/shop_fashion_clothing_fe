@@ -1,5 +1,5 @@
 // Libs
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '~/redux/hooks';
 import { navigateLogin } from '~/utils/constants/helper';
@@ -28,35 +28,35 @@ const ProtectedRoute = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
+    const [isMounted, setIsMounted] = useState(false);
     //#endregion Declare State
 
     //#region Implement Hook
-    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
-    const storedToken = localStorage.getItem('accessToken');
-
-    const finalUser = user || storedUser;
-    const finalAuth = isAuthenticated || storedToken;
-
     useEffect(() => {
-        if (typeof finalUser?.role === 'number') {
-            const route = navigateLogin(finalUser.role);
+        if (typeof user?.role === 'number') {
+            const route = navigateLogin(user.role);
+            if (location.pathname.startsWith('/admin') && user.role !== 0) {
+                navigate(userRoute.home, { replace: true });
+            }
+
             if (location.pathname === '/' || location.pathname === '/auth/login') {
                 if (location.pathname !== route) {
                     navigate(route, { replace: true });
                 }
             }
-        } else if (!finalUser) {
-            navigate(userRoute.home, { replace: true });
-        } else if (!finalAuth) {
+        } else if (!user || !isAuthenticated) {
             navigate('/auth/login');
         }
-    }, [finalAuth, finalUser, location.pathname, navigate]);
+        setTimeout(() => {
+            setIsMounted(true);
+        }, 1);
+    }, [isAuthenticated, user, location.pathname, navigate]);
 
     //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function
-
+    if (!isMounted) return;
     return children;
 };
 

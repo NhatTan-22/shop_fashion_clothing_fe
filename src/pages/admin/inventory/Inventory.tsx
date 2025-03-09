@@ -92,14 +92,14 @@ const Inventory = (props: Props) => {
     ];
 
     const columns: Columns<IProduct, DataType<IProduct>>[] = [
-        {
-            title: t('admin_products_code_label_table'),
-            dataIndex: 'sku',
-            key: 'sku',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
-            },
-        },
+        // {
+        //     title: t('admin_products_code_label_table'),
+        //     dataIndex: 'sku',
+        //     key: 'sku',
+        //     render: (text, _) => {
+        //         return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+        //     },
+        // },
         {
             title: t('admin_products_image_label_table'),
             dataIndex: 'images',
@@ -233,7 +233,7 @@ const Inventory = (props: Props) => {
                             trigger={['click']}
                         >
                             <div>
-                                <IconSVG IconComponent={icons.dotVerticalIcon} />
+                                <IconSVG IconComponent={icons.dotVerticalIcon} className='cursor-pointer' />
                             </div>
                         </Dropdown>
                     );
@@ -259,26 +259,34 @@ const Inventory = (props: Props) => {
 
     //#region Implement Hook
     useEffect(() => {
-        loadingContext?.show();
-        dispatch(getProductThunk(paramsPage))
-            .unwrap()
-            .then((response) => {
-                if (response) {
-                    const pagination = response?.pagination;
-                    setInventory(response?.data);
-                    setCurrentPage({
-                        lengthPage: pagination.lengthPage,
-                        currentPage: pagination.currentPage,
-                    });
-                }
-            })
-            .catch((error) => {
-                message.error(error?.message);
-            })
-            .finally(() => {
-                loadingContext?.hide();
-                dispatch(productActions.setRefreshTableFalse());
-            });
+        try {
+            loadingContext?.show();
+            dispatch(getProductThunk(paramsPage))
+                .unwrap()
+                .then((response) => {
+                    if (response) {
+                        const pagination = response?.pagination;
+                        setInventory(response?.data);
+                        setCurrentPage({
+                            lengthPage: pagination.lengthPage,
+                            currentPage: pagination.currentPage,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    message.error(error?.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                    dispatch(productActions.setRefreshTableFalse());
+                });
+        } catch (error) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
+        }
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
     //#endregion Implement Hook
 
@@ -346,12 +354,13 @@ const Inventory = (props: Props) => {
                     {data.length ? (
                         <div className={cx('bodyInventory')}>
                             <Table
-                                rowKey={(record) => record.sku}
-                                tableLayout='auto'
+                                rowKey={(record) => record.slug}
+                                tableLayout='fixed'
+                                bordered={true}
                                 columns={columns}
                                 dataSource={inventory}
                                 pagination={false}
-                                scroll={{ x: 400, y: 390 }}
+                                scroll={{ x: 400, y: 350 }}
                             />
                             <Pagination
                                 className={cx('footerPagination')}

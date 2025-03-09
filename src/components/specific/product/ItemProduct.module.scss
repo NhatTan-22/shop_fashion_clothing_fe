@@ -1,6 +1,10 @@
 .itemProduct {
-    @apply rounded-md bg-snuff-200 shadow-xl;
+    @apply rounded-md w-full min-w-[200px] p-4 bg-snuff-200 shadow-xl overflow-hidden;
 }
+
+// .boxGridProduct {
+//     @apply h-[400px];
+// }
 
 .itemProduct:hover img {
     @apply opacity-70;
@@ -11,24 +15,24 @@
 }
 
 .imageProduct {
-    @apply cursor-pointer;
+    @apply cursor-pointer w-auto h-[230px] mb-8 object-fill flex justify-center
 }
 
-.imageProduct img {
-    @apply w-full h-[200px];
+.boxInformation {
+    @apply h-auto;
 }
 
 .description {
-    @apply grid grid-flow-row gap-1 m-3 p-2;
+    @apply grid grid-flow-row gap-1 m-3 p-2 h-full;
 }
 
 .nameProduct {
-    @apply font-bold text-base;
+    @apply font-bold text-xl;
 }
 
 .nameProduct,
 .tileProduct {
-    @apply line-clamp-2;
+    @apply line-clamp-1;
 }
 
 .price {
@@ -57,9 +61,9 @@
 }
 
 .optionButtons {
-    @apply absolute top-0 right-[5%];
+    @apply absolute top-5 right-[5%] flex flex-col gap-2;
 }
 
 .buttonAddCart {
-    @apply w-[80%] absolute bottom-[5%] right-[10%] left-[10%];
+    @apply w-[80%] absolute bottom-[-10%] right-[10%] left-[10%];
 }

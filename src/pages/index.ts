@@ -10,13 +10,16 @@ export { default as Category } from './admin/category/Category';
 export { default as Brand } from './admin/brand/Brand';
 export { default as Report } from './admin/report/Report';
 export { default as Supplier } from './admin/supplier/Supplier';
+export { default as Order } from './admin/order/Order';
 //#endregion Admin Page
 
 //#region User Page
-// export { default as LoginUser } from './user/login/Login';
 export { default as HomePage } from './user/home/HomePage';
 export { default as ProductsPage } from './user/product/ProductsPage';
 export { default as BlogPage } from './user/blog/BlogPage';
 export { default as ContactPage } from './user/contact/ContactPage';
 export { default as OrderPage } from './user/order/OrderPage';
+export { default as Detail } from './user/detail/Detail';
+export { default as Checkout } from './user/checkout/Checkout';
+export { default as ShippingAddress } from './user/shippingAddress/ShippingAddress';
 //#endregion User Page
