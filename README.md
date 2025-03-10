@@ -14,8 +14,6 @@ Shop Fashion Clothing là một nền tảng bán hàng thời trang trực tuy�
 
 📊 Trang quản trị: Quản lý sản phẩm, đơn hàng, người dùng, thống kê doanh thu.
 
-🌎 Đa ngôn ngữ & Đổi giao diện: Hỗ trợ i18n và thay đổi theme.
-
 🛠️ Công nghệ sử dụng
 
 Frontend
@@ -28,50 +26,25 @@ Ant Design - UI/UX chuyên nghiệp.
 
 Tailwind CSS - Thiết kế giao diện linh hoạt.
 
-Backend
-
-Node.js + Express.js - Server-side API.
-
-MongoDB - Lưu trữ dữ liệu.
-
-WebSocket - Thông báo real-time.
-
-JWT - Xác thực người dùng.
-
 🏗️ Cài đặt dự án
 
 1. Clone repo
 
-git clone https://github.com/your-username/shop-fashion-clothing.git
+git clone [https://github.com/your-username/shop-fashion-clothing.git](https://github.com/NhatTan-22/shop_fashion_clothing_fe.git)
 cd shop-fashion-clothing
 
 2. Cài đặt dependencies
 
 # Cài đặt cho frontend
-cd frontend
-npm install
-
-# Cài đặt cho backend
-cd ../backend
-npm install
+yarn i
 
 3. Cấu hình môi trường
 
-Tạo file .env trong thư mục backend với nội dung:
-
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_secret_key
-PORT=5000
+Tạo file .env.dev trong thư mục:
 
 4. Chạy dự án
-
-# Chạy backend
-cd backend
-npm run dev
-
 # Chạy frontend
-cd frontend
-npm run dev
+yarn start
 
 📄 Tài khoản mẫu
 
@@ -93,4 +66,4 @@ API được xây dựng theo RESTful standards. Tài liệu API có thể truy 
 
 📬 Liên hệ
 
-Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ qua email: your-email@example.com.
+Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ qua email: tanpham2301@gmail.com.
