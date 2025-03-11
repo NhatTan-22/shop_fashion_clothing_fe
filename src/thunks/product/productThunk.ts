@@ -1,6 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import productApi from '~/apis/product';
-import { ADD_PRODUCT, DELETE_PRODUCT, GET_DETAIL_PRODUCT, GET_PRODUCT } from '~/utils/constants/actionType';
+import {
+    ADD_PRODUCT,
+    DELETE_PRODUCT,
+    GET_COLOR_PRODUCT,
+    GET_DETAIL_PRODUCT,
+    GET_PRODUCT,
+    GET_SIZE_PRODUCT,
+} from '~/utils/constants/actionType';
 import { IParamsPagination } from '~/utils/interfaces/common';
 import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 
@@ -9,7 +16,25 @@ export const getProductThunk = createAsyncThunk(GET_PRODUCT, async (params: IPar
         const response = await productApi.getAllProduct(params);
         return response.data;
     } catch (error: any) {
-        return rejectWithValue(error.response.data);
+        return rejectWithValue(error.response?.data || 'Unknown error!');
+    }
+});
+
+export const getColorProductThunk = createAsyncThunk(GET_COLOR_PRODUCT, async (_, { rejectWithValue }) => {
+    try {
+        const response = await productApi.getColorProduct();
+        return response.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || 'Unknown error!');
+    }
+});
+
+export const getSizeProductThunk = createAsyncThunk(GET_SIZE_PRODUCT, async (_, { rejectWithValue }) => {
+    try {
+        const response = await productApi.getSizeProduct();
+        return response.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || 'Unknown error!');
     }
 });
 

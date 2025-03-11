@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { authLoginThunk, authRegister } from '~/thunks/auth/authThunk';
 import { StorageEnum } from '~/utils/constants/enum';
 import { IUser } from '~/utils/interfaces/auth';
