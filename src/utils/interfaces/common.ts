@@ -37,6 +37,10 @@ export interface IParamsPagination {
     search?: string;
     sortBy?: string;
     order?: 'asc' | 'desc';
+    category?: string;
+    price?: [number, number];
+    colors?: string[];
+    sizes?: string[];
 }
 
 export interface IMenuItem {

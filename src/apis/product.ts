@@ -6,8 +6,20 @@ import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 const productApi = {
     async getAllProduct(params: IParamsPagination) {
         const url = `${urlApiProduct.getAllProduct}`;
-        const response = await axiosClient.get(url, { params });
-        return response.data;
+        const { data } = await axiosClient.get(url, { params });
+        return data;
+    },
+
+    async getColorProduct() {
+        const url = `${urlApiProduct.getColorProduct}`;
+        const { data } = await axiosClient.get(url);
+        return data;
+    },
+
+    async getSizeProduct() {
+        const url = `${urlApiProduct.getSizeProduct}`;
+        const { data } = await axiosClient.get(url);
+        return data;
     },
 
     async getDetailProduct(slug: string) {
@@ -27,7 +39,7 @@ const productApi = {
     },
 
     async deleteProduct(_id: string) {
-        const url = `${urlApiProduct.getDeleteProduct(_id)}`;
+        const url = `${urlApiProduct.deleteProduct(_id)}`;
         const response = await axiosClient.delete(url);
         return response.data;
     },

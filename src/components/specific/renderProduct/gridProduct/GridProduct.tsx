@@ -15,9 +15,9 @@ type Props = {
     // products: string;
 };
 interface IOutletContextType {
-    dataProduct: IProduct[];
-    currentPage: IPagination;
-    setParamsPage: React.Dispatch<React.SetStateAction<IParamsPagination>>;
+    products: IProduct[];
+    pagination: IPagination;
+    updateFilters: React.Dispatch<React.SetStateAction<IParamsPagination>>;
 }
 
 const cx = classNames.bind(styles);
@@ -32,7 +32,7 @@ const GridProduct = (props: Props) => {
     //#endregion Declare Hook
 
     //#region Selector
-    const { dataProduct, currentPage, setParamsPage } = useOutletContext<IOutletContextType>();
+    const { products, pagination, updateFilters } = useOutletContext<IOutletContextType>();
     //#endregion Selector
 
     //#region Declare State
@@ -43,16 +43,16 @@ const GridProduct = (props: Props) => {
 
     //#region Handle Function
     const handleChangePage = (e: number) => {
-        setParamsPage((prev) => ({ ...prev, currentPage: e }));
+        updateFilters((prev) => ({ ...prev, currentPage: e }));
     };
     //#endregion Handle Function
 
     return (
         <div id='gridProductPage' className={cx('mainGridProduct')}>
-            {dataProduct.length > 0 ? (
+            {products.length > 0 ? (
                 <>
                     <div className={cx('contentGridProduct')}>
-                        {dataProduct.map((product: IProduct) => (
+                        {products.map((product: IProduct) => (
                             <div key={product.slug}>
                                 <ItemProduct product={product} titleAdd='Buy Now' />
                             </div>
@@ -62,8 +62,8 @@ const GridProduct = (props: Props) => {
                         className={cx('footerPagination')}
                         align='end'
                         pageSize={12}
-                        total={currentPage.lengthPage}
-                        current={currentPage.currentPage}
+                        total={pagination.lengthPage}
+                        current={pagination.currentPage}
                         showSizeChanger={false}
                         onChange={handleChangePage}
                     />

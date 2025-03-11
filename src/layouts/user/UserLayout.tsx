@@ -3,20 +3,20 @@ import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { Avatar, Badge, Button, Dropdown, Empty, Typography } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, IconSVG } from '~/components';
 // Others
+import { userRoute } from '~/utils/constants/route';
 import { RootState } from '~/redux/store';
 import { authActions } from '~/thunks/auth/authSlice';
 import { ButtonStyleEnum } from '~/utils/constants/enum';
 import { listHeader } from '~/utils/constants/common';
 import { baseURL } from '~/utils/constants/env';
+import { useAppDispatch, useAppSelector } from '~/redux/hooks';
 // Styles, Images, icons
 import { icons, images } from '~/assets';
 import styles from './UserLayout.module.scss';
-import { useAppDispatch, useAppSelector } from '~/redux/hooks';
-import { userRoute } from '~/utils/constants/route';
-import { Avatar, Badge, Button, Dropdown, Empty, Typography } from 'antd';
 
 type Props = {
     content?: string;
@@ -39,8 +39,6 @@ const UserLayout = (props: Props) => {
     //#endregion Selector
 
     //#region Declare State
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
     const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
     //#endregion Declare State
 
@@ -65,13 +63,6 @@ const UserLayout = (props: Props) => {
 
     const handleSideBar = () => {
         setIsOpenSidebar(!isOpenSideBae);
-    };
-
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
     };
 
     const handleLogout = () => {

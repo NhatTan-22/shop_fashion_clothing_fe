@@ -1,22 +1,21 @@
 // Libs
 import classNames from 'classnames/bind';
-import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
+import { Empty, Pagination } from 'antd';
 // Components, Layouts, Pages
 // Others
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
 import { IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import ItemProduct from '~/components/specific/product/ItemProduct';
 // Styles, Images, icons
 import styles from './ListProduct.module.scss';
-import ItemProduct from '../../product/ItemProduct';
-import { Empty, Pagination } from 'antd';
 
 type Props = {};
 
 interface IOutletContextType {
-    dataProduct: IProduct[];
-    currentPage: IPagination;
-    setParamsPage: React.Dispatch<React.SetStateAction<IParamsPagination>>;
+    products: IProduct[];
+    pagination: IPagination;
+    updateFilters : React.Dispatch<React.SetStateAction<IParamsPagination>>;
 }
 
 const cx = classNames.bind(styles);
@@ -27,11 +26,10 @@ const ListProduct = (props: Props) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
-    const { t } = useTranslation();
     //#endregion Declare Hook
 
     //#region Selector
-    const { dataProduct, currentPage, setParamsPage } = useOutletContext<IOutletContextType>();
+    const { products, pagination, updateFilters  } = useOutletContext<IOutletContextType>();
     //#endregion Selector
 
     //#region Declare State
@@ -42,16 +40,16 @@ const ListProduct = (props: Props) => {
 
     //#region Handle Function
     const handleChangePage = (e: number) => {
-        setParamsPage((prev) => ({ ...prev, currentPage: e }));
+        updateFilters ((prev) => ({ ...prev, currentPage: e }));
     };
     //#endregion Handle Function
 
     return (
         <div id='listProductPage' className={cx('mainListProduct')}>
-            {dataProduct.length > 0 ? (
+            {products.length > 0 ? (
                 <>
                     <div className={cx('contentListProduct')}>
-                        {dataProduct.map((product: IProduct) => (
+                        {products.map((product: IProduct) => (
                             <div key={product.slug}>
                                 <ItemProduct styleItem={false} product={product} titleAdd='Buy Now' />
                             </div>
@@ -61,8 +59,8 @@ const ListProduct = (props: Props) => {
                         className={cx('footerPagination')}
                         align='end'
                         pageSize={12}
-                        total={currentPage.lengthPage}
-                        current={currentPage.currentPage}
+                        total={pagination.lengthPage}
+                        current={pagination.currentPage}
                         showSizeChanger={false}
                         onChange={handleChangePage}
                     />
