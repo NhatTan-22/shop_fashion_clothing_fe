@@ -1,28 +1,18 @@
 // Libs
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Menu, message, Radio, Select, Slider } from 'antd';
-import { Link, Outlet } from 'react-router-dom';
+import { Button, Checkbox, Menu, Radio, Select, Slider, Tag, Typography } from 'antd';
+import { debounce } from 'lodash';
+import { Link, Outlet, useSearchParams } from 'react-router-dom';
 // Components, Layouts, Pages
-import { Advertisement, BaseButton, Breadcrumb, IconSVG } from '~/components';
+import { Advertisement, BaseButton, Breadcrumb, IconSVG, UseFetchProducts } from '~/components';
 // Others
 import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { IMenuItem, IPagination, IParamsPagination } from '~/utils/interfaces/common';
+import { IMenuItem, IParamsPagination } from '~/utils/interfaces/common';
 // Styles, Images, icons
 import styles from './ProductsPage.module.scss';
 import { icons } from '~/assets';
-import { subBanners } from '~/utils/constants/mockData';
-import { useAppDispatch, useAppSelector } from '~/redux/hooks';
-import { LoadingContext } from '~/context';
-import { IProduct } from '~/utils/interfaces/interfaceProduct';
-import { getProductThunk } from '~/thunks/product/productThunk';
-import { productActions } from '~/thunks/product/productSlice';
-import { getErrorMessage } from '~/utils/constants/helper';
-
-type Props = {
-    content?: string;
-};
 
 const cx = classNames.bind(styles);
 
@@ -33,59 +23,71 @@ const productBreadcrumbs = [
     },
 ];
 
-const ProductsPage = (props: Props) => {
+const ProductsPage = () => {
     //#region Destructuring Props
     //#endregion Destructuring Props
 
     //#region Declare Hook
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-    const loadingContext = useContext(LoadingContext);
     //#endregion Declare Hook
 
     //#region Selector
-    const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
     //#endregion Selector
 
     //#region Declare State
-    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    const [valuePrice, setValuePrice] = useState<number[]>([0, 0]);
-    const [selectedSize, setSelectedSize] = useState<string>('');
-    const [dataProduct, setDataProduct] = useState<IProduct[]>([]);
-    const [paramsPage, setParamsPage] = useState<IParamsPagination>({
-        currentPage: 1,
-        limitPage: 12,
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [filters, setFilters] = useState<IParamsPagination>({
+        currentPage: Number(searchParams.get('currentPage')) || 1,
+        limitPage: Number(searchParams.get('limitPage')) || 12,
+        sortBy: searchParams.get('sortBy') || 'createdAt',
+        order: (searchParams.get('order') as 'asc' | 'desc') || 'desc',
+        category: searchParams.get('category') || '',
+        price: [
+            searchParams.get('price_m in') !== null ? Number(searchParams.get('price_min')) || 0 : 0,
+            searchParams.get('price_max') !== null ? Number(searchParams.get('price_max')) || 9999999 : 9999999,
+        ],
+        colors: searchParams.getAll('colors'),
+        sizes: searchParams.getAll('sizes'),
     });
-    const [currentPage, setCurrentPage] = useState<IPagination>({
-        lengthPage: 0,
-        currentPage: 1,
-    });
+    const [tempPrice, setTempPrice] = useState(filters.price || [0, 100]);
     //#endregion Declare State
 
+    //#region Implement Hook
+    const { products, categories, colors, sizes, pagination } = UseFetchProducts(filters);
+    //#endregion Implement Hook
+
+    //#region Create Variables
     const items: IMenuItem[] = [
+        {
+            key: 'search',
+            label: (
+                <div className='flex items-center justify-between gap-2'>
+                    <Typography.Title level={2} style={{ margin: 0 }}>
+                        {t('_user_sidebar_product')}
+                    </Typography.Title>
+                    <Button type='text' onClick={clearFilters}>
+                        {t('common_clear')}
+                    </Button>
+                </div>
+            ),
+        },
         {
             key: 'category',
             label: <b>{t('user_sidebar_category_label_product')}</b>,
-            children: [
-                {
-                    key: 'Men',
-                    label: (
-                        <div className={cx('itemCategory')}>
-                            <Radio style={{ accentColor: 'red' }}>Men</Radio>
-                            <span>{`(4)`}</span>
-                        </div>
-                    ),
-                },
-                {
-                    key: 'Women',
-                    label: (
-                        <div className={cx('itemCategory')}>
-                            <Radio>Women</Radio>
-                            <span>{`(20)`}</span>
-                        </div>
-                    ),
-                },
-            ],
+            children: categories.map((category) => ({
+                key: category._id,
+                label: (
+                    <div className={cx('itemCategory')}>
+                        <Radio
+                            checked={filters.category === category._id}
+                            onChange={() => handleFilterChange('category', category._id)}
+                        >
+                            {category.name}
+                        </Radio>
+                        <span>{`(4)`}</span>
+                    </div>
+                ),
+            })),
         },
         {
             key: 'price',
@@ -95,11 +97,11 @@ const ProductsPage = (props: Props) => {
                     key: 'tile-price-slider',
                     label: (
                         <div className={cx('itemPrice')}>
-                            <h1>{`Price: ${valuePrice[0]} - ${valuePrice[1]}`}</h1>
+                            <h1>{`Price: ${tempPrice[0]} - ${tempPrice[1]}`}</h1>
                             <BaseButton
                                 styleButton={ButtonStyleEnum.TEXT}
                                 nameButton={`${t('common_clear')}`}
-                                onClick={() => setValuePrice([0, 0])}
+                                onClick={() => setTempPrice([0, 9999999])}
                             />
                         </div>
                     ),
@@ -108,10 +110,13 @@ const ProductsPage = (props: Props) => {
                     key: 'price-slider',
                     label: (
                         <Slider
-                            className={cx('sliderPrice')}
-                            range={{ minCount: 0, maxCount: 100 }}
-                            onChange={(newValue: number[]) => setValuePrice(newValue)}
-                            value={valuePrice}
+                            range
+                            min={0}
+                            max={999999}
+                            step={100}
+                            value={tempPrice}
+                            onChange={(value) => setTempPrice(value)}
+                            onAfterChange={(value) => handleFilterChange('price', value)}
                         />
                     ),
                 },
@@ -120,105 +125,137 @@ const ProductsPage = (props: Props) => {
         {
             key: 'color',
             label: <b>{t('user_sidebar_color_label_product')}</b>,
-            children: [
-                { key: 'Red', label: <Checkbox>Red</Checkbox> },
-                { key: 'Bue', label: <Checkbox>Bue</Checkbox> },
-            ],
+            children: colors.map((color) => ({
+                key: color,
+                label: (
+                    <Checkbox
+                        checked={(filters.colors ?? []).includes(color)}
+                        onChange={(e) =>
+                            handleFilterChange(
+                                'colors',
+                                e.target.checked
+                                    ? [...(filters.colors ?? []), color]
+                                    : (filters.colors ?? []).filter((c) => c !== color)
+                            )
+                        }
+                    >
+                        <Tag color={color}>{color}</Tag>
+                    </Checkbox>
+                ),
+            })),
         },
         {
             key: 'size',
             label: <b>{t('user_sidebar_size_label_product')}</b>,
-            children: [
-                {
-                    key: '1',
-                    label: (
-                        <Checkbox value='S' checked={selectedSize === 'S'} onChange={handleSizeChange}>
-                            S
-                        </Checkbox>
-                    ),
-                },
-                {
-                    key: '2',
-                    label: (
-                        <Checkbox value='M' checked={selectedSize === 'M'} onChange={handleSizeChange}>
-                            M
-                        </Checkbox>
-                    ),
-                },
-                {
-                    key: '3',
-                    label: (
-                        <Checkbox value='L' checked={selectedSize === 'L'} onChange={handleSizeChange}>
-                            L
-                        </Checkbox>
-                    ),
-                },
-                {
-                    key: '4',
-                    label: (
-                        <Checkbox value='XL' checked={selectedSize === 'XL'} onChange={handleSizeChange}>
-                            XL
-                        </Checkbox>
-                    ),
-                },
-                {
-                    key: '5',
-                    label: (
-                        <Checkbox value='XXL' checked={selectedSize === 'XXL'} onChange={handleSizeChange}>
-                            XXL
-                        </Checkbox>
-                    ),
-                },
-            ],
+            children: sizes.map((size) => ({
+                key: size,
+                label: (
+                    <Checkbox
+                        checked={(filters.sizes ?? []).includes(size)}
+                        onChange={(e) =>
+                            handleFilterChange(
+                                'sizes',
+                                e.target.checked
+                                    ? [...(filters.sizes ?? []), size]
+                                    : (filters.sizes ?? []).filter((s) => s !== size)
+                            )
+                        }
+                    >
+                        <Typography.Text>{size}</Typography.Text>
+                    </Checkbox>
+                ),
+            })),
         },
     ];
-
-    //#region Implement Hook
-    useEffect(() => {
-        try {
-            loadingContext?.show();
-            dispatch(getProductThunk(paramsPage))
-                .unwrap()
-                .then((response) => {
-                    if (response) {
-                        const pagination = response?.pagination;
-                        setDataProduct(response?.data);
-                        setCurrentPage({
-                            lengthPage: pagination.lengthPage,
-                            currentPage: pagination.currentPage,
-                        });
-                    }
-                })
-                .catch((error) => {
-                    message.error(getErrorMessage(error));
-                })
-                .finally(() => {
-                    loadingContext?.hide();
-                    dispatch(productActions.setRefreshTableFalse());
-                });
-        } catch (error) {
-            message.error(getErrorMessage(error));
-        }
-    }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
-    //#endregion Implement Hook
+    //#endregion Create Variables
 
     //#region Handle Function
-    const handleMenuClick = (e: { key: string }) => {
-        const key = e.key;
-        setSelectedKeys((prev) => {
-            if (prev.includes(key)) {
-                return prev.filter((k) => k !== key);
-            } else {
-                return [...prev, key];
-            }
-        });
+    const updateFilters = useCallback(
+        debounce((newFilters: Partial<IParamsPagination>) => {
+            setFilters((prev) => {
+                const updatedFilters = { ...prev, ...newFilters };
+                const params = new URLSearchParams();
+
+                // Chỉ thêm currentPage nếu khác 1
+                if (updatedFilters.currentPage !== 1) {
+                    params.set('currentPage', String(updatedFilters.currentPage));
+                }
+
+                // Chỉ thêm limitPage nếu khác 12
+                if (updatedFilters.limitPage !== 12) {
+                    params.set('limitPage', String(updatedFilters.limitPage));
+                }
+
+                // Chỉ thêm sortBy nếu khác 'createdAt'
+                if (updatedFilters.sortBy && updatedFilters.sortBy !== 'createdAt') {
+                    params.set('sortBy', updatedFilters.sortBy);
+                }
+
+                // Chỉ thêm order nếu khác 'desc'
+                if (updatedFilters.order && updatedFilters.order !== 'desc') {
+                    params.set('order', updatedFilters.order);
+                }
+
+                // Chỉ thêm category nếu có giá trị
+                if (updatedFilters.category) {
+                    params.set('category', updatedFilters.category);
+                }
+
+                // Chỉ thêm price_min và price_max nếu khác giá trị mặc định
+                if (updatedFilters.price && (updatedFilters.price[0] !== 0 || updatedFilters.price[1] !== 9999999)) {
+                    params.set('price_min', String(updatedFilters.price[0]));
+                    params.set('price_max', String(updatedFilters.price[1]));
+                }
+
+                // Chỉ thêm colors nếu có giá trị
+                if (updatedFilters.colors?.length) {
+                    params.set('colors', updatedFilters.colors.join(','));
+                }
+
+                // Chỉ thêm sizes nếu có giá trị
+                if (updatedFilters.sizes?.length) {
+                    params.set('sizes', updatedFilters.sizes.join(','));
+                }
+
+                // Cập nhật URL
+                setSearchParams(params);
+                return updatedFilters;
+            });
+        }, 1000),
+        [setSearchParams]
+    );
+
+    const handleFilterChange = (key: keyof IParamsPagination, value: any) => {
+        updateFilters({ [key]: value });
     };
 
-    // console.log(selectedKeys);
+    const handleSortChange = (value: string) => {
+        const [sortBy, order] = value.split('_');
+        const validOrder = order === 'asc' || order === 'desc' ? order : 'desc';
+        updateFilters({ sortBy, order: validOrder });
+    };
 
-    function handleSizeChange(e: any) {
-        setSelectedSize(e.target.value);
+    function clearFilters() {
+        debounceClear();
     }
+
+    const debounceClear = useCallback(
+        debounce(() => {
+            setFilters({
+                currentPage: 1,
+                limitPage: 12,
+                sortBy: 'createdAt',
+                order: 'desc',
+                category: '',
+                price: [0, 9999999],
+                colors: [],
+                sizes: [],
+            });
+
+            setSearchParams({});
+        }, 1000),
+        [setSearchParams]
+    );
     //#endregion Handle Function
 
     return (
@@ -226,13 +263,7 @@ const ProductsPage = (props: Props) => {
             <Breadcrumb breadcrumbs={productBreadcrumbs} />
             <div className={cx('swapperContact')}>
                 <div className={cx('sideBarProduct')}>
-                    <Menu
-                        className={cx('custom-menu-global')}
-                        items={items}
-                        mode='inline'
-                        inlineCollapsed={false}
-                        onClick={handleMenuClick}
-                    />
+                    <Menu className={cx('custom-menu-global')} items={items} mode='inline' inlineCollapsed={false} />
                 </div>
                 <div className={cx('contentProduct')}>
                     <div className={cx('headerProduct')}>
@@ -247,21 +278,22 @@ const ProductsPage = (props: Props) => {
                         </div>
                         <div className={cx('colRightHeaderProduct')}>
                             <Select
-                                defaultValue='0'
+                                defaultValue='createdAt_desc'
                                 variant='borderless'
                                 style={{ width: 200 }}
+                                onChange={handleSortChange}
                                 options={[
-                                    { value: '0', label: `${t('user_short_title_product')}` },
-                                    { value: '1', label: `${t('user_short_asc_abc_product')}` },
-                                    { value: '2', label: `${t('user_short_desc_abc_product')}` },
-                                    { value: '3', label: `${t('user_short_asc_price_product')}` },
-                                    { value: '4', label: `${t('user_short_desc_price_product')}` },
+                                    { value: 'createdAt_desc', label: `${t('user_short_title_product')}` },
+                                    { value: 'name_asc', label: `${t('user_short_asc_abc_product')}` },
+                                    { value: 'name_desc', label: `${t('user_short_desc_abc_product')}` },
+                                    { value: 'price_asc', label: `${t('user_short_asc_price_product')}` },
+                                    { value: 'price_desc', label: `${t('user_short_desc_price_product')}` },
                                 ]}
                             />
                         </div>
                     </div>
                     <div className={cx('listProduct')}>
-                        <Outlet context={{ dataProduct, currentPage, setParamsPage }} />
+                        <Outlet context={{ products, pagination, updateFilters }} />
                     </div>
                 </div>
             </div>
