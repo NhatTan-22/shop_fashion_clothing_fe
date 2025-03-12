@@ -1,12 +1,6 @@
-const { override, addWebpackModuleRule } = require('customize-cra');
+const { override, useBabelRc } = require('customize-cra');
 
 module.exports = override(
-  addWebpackModuleRule({
-    use: [
-      'style-loader',
-      'css-loader',
-      'postcss-loader',
-      'sass-loader',
-    ],
-  })
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useBabelRc()
 );
