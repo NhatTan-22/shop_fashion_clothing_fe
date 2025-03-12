@@ -14,10 +14,12 @@ import { Columns, DataType } from '~/utils/interfaces/interfaceTable';
 import { getOrderThunk } from '~/thunks/order/orderThunk';
 import { renderFormatValue } from '~/utils/constants/helper';
 import { baseURL } from '~/utils/constants/env';
+import { IOrder } from '~/utils/interfaces/interfaceOrder';
+import { IUser } from '~/utils/interfaces/auth';
 // Styles, Images, icons
 import styles from './Order.module.scss';
 import { icons } from '~/assets';
-import { IOrder } from '~/utils/interfaces/interfaceOrder';
+import { IProduct } from '~/utils/interfaces/interfaceProduct';
 
 type Props = {
     content?: string;
@@ -42,46 +44,122 @@ const Order = (props: Props) => {
     const columns: Columns<IOrder, DataType<IOrder>>[] = [
         {
             key: 'sku',
-            title: `${t('admin_order_client_label_table')}`,
+            title: `${t('admin_order_sku_label_table')}`,
             dataIndex: 'sku',
             render: (text, _) => {
                 return <p>{`${text ?? renderFormatValue(text)}`}</p>;
             },
         },
         {
-            key: 'image',
-            title: `${t('admin_order_image_label_table')}`,
-            dataIndex: 'image',
+            key: 'userId',
+            title: `${t('admin_order_client_label_table')}`,
+            dataIndex: 'userId',
             render: (_, record) => {
-                if (record.products.length) {
-                    return record.products.map((product) => (
-                        <Avatar src={`${baseURL}/${product.image}`} alt={product.name} />
-                    ));
+                const user = record.userId as IUser;
+                if (user && typeof user === 'object') {
+                    return (
+                        <p>{`${user.firstName ?? renderFormatValue(user.firstName)} ${
+                            user.lastName ?? renderFormatValue(user.lastName)
+                        }`}</p>
+                    );
                 }
             },
         },
         {
-            key: 'supplierName',
+            key: 'images',
+            title: `${t('admin_order_image_product_label_table')}`,
+            dataIndex: 'images',
+            render: (_, record) => {
+                if (record.products && record.products.length) {
+                    return (
+                        <div>
+                            {record.products.map((product, productIndex) => {
+                                const productDetails = product.productId as IProduct;
+                                if (
+                                    productDetails &&
+                                    typeof productDetails === 'object' &&
+                                    productDetails.images &&
+                                    productDetails.images.length
+                                ) {
+                                    return (
+                                        <div key={`product-${productIndex}`} style={{ marginBottom: '4px' }}>
+                                            <Avatar.Group
+                                                shape='circle'
+                                                max={{
+                                                    count: 2,
+                                                }}
+                                            >
+                                                {productDetails.images.map((image, index) => (
+                                                    <Avatar
+                                                        key={`${productDetails._id}_image_${index}`}
+                                                        src={`${baseURL}/${image}`}
+                                                        alt={productDetails.name}
+                                                    />
+                                                ))}
+                                            </Avatar.Group>
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            })}
+                        </div>
+                    );
+                }
+            },
+        },
+        {
+            key: 'name',
             title: `${t('admin_order_product_name_label_table')}`,
-            dataIndex: 'supplierName',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            dataIndex: 'name',
+            render: (_, record) => {
+                if (record.products && record.products.length) {
+                    return record.products.map((product, index) => {
+                        const productDetails = product.productId as IProduct;
+
+                        return (
+                            <div key={index}>
+                                <p>{`item ${index} - ${
+                                    productDetails.name ?? renderFormatValue(productDetails.name)
+                                }`}</p>
+                            </div>
+                        );
+                    });
+                }
             },
         },
         {
-            key: 'contactPerson',
+            key: 'color',
             title: `${t('admin_order_color_label_table')}`,
-            dataIndex: 'contactPerson',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            dataIndex: 'color',
+            render: (_, record) => {
+                if (record.products && record.products.length) {
+                    return record.products.map((product, index) => {
+                        return (
+                            <div key={`product-${index}`} style={{ marginBottom: '4px' }}>
+                                item {index} -{' '}
+                                <Tag color={product.color}>{`${
+                                    product.color ?? renderFormatValue(product.color)
+                                }`}</Tag>
+                            </div>
+                        );
+                    });
+                }
             },
         },
         {
-            key: 'phone',
+            key: 'size',
             title: `${t('admin_order_size_label_table')}`,
-            dataIndex: 'phone',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            dataIndex: 'size',
+            render: (_, record) => {
+                if (record.products && record.products.length) {
+                    return record.products.map((product, index) => {
+                        return (
+                            <div key={`product-${index}`} style={{ marginBottom: '4px' }}>
+                                <p>{`item ${index} - ${product.size ?? renderFormatValue(product.size)}`}</p>
+                            </div>
+                        );
+                    });
+                }
             },
         },
         {
@@ -89,10 +167,14 @@ const Order = (props: Props) => {
             title: `${t('admin_order_quantity_label_table')}`,
             dataIndex: 'quantity',
             render: (_, record) => {
-                if (record.products.length) {
-                    return record.products.map((product) => (
-                        <p>{`${product.quantity ?? renderFormatValue(product.quantity)}`}</p>
-                    ));
+                if (record.products && record.products.length) {
+                    return record.products.map((product, index) => {
+                        return (
+                            <div key={`product-${index}`} style={{ marginBottom: '4px' }}>
+                                <p>{`item ${index} - ${product.quantity ?? renderFormatValue(product.quantity)}`}</p>
+                            </div>
+                        );
+                    });
                 }
             },
         },
@@ -101,15 +183,19 @@ const Order = (props: Props) => {
             title: `${t('admin_order_discount_label_table')}`,
             dataIndex: 'discount',
             render: (_, record) => {
-                return <p>{`${record?.discount ?? renderFormatValue(record.discount)}`}</p>;
+                if (record.discount) {
+                    return <p>{`${record?.discount ?? renderFormatValue(record.discount)}`}</p>;
+                }
             },
         },
         {
             key: 'totalPrice',
             title: `${t('admin_order_total_price_label_table')}`,
             dataIndex: 'totalPrice',
-            render: (text, _) => {
-                return <p>{`${text ?? renderFormatValue(text)}`}</p>;
+            render: (_, record) => {
+                if (record.totalPrice) {
+                    return <p>{`${record?.totalPrice ?? renderFormatValue(record.totalPrice)} đ`}</p>;
+                }
             },
         },
         {
@@ -118,13 +204,13 @@ const Order = (props: Props) => {
             dataIndex: 'status',
             render: (_, record) => {
                 if (record?.status.toUpperCase() === 'PENDING') {
-                    return <Tag color='gold'>{`${t('admin_supplier_type_pending_label_table')}`}</Tag>;
+                    return <Tag color='gold'>{`${t('admin_order_status_pending_label_table')}`}</Tag>;
                 } else if (record?.status.toUpperCase() === 'SHIPPED') {
-                    return <Tag color='blue'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
+                    return <Tag color='blue'>{`${t('admin_order_status_shipped_label_table')}`}</Tag>;
                 } else if (record?.status.toUpperCase() === 'DELIVERED') {
-                    return <Tag color='green'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
+                    return <Tag color='green'>{`${t('admin_order_status_delivered_label_table')}`}</Tag>;
                 } else {
-                    return <Tag color='red'>{`${t('admin_supplier_type_received_label_table')}`}</Tag>;
+                    return <Tag color='red'>{`${t('admin_order_status_canceled_label_table')}`}</Tag>;
                 }
             },
         },
@@ -134,9 +220,9 @@ const Order = (props: Props) => {
             dataIndex: 'paymentStatus',
             render: (_, record) => {
                 if (record?.paymentStatus.toUpperCase() === 'PAID') {
-                    return <Tag color='green'>{`${t('admin_supplier_type_pending_label_table')}`}</Tag>;
+                    return <Tag color='green'>{`${t('admin_order_payment_status_paid_label_table')}`}</Tag>;
                 } else if (record?.paymentStatus.toUpperCase() === 'UNPAID') {
-                    return <Tag color='grey'>{`${t('admin_supplier_type_shipped_label_table')}`}</Tag>;
+                    return <Tag color='grey'>{`${t('admin_order_payment_status_unpaid_label_table')}`}</Tag>;
                 }
             },
         },

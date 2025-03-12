@@ -12,12 +12,12 @@ export interface IAddOrder {
     products: IProducts[];
     totalPrice: number;
     paymentMethod: string;
-    discount: string;
+    discount?: string;
 }
 
 export interface IProducts {
-    productId: string;
-    image: string;
+    productId: string | { _id: string; name: string; images: string[] };
+    image?: string;
     name: string;
     color: string;
     size: string;
