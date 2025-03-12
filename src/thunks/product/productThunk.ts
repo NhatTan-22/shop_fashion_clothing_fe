@@ -5,6 +5,7 @@ import {
     DELETE_PRODUCT,
     GET_COLOR_PRODUCT,
     GET_DETAIL_PRODUCT,
+    GET_POPULAR_PRODUCT,
     GET_PRODUCT,
     GET_SIZE_PRODUCT,
 } from '~/utils/constants/actionType';
@@ -14,6 +15,15 @@ import { IAddProduct } from '~/utils/interfaces/interfaceProduct';
 export const getProductThunk = createAsyncThunk(GET_PRODUCT, async (params: IParamsPagination, { rejectWithValue }) => {
     try {
         const response = await productApi.getAllProduct(params);
+        return response.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || 'Unknown error!');
+    }
+});
+
+export const getPopularProductThunk = createAsyncThunk(GET_POPULAR_PRODUCT, async (_, { rejectWithValue }) => {
+    try {
+        const response = await productApi.getPopularProduct({});
         return response.data;
     } catch (error: any) {
         return rejectWithValue(error.response?.data || 'Unknown error!');

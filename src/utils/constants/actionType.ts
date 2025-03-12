@@ -7,6 +7,7 @@ export const ADD_SUPPLIER = 'ADD_SUPPLIER';
 export const DELETE_SUPPLIER = 'DELETE_SUPPLIER';
 
 export const GET_PRODUCT = 'GET_PRODUCT';
+export const GET_POPULAR_PRODUCT = 'GET_POPULAR_PRODUCT';
 export const GET_COLOR_PRODUCT = 'GET_COLOR_PRODUCT';
 export const GET_SIZE_PRODUCT = 'GET_SIZE_PRODUCT';
 export const GET_DETAIL_PRODUCT = 'GET_DETAIL_PRODUCT';
@@ -39,6 +40,7 @@ export const urlApiSupplier = {
 
 export const urlApiProduct = {
     getAllProduct: '/products',
+    getPopularProduct: '/products/popular',
     getColorProduct: '/products/colors',
     getSizeProduct: '/products/sizes',
     getDetailProduct: (slug: string) => `/products/${slug}`,

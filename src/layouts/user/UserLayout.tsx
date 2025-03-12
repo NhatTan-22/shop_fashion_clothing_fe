@@ -195,7 +195,11 @@ const UserLayout = (props: Props) => {
                                                 items: [
                                                     {
                                                         key: '1',
-                                                        label: `Welcome, ${user.firstName} ${user.lastName}!`,
+                                                        label: (
+                                                            <Typography.Title
+                                                                level={5}
+                                                            >{`Welcome, ${user.firstName} ${user.lastName}!`}</Typography.Title>
+                                                        ),
                                                     },
                                                     {
                                                         key: '2',

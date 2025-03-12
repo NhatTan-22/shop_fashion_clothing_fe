@@ -48,6 +48,10 @@
     @apply focus:border-wisteria-600;
 }
 
+.inputSearch:focus {
+    @apply focus:border-wisteria-600;
+}
+
 .iconSearch {
     @apply absolute top-[15%] right-[5%];
 }

@@ -151,7 +151,7 @@ const Checkout = (props: Props) => {
         if (value && value > 0) {
             dispatch(
                 orderActions.updateQuantity({
-                    id: record.productId,
+                    id: record.productId as string,
                     quantity: value,
                     color: record.color,
                     size: record.size,
@@ -163,7 +163,7 @@ const Checkout = (props: Props) => {
     const handleDelete = (record: IProducts) => {
         dispatch(
             orderActions.removeProduct({
-                id: record.productId,
+                id: record.productId as string,
                 color: record.color,
                 size: record.size,
             })
