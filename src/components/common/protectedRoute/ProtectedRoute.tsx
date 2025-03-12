@@ -57,7 +57,7 @@ const ProtectedRoute = (props: Props) => {
     //#region Handle Function
     //#endregion Handle Function
     if (!isMounted) return;
-    return children;
+    return <>{children}</> || null;
 };
 
 export default ProtectedRoute;
