@@ -4,18 +4,15 @@ import { Drawer, Form, message } from 'antd';
 import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 // Components, Layouts, Pages
-import { BaseButton, IconSVG } from '~/components';
+import { BaseButton } from '~/components';
 // Others
-import { baseURL } from '~/utils/constants/env';
 import { LoadingContext } from '~/context';
 import { useAppDispatch } from '~/redux/hooks';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { ISupplier } from '~/utils/interfaces/interfaceSupplier';
-// Styles, Images, icons
-import { icons } from '~/assets';
-import styles from './DetailSupplier.module.scss';
 import { deleteSupplierThunk } from '~/thunks/supplier/supplierThunk';
 import { supplierActions } from '~/thunks/supplier/supplierSlice';
+import { ButtonStyleEnum } from '~/utils/constants/enum';
+// Styles, Images, icons
+import styles from './DetailSupplier.module.scss';
 
 type Props = {
     openDrawerDetail?: boolean;
