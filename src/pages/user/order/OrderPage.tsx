@@ -13,6 +13,7 @@ import { LoadingContext } from '~/context';
 // Styles, Images, icons
 import styles from './OrderPage.module.scss';
 import { orderActions } from '~/thunks/order/orderSlice';
+import { IAddOrder } from '~/utils/interfaces/interfaceOrder';
 
 type Props = {
     // content?: string;
@@ -26,6 +27,7 @@ const OrderPage = (props: Props) => {
     //#endregion Destructuring Props
 
     //#region Declare Hook
+    const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : '[]';
     const { t } = useTranslation();
     const location = useLocation();
     const dispatch = useAppDispatch();
@@ -39,49 +41,59 @@ const OrderPage = (props: Props) => {
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isNotification, setIsNotification] = useState<boolean>(false);
     const orderStore = useAppSelector((state: RootState) => state.order.order);
+    const [order, setOrder] = useState<IAddOrder>({
+        userId: user._id,
+        address: {
+            nameCustomer: '',
+            phone: '',
+            address: '',
+        },
+        products: [],
+        totalPrice: 0,
+        paymentMethod: '',
+        discount: '',
+    });
     //#endregion Declare State
 
     //#region Implement Hook
     useEffect(() => {
         setCurrentStep(0);
+        if (orderStore) {
+            const newOrder: IAddOrder = {
+                ...orderStore,
+                userId: user._id,
+                products: orderStore.products.map(({ image, ...rest }) => rest),
+            };
+            setOrder(newOrder);
+        }
     }, [location.pathname]);
     //#endregion Implement Hook
 
     //#region Handle Function
     function handlePlaceOrder() {
-        // try {
-        //     const formData = new FormData();
-
-        //     Object.entries(orderStore).forEach(([key, value]) => {
-        //         if (key === 'image' && value instanceof File) {
-        //             formData.append(key, value);
-        //         } else if (value !== undefined && value !== null) {
-        //             formData.append(key, value.toString());
-        //         }
-        //     });
-
-        //     loadingContext?.show();
-        //     dispatch(addOrderThunk(formData))
-        //         .unwrap()
-        //         .then((response) => {
-        //             message.success(response.message);
-        //             localStorage.removeItem('order');
-        //             setIsNotification(true);
-        //             dispatch(orderActions.setRefreshTableTrue());
-        //         })
-        //         .catch((error) => {
-        //             message.error(error.message);
-        //         })
-        //         .finally(() => {
-        //             loadingContext?.hide();
-        //         });
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         message.error(error.message);
-        //     } else {
-        //         message.error(String(error));
-        //     }
-        // }
+        try {
+            loadingContext?.show();
+            dispatch(addOrderThunk(order))
+                .unwrap()
+                .then((response) => {
+                    message.success(response.message);
+                    localStorage.removeItem('order');
+                    setIsNotification(true);
+                    dispatch(orderActions.setRefreshTableTrue());
+                })
+                .catch((error) => {
+                    message.error(error.message);
+                })
+                .finally(() => {
+                    loadingContext?.hide();
+                });
+        } catch (error) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                message.error(String(error));
+            }
+        }
         setIsNotification(true);
     }
     //#endregion Handle Function
@@ -155,7 +167,7 @@ const OrderPage = (props: Props) => {
                         title='Your order is confirmed'
                         subTitle='Thanks for shopping! Your order hasn’t shipped yet, but we will send you an email when it is done.'
                         extra={[
-                            <div className='w-full flex flex-col'>
+                            <div key={'button'} className='w-full flex flex-col'>
                                 <Link to='/my-orders'>
                                     <Button
                                         style={{ width: '100%' }}

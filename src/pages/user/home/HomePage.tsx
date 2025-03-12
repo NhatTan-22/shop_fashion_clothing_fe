@@ -51,7 +51,6 @@ const HomePage = (props: Props) => {
             .then((response) => {
                 if (response) {
                     const popular = getUniqueCategoryProducts(response?.data as IProduct[]);
-                    console.log(popular);
                     setData(popular);
                 }
             })

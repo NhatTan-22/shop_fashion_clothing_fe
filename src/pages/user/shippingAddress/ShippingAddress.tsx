@@ -71,6 +71,7 @@ const ShippingAddress = (props: Props) => {
         address: '',
     });
     const [isOpenAddAddress, setIsOpenAddAddress] = useState<boolean>(false);
+    const [isSave, setIsSave] = useState<boolean>(false);
     //#endregion Declare State
 
     //#region Create Variables
@@ -83,37 +84,41 @@ const ShippingAddress = (props: Props) => {
                     <Typography.Title level={2}>{t('user_order_select_address_tile')}</Typography.Title>
                     <Typography.Text>{t('user_order_select_address_description')}</Typography.Text>
                     <div className='flex my-6 gap-6  overflow-auto pb-10 border-b-2 border-gray-300'>
-                        {
-                            orderStore.address && (
-                                // orderStore.address.map((user) => (
-                                <Card
-                                    title={`${orderStore?.address.nameCustomer}`}
-                                    extra={<Checkbox checked></Checkbox>}
-                                    style={{ minWidth: 300 }}
-                                >
-                                    <Typography.Text>{`${
-                                        orderStore?.address.address ?? 'No address yet, please update address'
-                                    }`}</Typography.Text>
-                                    <div className='flex justify-around mt-5'>
-                                        <Button
-                                            type='primary'
-                                            size='large'
-                                            onClick={() => console.log(orderStore?.address)}
-                                        >
-                                            <IconSVG IconComponent={icons.editIcon} /> {`${t('common_edit')}`}
-                                        </Button>
-                                        <Button
-                                            size='large'
-                                            className='bg-red-600'
-                                            onClick={() => console.log(orderStore?.address)}
-                                        >
-                                            <IconSVG IconComponent={icons.deleteIcon} /> {`${t('common_delete')}`}
-                                        </Button>
-                                    </div>
-                                </Card>
-                            )
-                            /* ))} */
-                        }
+                        {isSave ? (
+                            <Card
+                                title={`${shippingAddress?.nameCustomer}`}
+                                extra={<Checkbox checked></Checkbox>}
+                                style={{ minWidth: 300 }}
+                            >
+                                <Typography.Text>{`${
+                                    shippingAddress?.address ?? 'No address yet, please update address'
+                                }`}</Typography.Text>
+                                <div className='flex justify-around mt-5'>
+                                    <Button
+                                        type='primary'
+                                        size='large'
+                                        onClick={() => console.log(shippingAddress?.address)}
+                                    >
+                                        <IconSVG IconComponent={icons.editIcon} /> {`${t('common_edit')}`}
+                                    </Button>
+                                    <Button
+                                        size='large'
+                                        className='bg-red-600'
+                                        onClick={() =>
+                                            setShippingAddress({
+                                                nameCustomer: '',
+                                                phone: '',
+                                                address: '',
+                                            })
+                                        }
+                                    >
+                                        <IconSVG IconComponent={icons.deleteIcon} /> {`${t('common_delete')}`}
+                                    </Button>
+                                </div>
+                            </Card>
+                        ) : (
+                            ''
+                        )}
                     </div>
                     <div className='flex justify-around'>
                         <Button type='primary' size='large' onClick={() => setIsOpenAddAddress(true)}>
@@ -139,11 +144,15 @@ const ShippingAddress = (props: Props) => {
                         onChange={onChangePaymentMethod}
                     >
                         <Space direction='vertical' className='gap-6'>
-                            <Radio value='Cash on Delivery'>
-                                <Typography.Text className='text-xl'>Cash on Delivery</Typography.Text>
+                            <Radio value='COD'>
+                                <Typography.Text className='text-xl'>
+                                    {t('user_order_payment_method_cod_label')}
+                                </Typography.Text>
                             </Radio>
-                            <Radio value='Debit/Credit Card'>
-                                <Typography.Text className='text-xl'>Debit/Credit Card</Typography.Text>
+                            <Radio value='CREDIT_CARD'>
+                                <Typography.Text className='text-xl'>
+                                    {t('user_order_payment_method_credit_card_label')}
+                                </Typography.Text>
                             </Radio>
                             {paymentMethod === 'Debit/Credit Card' && (
                                 <Form>
@@ -166,8 +175,10 @@ const ShippingAddress = (props: Props) => {
                                     </Button>
                                 </Form>
                             )}
-                            <Radio value='Google Pay'>
-                                <Typography.Text className='text-xl'>Google Pay</Typography.Text>
+                            <Radio value='PAYPAL'>
+                                <Typography.Text className='text-xl'>
+                                    {t('user_order_payment_method_paypal_label')}
+                                </Typography.Text>
                             </Radio>
                             {paymentMethod === 'Google Pay' && (
                                 <Space direction='vertical' align='center'>
@@ -245,7 +256,13 @@ const ShippingAddress = (props: Props) => {
                     <div className={cx('rowReview')}>
                         <Typography.Title level={3}>{t('user_order_payment_method_label')}</Typography.Title>
                         <div>
-                            <Typography.Title level={5}>{orderStore.paymentMethod}</Typography.Title>
+                            <Typography.Title level={5}>
+                                {orderStore.paymentMethod === 'COD'
+                                    ? t('user_order_payment_method_cod_label')
+                                    : orderStore.paymentMethod === 'CREDIT_CARD'
+                                    ? t('user_order_payment_method_credit_card_label')
+                                    : t('user_order_payment_method_paypal_label')}
+                            </Typography.Title>
                         </div>
                     </div>
                 </>
@@ -276,6 +293,7 @@ const ShippingAddress = (props: Props) => {
     function handleAddShippingAddress() {
         dispatch(orderActions.updateShippingAddress({ shippingAddress }));
         setIsOpenAddAddress(false);
+        setIsSave(true);
     }
     //#endregion Handle Function
 
@@ -298,7 +316,7 @@ const ShippingAddress = (props: Props) => {
                     open={isOpenAddAddress}
                     title='Add New Shipping Address'
                     footer={[
-                        <Button type='primary' size='large' onClick={handleAddShippingAddress}>
+                        <Button key={'save'} type='primary' size='large' onClick={handleAddShippingAddress}>
                             {t('common_save')}
                         </Button>,
                     ]}

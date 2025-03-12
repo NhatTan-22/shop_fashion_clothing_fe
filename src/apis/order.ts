@@ -10,13 +10,9 @@ const orderApi = {
         return response.data;
     },
 
-    async addOrder(body: IAddOrder | FormData) {
-        const headers =
-            body instanceof FormData
-                ? { 'Content-Type': 'multipart/form-data' }
-                : { 'Content-Type': 'application/json' };
+    async addOrder(payload: IAddOrder) {
         const url = `${urlApiOrder.addOrder}`;
-        const response = await axiosClient.post(url, body, { headers });
+        const response = await axiosClient.post(url, payload);
         return response.data;
     },
 };

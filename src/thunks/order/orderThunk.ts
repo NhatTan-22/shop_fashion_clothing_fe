@@ -15,21 +15,12 @@ export const getOrderThunk = createAsyncThunk(GET_ORDER, async (params: IParamsP
 
 export const addOrderThunk = createAsyncThunk(
     ADD_ORDER,
-    async (formData: IAddOrder | FormData, { rejectWithValue }) => {
+    async (payload: IAddOrder, { rejectWithValue }) => {
         try {
-            const response = await orderApi.addOrder(formData);
+            const response = await orderApi.addOrder(payload);
             return response;
         } catch (error: any) {
             return rejectWithValue(error.response.data);
         }
     }
 );
-
-// export const deleteSupplierThunk = createAsyncThunk(DELETE_SUPPLIER, async (payload: Object, { rejectWithValue }) => {
-//     try {
-//         const response = await supplierApi.deleteSupplier(payload);
-//         return response;
-//     } catch (error: any) {
-//         return rejectWithValue(error.response.data);
-//     }
-// });
