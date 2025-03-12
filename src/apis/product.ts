@@ -10,6 +10,12 @@ const productApi = {
         return data;
     },
 
+    async getPopularProduct(params: IParamsPagination) {
+        const url = `${urlApiProduct.getPopularProduct}`;
+        const { data } = await axiosClient.get(url, { params });
+        return data;
+    },
+
     async getColorProduct() {
         const url = `${urlApiProduct.getColorProduct}`;
         const { data } = await axiosClient.get(url);

@@ -62,7 +62,7 @@ const ProductsPage = () => {
             key: 'search',
             label: (
                 <div className='flex items-center justify-between gap-2'>
-                    <Typography.Title level={2} style={{ margin: 0 }}>
+                    <Typography.Title level={4} style={{ margin: 0 }}>
                         {t('_user_sidebar_product')}
                     </Typography.Title>
                     <Button type='text' onClick={clearFilters}>
@@ -176,48 +176,39 @@ const ProductsPage = () => {
                 const updatedFilters = { ...prev, ...newFilters };
                 const params = new URLSearchParams();
 
-                // Chỉ thêm currentPage nếu khác 1
                 if (updatedFilters.currentPage !== 1) {
                     params.set('currentPage', String(updatedFilters.currentPage));
                 }
 
-                // Chỉ thêm limitPage nếu khác 12
                 if (updatedFilters.limitPage !== 12) {
                     params.set('limitPage', String(updatedFilters.limitPage));
                 }
 
-                // Chỉ thêm sortBy nếu khác 'createdAt'
                 if (updatedFilters.sortBy && updatedFilters.sortBy !== 'createdAt') {
                     params.set('sortBy', updatedFilters.sortBy);
                 }
 
-                // Chỉ thêm order nếu khác 'desc'
-                if (updatedFilters.order && updatedFilters.order !== 'desc') {
+                if (updatedFilters.order) {
                     params.set('order', updatedFilters.order);
                 }
 
-                // Chỉ thêm category nếu có giá trị
                 if (updatedFilters.category) {
                     params.set('category', updatedFilters.category);
                 }
 
-                // Chỉ thêm price_min và price_max nếu khác giá trị mặc định
                 if (updatedFilters.price && (updatedFilters.price[0] !== 0 || updatedFilters.price[1] !== 9999999)) {
                     params.set('price_min', String(updatedFilters.price[0]));
                     params.set('price_max', String(updatedFilters.price[1]));
                 }
 
-                // Chỉ thêm colors nếu có giá trị
                 if (updatedFilters.colors?.length) {
                     params.set('colors', updatedFilters.colors.join(','));
                 }
 
-                // Chỉ thêm sizes nếu có giá trị
                 if (updatedFilters.sizes?.length) {
                     params.set('sizes', updatedFilters.sizes.join(','));
                 }
 
-                // Cập nhật URL
                 setSearchParams(params);
                 return updatedFilters;
             });

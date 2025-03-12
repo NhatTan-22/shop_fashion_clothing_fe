@@ -44,7 +44,7 @@ Tạo file .env.dev trong thư mục:
 
 4. Chạy dự án
 # Chạy frontend
-yarn start
+npm start
 
 📄 Tài khoản mẫu
 

@@ -8,7 +8,7 @@ import { message } from 'antd';
 import { BaseButton, ItemProduct, Slider } from '~/components';
 // Others
 import { useAppDispatch, useAppSelector } from '~/redux/hooks';
-import { getProductThunk } from '~/thunks/product/productThunk';
+import { getPopularProductThunk } from '~/thunks/product/productThunk';
 import { LoadingContext } from '~/context';
 import { productActions } from '~/thunks/product/productSlice';
 import { IProduct } from '~/utils/interfaces/interfaceProduct';
@@ -46,11 +46,12 @@ const HomePage = (props: Props) => {
     //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
-        dispatch(getProductThunk({}))
+        dispatch(getPopularProductThunk())
             .unwrap()
             .then((response) => {
                 if (response) {
                     const popular = getUniqueCategoryProducts(response?.data as IProduct[]);
+                    console.log(popular);
                     setData(popular);
                 }
             })
