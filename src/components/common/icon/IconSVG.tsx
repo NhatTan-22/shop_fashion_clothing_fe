@@ -43,18 +43,16 @@ const IconSVG = (props: Props) => {
 
     useEffect(() => {
         if (svgRef.current) {
-            const pathElements = svgRef.current.querySelectorAll('path');
-            pathElements.forEach((path) => {
-                path.setAttribute('stroke', colorIcon);
+            const pathElements = svgRef.current.querySelectorAll('path, circle, rect, line, polyline, polygon');
+            pathElements.forEach((element) => {
+                element.setAttribute('stroke', colorIcon);
             });
         }
     }, [colorIcon]);
     //#endregion Implement Hook
 
     //#region Handle Function
-    if (!IconComponent) {
-        return null;
-    }
+    if (!IconComponent) return <></>;
 
     //#endregion Handle Function
 
