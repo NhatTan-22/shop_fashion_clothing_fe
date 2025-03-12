@@ -39,7 +39,7 @@ const BlogPage = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <div>
+        <div className={cx('mainBlogPage')}>
             <Breadcrumb breadcrumbs={blogBreadcrumbs} />
         </div>
     );

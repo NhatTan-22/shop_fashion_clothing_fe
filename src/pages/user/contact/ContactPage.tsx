@@ -1,6 +1,7 @@
 // Libs
 import classNames from 'classnames/bind';
 import { useTranslation } from 'react-i18next';
+import { Form, Input } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton, Breadcrumb, IconSVG } from '~/components';
 // Others
@@ -8,7 +9,6 @@ import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './ContactPage.module.scss';
 import { icons } from '~/assets';
-import { Form, Input } from 'antd';
 
 type Props = {
     content?: string;
@@ -25,7 +25,6 @@ const { TextArea } = Input;
 
 const ContactPage = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'AboutPage' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook

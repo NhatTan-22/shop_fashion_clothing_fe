@@ -31,7 +31,7 @@ const DialogDefault = (props: Props) => {
     //#region Handle Function
     //#endregion Handle Function
 
-    return <>{content}</>;
+    return <div className={cx('dialogDefault')}>{content}</div>;
 };
 
 export default DialogDefault;
