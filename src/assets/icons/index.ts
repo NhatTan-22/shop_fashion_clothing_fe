@@ -1,5 +1,5 @@
 import { ReactComponent as HomeIcon } from '../icons/homeIcon.svg';
-import { ReactComponent as Notification } from '@/assets/icons/notification.svg';
+import { ReactComponent as Notification } from '../icons/notification.svg';
 import { ReactComponent as SearchIcon } from '../icons/searchIcon.svg';
 import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
 import { ReactComponent as EmailIcon } from '../icons/emailIcon.svg';
