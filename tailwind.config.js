@@ -2,7 +2,8 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     content: [
-        "./src/**/*.{html,js,jsx,ts,tsx}",
+        "./src/**/*.{js,ts,jsx,tsx,scss}",
+        ".public/index.html",
     ],
     theme: {
         extend: {

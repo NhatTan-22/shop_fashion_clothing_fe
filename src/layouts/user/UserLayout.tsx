@@ -68,6 +68,8 @@ const UserLayout = (props: Props) => {
     const handleLogout = () => {
         dispatch(authActions.handleLogout());
     };
+    console.log(styles);
+
     //#endregion Handle Function
 
     return (
