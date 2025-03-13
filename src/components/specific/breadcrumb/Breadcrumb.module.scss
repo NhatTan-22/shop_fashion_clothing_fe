@@ -5,3 +5,27 @@
 .contentBreadcrumb {
     @apply flex h-12 items-center mx-auto max-w-[80%];
 }
+
+.listBreadcrumb {
+    @apply inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse;
+}
+
+.liBreadcrumb {
+    @apply inline-flex items-center;
+}
+
+.linkBreadcrumb {
+    @apply inline-flex items-center text-sm font-medium text-gray-700 gap-2;
+}
+
+.divBreadcrumb {
+    @apply flex items-center;
+}
+
+.spanOne {
+    @apply ms-1 text-sm font-medium md:ms-2;
+}
+
+.defaultColor {
+    @apply text-red-600 cursor-default;
+}

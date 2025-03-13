@@ -1,8 +1,12 @@
 // Libs
+import { useEffect, useRef } from 'react';
+import classNames from 'classnames/bind';
 // Components, Layouts, Pages
 // Others
 // Styles, Images, icons
-import { useEffect, useRef } from 'react';
+import styles from './IconSVG.module.scss';
+
+const cx = classNames.bind(styles);
 
 type Props = {
     IconComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -24,7 +28,6 @@ const IconSVG = (props: Props) => {
         colorIcon = 'currentColor',
         border,
         className,
-        bgColor,
         onClick,
     } = props;
     //#endregion Destructuring Props
@@ -57,7 +60,7 @@ const IconSVG = (props: Props) => {
     //#endregion Handle Function
 
     return (
-        <span className='inline-flex items-center justify-center'>
+        <span className={cx('iconSVG')}>
             <IconComponent
                 width={width}
                 height={height}

@@ -1,3 +1,15 @@
+.headerNotFound {
+    @apply relative;
+}
+
+.contentNotFound {
+    @apply absolute top-56 text-center text-base w-full text-orange-500;
+}
+
+.contentOne {
+    @apply mt-4 flex flex-col gap-2 text-base;
+}
+
 .orToProduct {
     @apply flex items-center justify-center;
 }

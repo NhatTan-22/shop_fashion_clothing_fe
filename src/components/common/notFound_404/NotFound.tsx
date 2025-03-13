@@ -1,15 +1,14 @@
 // Libs
-import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { useTranslation } from 'react-i18next';
+import { Typography } from 'antd';
 // Components, Layouts, Pages
 import { BaseButton } from '~/components';
 // Others
+import { ButtonStyleEnum } from '~/utils/constants/enum';
 // Styles, Images, icons
 import styles from './NotFound.module.scss';
-import { useTranslation } from 'react-i18next';
-import { ButtonStyleEnum } from '~/utils/constants/enum';
-import { images } from '~/assets';
 
 type Props = {
     content?: string;
@@ -19,7 +18,6 @@ const cx = classNames.bind(styles);
 
 const NotFoundPage = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'Example Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
@@ -40,13 +38,13 @@ const NotFoundPage = (props: Props) => {
 
     return (
         <div>
-            <div className='relative'>
-                {/* <img className='h-screen w-screen object-contain' alt='NotFound_404' src='' /> */}
+            <div className={cx('headerNotFound')}>
+                {/* <img alt='NotFound_404' src='' /> */}
             </div>
-            <div className='absolute top-56 text-center text-base w-full text-orange-500'>
+            <div className={cx('contentNotFound')}>
                 {/* <img alt='' src={images.fashionStore} /> */}
-                <h1 className='text-5xl font-bold'>{t('No content found')}</h1>
-                <ul className='mt-4 flex flex-col gap-2 text-base'>
+                <Typography.Title level={1}>{t('common_not_found_confirm_title')}</Typography.Title>
+                <ul className={cx('contentOne')}>
                     <li>
                         {t('The URL of this content has been')} <strong>{t('changed')}</strong> {t('OR')}{' '}
                         <strong>{t('no longer exists')}</strong>.

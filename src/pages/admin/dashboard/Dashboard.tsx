@@ -1,5 +1,4 @@
 // Libs
-import React from 'react';
 import classNames from 'classnames/bind';
 import { DatePicker, List } from 'antd';
 import { useTranslation } from 'react-i18next';

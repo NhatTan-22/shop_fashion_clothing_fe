@@ -23,6 +23,8 @@
 
     "common_confirm_title": "Confirm deletion",
     "common_confirm_content": "Are you sure you want to delete?",
+    
+    "common_not_found_confirm_title": "No content found",
 
     "gender_male": "MALE",
     "gender_female": "FEMALE",

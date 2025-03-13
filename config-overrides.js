@@ -4,11 +4,21 @@ module.exports = override(
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useBabelRc(),
   addWebpackModuleRule({
+    test: /\.scss$/,
     use: [
-      'style-loader',
       'css-loader',
-      'postcss-loader',
-      'sass-loader',
+      {
+        loader: 'resolve-url-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
+      {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+        },
+      },
     ],
   })
 );

@@ -116,7 +116,7 @@ const ItemProduct = (props: Props) => {
                     </Link>
                 </div>
             ) : (
-                <div className='grid grid-cols-2 gap-6 mb-8'>
+                <div className={cx('boxListProduct')}>
                     <div className={cx('boxImage')}>
                         <div className={cx('imageProduct')}>
                             <Image
@@ -145,7 +145,7 @@ const ItemProduct = (props: Props) => {
                                 {`${product?.pricing.price}`}
                             </h4>
                         </div>
-                        <div className='flex gap-5 items-end content-end'>
+                        <div className={cx('buttonsList')}>
                             <Button
                                 type='primary'
                                 size='large'
