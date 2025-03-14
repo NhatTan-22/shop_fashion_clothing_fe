@@ -65,7 +65,6 @@ const HomePage = (props: Props) => {
     //#endregion Implement Hook
 
     //#region Handle Function
-    console.log(styles);
     //#endregion Handle Function
 
     return (

@@ -20,7 +20,7 @@ const blogBreadcrumbs = [
 
 const BlogPage = (props: Props) => {
     //#region Destructuring Props
-    const { content = 'BlogPage Component' } = props;
+    // const { content = 'BlogPage Component' } = props;
     //#endregion Destructuring Props
 
     //#region Declare Hook
