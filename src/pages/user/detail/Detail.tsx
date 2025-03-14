@@ -25,22 +25,14 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Detail = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Example Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const params = useParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [detail, setDetail] = useState<IProduct>();
     const [relate, setRelate] = useState<IProduct[]>([]);
     const [product, setProduct] = useState<IProducts>({
@@ -52,9 +44,7 @@ const Detail = (props: Props) => {
         quantity: 1,
         price: 0,
     });
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
         try {
@@ -92,7 +82,6 @@ const Detail = (props: Props) => {
             }
         }
     }, [params.slug]);
-    //#endregion Implement Hook
 
     //#region Create Variables
     const detailBreadcrumbs = [

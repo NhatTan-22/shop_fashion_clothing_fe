@@ -24,17 +24,8 @@ const productBreadcrumbs = [
 ];
 
 const ProductsPage = () => {
-    //#region Destructuring Props
-    //#endregion Destructuring Props
-
-    //#region Declare Hook
     const { t } = useTranslation();
-    //#endregion Declare Hook
 
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [searchParams, setSearchParams] = useSearchParams();
     const [filters, setFilters] = useState<IParamsPagination>({
         currentPage: Number(searchParams.get('currentPage')) || 1,
@@ -50,11 +41,8 @@ const ProductsPage = () => {
         sizes: searchParams.getAll('sizes'),
     });
     const [tempPrice, setTempPrice] = useState(filters.price || [0, 100]);
-    //#endregion Declare State
 
-    //#region Implement Hook
     const { products, categories, colors, sizes, pagination } = UseFetchProducts(filters);
-    //#endregion Implement Hook
 
     //#region Create Variables
     const items: IMenuItem[] = [

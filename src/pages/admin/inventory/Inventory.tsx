@@ -29,17 +29,12 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Inventory = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Inventory Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
     const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
 
     const data = [
@@ -241,9 +236,7 @@ const Inventory = (props: Props) => {
             },
         },
     ];
-    //#endregion Selector
 
-    //#region Declare State
     // const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
     const [openModalAddProduct, setOpenModalAddProduct] = useState<boolean>(false);
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
@@ -255,9 +248,7 @@ const Inventory = (props: Props) => {
         lengthPage: 0,
         currentPage: 1,
     });
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         try {
             loadingContext?.show();
@@ -288,7 +279,6 @@ const Inventory = (props: Props) => {
             }
         }
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleChangePage = (e: number) => {

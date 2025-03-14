@@ -20,28 +20,8 @@ type Props = {
 };
 
 const IconSVG = (props: Props) => {
-    //#region Destructuring Props
-    const {
-        IconComponent,
-        width = 24,
-        height = 24,
-        colorIcon = 'currentColor',
-        border,
-        className,
-        onClick,
-    } = props;
-    //#endregion Destructuring Props
+    const { IconComponent, width = 24, height = 24, colorIcon = 'currentColor', border, className, onClick } = props;
 
-    //#region Declare Hook
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
@@ -52,7 +32,6 @@ const IconSVG = (props: Props) => {
             });
         }
     }, [colorIcon]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     if (!IconComponent) return <></>;

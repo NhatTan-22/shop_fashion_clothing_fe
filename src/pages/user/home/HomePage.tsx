@@ -25,25 +25,16 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const HomePage = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Example Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
     const isRefreshTable = useAppSelector((state) => state.product.isRefreshSupplier);
-    //#endregion Selector
 
-    //#region Declare State
     const [data, setData] = useState<IProduct[]>([]);
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
         dispatch(getPopularProductThunk())
@@ -62,7 +53,6 @@ const HomePage = (props: Props) => {
                 dispatch(productActions.setRefreshTableFalse());
             });
     }, [isRefreshTable]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function

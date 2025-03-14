@@ -57,18 +57,13 @@ const getBase64 = (file: FileType): Promise<string> =>
 const cx = classNames.bind(styles);
 
 const Brand = (props: Props) => {
-    //#region Destructuring Props
     const {} = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const [form] = useForm<FormInstance>();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
     const isRefreshTable = useAppSelector((state) => state.brand.refreshTable);
     const columns: Columns<IBrand, DataType<IBrand>>[] = [
         {
@@ -152,9 +147,7 @@ const Brand = (props: Props) => {
             },
         },
     ];
-    //#endregion Selector
 
-    //#region Declare State
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<string>('');
 
@@ -177,9 +170,7 @@ const Brand = (props: Props) => {
         currentPage: 1,
         limitPage: 10,
     });
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         getSearchSuppliers('');
     }, []);
@@ -206,7 +197,6 @@ const Brand = (props: Props) => {
                 dispatch(brandActions.resetRefreshTable());
             });
     }, [paramsPage, paramsPage.currentPage, isRefreshTable]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     function getSearchSuppliers(value: string) {

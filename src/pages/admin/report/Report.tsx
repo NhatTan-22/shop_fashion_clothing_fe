@@ -14,23 +14,23 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Report = (props: Props) => {
-    //#region Destructuring Props
+   
     const { content = 'Report Component' } = props;
-    //#endregion Destructuring Props
+    
 
-    //#region Declare Hook
-    //#endregion Declare Hook
+    
+    
 
-    //#region Selector
-    //#endregion Selector
+    
+    
 
-    //#region Declare State
+    
     const [sizeInput, setSizeInput] = useState<string>('');
     const [addProduct, setAddProduct] = useState([] as string[]);
-    //#endregion Declare State
+    
 
-    //#region Implement Hook
-    //#endregion Implement Hook
+    
+   
 
     //#region Handle Function
     function handleGetInput(e: React.ChangeEvent<HTMLInputElement>) {

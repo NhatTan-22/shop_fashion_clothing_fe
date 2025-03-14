@@ -55,22 +55,13 @@ const getBase64 = (file: FileType): Promise<string> =>
 const cx = classNames.bind(styles);
 
 const FormAddSupplier = (props: Props) => {
-    //#region Destructuring Props
     const { isShowModal, onClose } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
     const [form] = Form.useForm();
 
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [supplier, setSupplier] = useState<IAddSupplier>({
         supplierName: '',
         contactPerson: '',
@@ -90,15 +81,12 @@ const FormAddSupplier = (props: Props) => {
     const [previewImage, setPreviewImage] = useState<string>('');
 
     const [optionCategory, setOptionCategory] = useState([]);
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         if (isShowModal) {
             getSearchCategories('');
         }
     }, [isShowModal]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const steps = [

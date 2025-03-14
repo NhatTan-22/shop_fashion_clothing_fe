@@ -1,10 +1,10 @@
 // Libs
 import classNames from 'classnames/bind';
 // Components, Layouts, Pages
+import { Breadcrumb } from '~/components';
 // Others
 // Styles, Images, icons
 import styles from './BlogPage.module.scss';
-import { Breadcrumb } from '~/components';
 
 type Props = {
     content?: string;
@@ -19,21 +19,7 @@ const blogBreadcrumbs = [
 ];
 
 const BlogPage = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'BlogPage Component' } = props;
-    //#endregion Destructuring Props
-
-    //#region Declare Hook
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function

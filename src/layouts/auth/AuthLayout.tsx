@@ -15,22 +15,9 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const AuthLayout = (props: Props) => {
-    //#region Destructuring Props
     const { content = 'Example Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function

@@ -42,27 +42,19 @@ const { Step } = Steps;
 const cx = classNames.bind(styles);
 
 const ShippingAddress = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'ShippingAddress Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const extraDays = Math.floor(Math.random() * 2) + 3;
     const estimatedDate = new Date();
     estimatedDate.setDate(estimatedDate.getDate() + extraDays);
     const dispatch = useAppDispatch();
-    //#endregion Declare Hook
 
-    //#region Selector
     const orderStore = useAppSelector((state: RootState) => state.order.order);
     const { setCurrentStep } = useOutletContext<{
         setCurrentStep: (step: number) => void;
     }>();
 
-    //#endregion Selector
-
-    //#region Declare State
     const [step, setStep] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState('');
     const [shippingAddress, setShippingAddress] = useState<IAddress>({
@@ -72,7 +64,6 @@ const ShippingAddress = (props: Props) => {
     });
     const [isOpenAddAddress, setIsOpenAddAddress] = useState<boolean>(false);
     const [isSave, setIsSave] = useState<boolean>(false);
-    //#endregion Declare State
 
     //#region Create Variables
     const steps = [
@@ -271,13 +262,11 @@ const ShippingAddress = (props: Props) => {
     ];
     //#endregion Create Variables
 
-    //#region Implement Hook
     useEffect(() => {
         if (step === 2) {
             setCurrentStep(3);
         }
     }, [step]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     function onChangePaymentMethod(e: RadioChangeEvent) {

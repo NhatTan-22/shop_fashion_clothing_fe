@@ -25,24 +25,15 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const UserLayout = (props: Props) => {
-    //#region Destructuring Props
     const { content = 'Example Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    //#endregion Declare Hook
 
-    //#region Selector
     const user = useAppSelector((state: RootState) => state.auth.user);
-    //#endregion Selector
 
-    //#region Declare State
     const [isOpenSideBae, setIsOpenSidebar] = useState<boolean>(true);
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         window.addEventListener('resize', handleResize);
 
@@ -50,7 +41,6 @@ const UserLayout = (props: Props) => {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleResize = () => {

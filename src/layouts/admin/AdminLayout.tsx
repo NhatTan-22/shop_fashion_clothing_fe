@@ -25,25 +25,15 @@ type MenuItem = Required<MenuProps>['items'][number];
 const cx = classNames.bind(styles);
 
 const AdminLayout = (props: Props) => {
-    //#region Destructuring Props
-    //#endregion Destructuring Props
-
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    //#endregion Declare Hook
 
-    //#region Selector
     const admin = useAppSelector((state: RootState) => state.auth.user);
-    //#endregion Selector
 
-    //#region Declare State
     const [collapsed, setCollapsed] = useState<boolean>(false);
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         window.addEventListener('resize', handleResize);
 
@@ -51,7 +41,6 @@ const AdminLayout = (props: Props) => {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const items: MenuItem[] = [

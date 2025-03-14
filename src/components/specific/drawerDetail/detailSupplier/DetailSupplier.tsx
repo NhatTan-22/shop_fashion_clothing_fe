@@ -23,26 +23,14 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const DetailSupplier = (props: Props) => {
-    //#region Destructuring Props
     const { openDrawerDetail, setOpenDrawerDetail, slug } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
     const [form] = Form.useForm();
-    //#endregion Declare Hook
 
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
     useEffect(() => {}, [slug]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleUpdateSupplier = (_id: string) => {

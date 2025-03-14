@@ -23,23 +23,10 @@ interface IOutletContextType {
 const cx = classNames.bind(styles);
 
 const GridProduct = (props: Props) => {
-    //#region Destructuring Props
-    //#endregion Destructuring Props
-
-    //#region Declare Hook
     // const { products } = useOutletContext<any>();
     const { t } = useTranslation();
-    //#endregion Declare Hook
 
-    //#region Selector
     const { products, pagination, updateFilters } = useOutletContext<IOutletContextType>();
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleChangePage = (e: number) => {

@@ -17,17 +17,8 @@ type LoadingContextType = {
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
 const LoadingProvider = (props: Props) => {
-    //#region Destructuring Props
     const { children } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const value = {
@@ -35,10 +26,6 @@ const LoadingProvider = (props: Props) => {
         show: () => setIsLoading(true),
         hide: () => setIsLoading(false),
     };
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function

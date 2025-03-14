@@ -15,32 +15,19 @@ type Props = {};
 interface IOutletContextType {
     products: IProduct[];
     pagination: IPagination;
-    updateFilters : React.Dispatch<React.SetStateAction<IParamsPagination>>;
+    updateFilters: React.Dispatch<React.SetStateAction<IParamsPagination>>;
 }
 
 const cx = classNames.bind(styles);
 
 const ListProduct = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'ListProduct Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
-    //#endregion Declare Hook
-
-    //#region Selector
-    const { products, pagination, updateFilters  } = useOutletContext<IOutletContextType>();
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
+    const { products, pagination, updateFilters } = useOutletContext<IOutletContextType>();
 
     //#region Handle Function
     const handleChangePage = (e: number) => {
-        updateFilters ((prev) => ({ ...prev, currentPage: e }));
+        updateFilters((prev) => ({ ...prev, currentPage: e }));
     };
     //#endregion Handle Function
 

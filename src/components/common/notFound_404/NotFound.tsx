@@ -17,30 +17,14 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const NotFoundPage = (props: Props) => {
-    //#region Destructuring Props
-    //#endregion Destructuring Props
-
-    //#region Declare Hook
     const { t } = useTranslation();
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function
 
     return (
         <div>
-            <div className={cx('headerNotFound')}>
-                {/* <img alt='NotFound_404' src='' /> */}
-            </div>
+            <div className={cx('headerNotFound')}>{/* <img alt='NotFound_404' src='' /> */}</div>
             <div className={cx('contentNotFound')}>
                 {/* <img alt='' src={images.fashionStore} /> */}
                 <Typography.Title level={1}>{t('common_not_found_confirm_title')}</Typography.Title>

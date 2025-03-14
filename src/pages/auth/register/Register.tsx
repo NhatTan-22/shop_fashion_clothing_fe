@@ -25,19 +25,19 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Register = (props: Props) => {
-    //#region Destructuring Props
-    //#endregion Destructuring Props
+   
+    
 
-    //#region Declare Hook
+    
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
+    
 
-    //#region Selector
-    //#endregion Selector
+    
+    
 
-    //#region Declare State
+    
     const [data, setData] = useState<IRegister>({
         firstName: '',
         lastName: '',
@@ -45,10 +45,10 @@ const Register = (props: Props) => {
         email: '',
         password: '',
     });
-    //#endregion Declare State
+    
 
-    //#region Implement Hook
-    //#endregion Implement Hook
+    
+   
 
     //#region Handle Function
 

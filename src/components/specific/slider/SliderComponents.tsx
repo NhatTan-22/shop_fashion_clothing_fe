@@ -20,22 +20,9 @@ const cx = classNames.bind(styles);
 const TypedSlider = Slider as unknown as React.FC<any>;
 
 const SliderComponents = (props: Props) => {
-    //#region Destructuring Props
     const { content } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
-    //#endregion Declare Hook
-
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     const settings = {

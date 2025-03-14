@@ -53,18 +53,13 @@ const getBase64 = (file: FileType): Promise<string> =>
 const cx = classNames.bind(styles);
 
 const Category = (props: Props) => {
-    //#region Destructuring Props
     const {} = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const [form] = useForm<FormInstance>();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
     const isRefreshTable = useAppSelector((state) => state.category.refreshTable);
     const columns: Columns<ICategory, DataType<ICategory>>[] = [
         {
@@ -132,9 +127,7 @@ const Category = (props: Props) => {
             },
         },
     ];
-    //#endregion Selector
 
-    //#region Declare State
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<string>('');
 
@@ -153,9 +146,6 @@ const Category = (props: Props) => {
         limitPage: 10,
     });
 
-    //#endregion Declare State
-
-    //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
         dispatch(getCategoryThunk(paramsPage))
@@ -178,7 +168,6 @@ const Category = (props: Props) => {
                 dispatch(categoryActions.resetRefreshTable());
             });
     }, [paramsPage, paramsPage.currentPage, isRefreshTable]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     async function handlePreview(file: UploadFile) {

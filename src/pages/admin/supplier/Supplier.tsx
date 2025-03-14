@@ -28,17 +28,17 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Supplier = (props: Props) => {
-    //#region Destructuring Props
+   
     // const { content = 'Supplier Component' } = props;
-    //#endregion Destructuring Props
+    
 
-    //#region Declare Hook
+    
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
+    
 
-    //#region Selector
+    
     const isRefreshTable = useAppSelector((state) => state.supplier.isRefreshSupplier);
 
     const columns: Columns<ISupplier, DataType<ISupplier>>[] = [
@@ -180,9 +180,9 @@ const Supplier = (props: Props) => {
         },
     ];
 
-    //#endregion Selector
+    
 
-    //#region Declare State
+    
     const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
     const [openModalAddSupplier, setOpenModalAddSupplier] = useState<boolean>(false);
     const [supplier, setSupplier] = useState<ISupplier[]>([]);
@@ -195,9 +195,9 @@ const Supplier = (props: Props) => {
         lengthPage: 0,
         currentPage: 1,
     });
-    //#endregion Declare State
+    
 
-    //#region Implement Hook
+    
     useEffect(() => {
         try {
             loadingContext?.show();
@@ -229,7 +229,7 @@ const Supplier = (props: Props) => {
             }
         }
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
-    //#endregion Implement Hook
+   
 
     //#region Handle Function
     const handleDetailSupplier = (slug: string) => {

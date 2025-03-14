@@ -28,17 +28,12 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Order = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Supplier Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
     const isRefreshTable = useAppSelector((state) => state.supplier.isRefreshSupplier);
 
     const columns: Columns<IOrder, DataType<IOrder>>[] = [
@@ -262,9 +257,6 @@ const Order = (props: Props) => {
         },
     ];
 
-    //#endregion Selector
-
-    //#region Declare State
     const [openDrawerDetail, setOpenDrawerDetail] = useState<boolean>(false);
     const [order, setOrder] = useState<IOrder[]>([]);
     const [paramsPage, setParamsPage] = useState<IParamsPagination>({
@@ -275,9 +267,7 @@ const Order = (props: Props) => {
         lengthPage: 0,
         currentPage: 1,
     });
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         loadingContext?.show();
         dispatch(getOrderThunk(paramsPage))
@@ -301,7 +291,6 @@ const Order = (props: Props) => {
                 dispatch(supplierActions.setRefreshTableFalse());
             });
     }, [paramsPage.currentPage, isRefreshTable, paramsPage]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleDetailSupplier = (sku: string) => {

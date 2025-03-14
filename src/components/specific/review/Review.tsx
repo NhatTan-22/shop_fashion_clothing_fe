@@ -18,24 +18,14 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Review = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Review Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const emojiRef = useRef<HTMLDivElement>(null);
-    //#endregion Declare Hook
 
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [isReply, setIsReply] = useState<boolean>(false);
     const [isEmoji, setIsEmoji] = useState<boolean>(false);
     const [isLike, setIsLike] = useState<boolean>();
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (emojiRef.current && !emojiRef.current.contains(event.target as Node)) {
@@ -51,7 +41,6 @@ const Review = (props: Props) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isEmoji]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     function handleReply() {

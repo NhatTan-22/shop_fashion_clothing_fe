@@ -24,24 +24,17 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Checkout = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Checkout Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    //#endregion Declare Hook
 
-    //#region Selector
     const orderStore = useAppSelector((state: RootState) => state.order.order);
-    //#endregion Selector
 
-    //#region Declare State
     // const [product, setProduct] = useState<IProducts[]>(
     //     localStorage.getItem('product') ? JSON.parse(localStorage.getItem('product')!) : []
     // );
-    //#endregion Declare State
+
     //#region Create Variables
     const columns: Columns<IProducts, DataType<IProducts>>[] = [
         {
@@ -142,9 +135,6 @@ const Checkout = (props: Props) => {
         },
     ];
     //#endregion Create Variables
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleQuantityChange = (value: number | null, record: IProducts) => {

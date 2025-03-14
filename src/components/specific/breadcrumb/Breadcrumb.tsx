@@ -17,23 +17,11 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Breadcrumb = (props: Props) => {
-    //#region Destructuring Props
     const { breadcrumbs = [] } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
-    //#endregion Declare Hook
 
-    //#region Selector
     const lastIndex = breadcrumbs.length - 1;
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     //#endregion Handle Function
@@ -55,11 +43,7 @@ const Breadcrumb = (props: Props) => {
                                     <div className={cx('divBreadcrumb')}>
                                         <IconSVG IconComponent={icons.slashIcon} />
                                         <Link to={lastIndex === i ? '#' : breadcrumb.to}>
-                                            <span
-                                                className={cx(
-                                                    `spanOne ${lastIndex === i ? 'defaultColor' : ''}`
-                                                )}
-                                            >
+                                            <span className={cx(`spanOne ${lastIndex === i ? 'defaultColor' : ''}`)}>
                                                 {t(`${breadcrumb.title}`)}
                                             </span>
                                         </Link>

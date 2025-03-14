@@ -18,16 +18,11 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const SideBar = (props: Props) => {
-    //#region Destructuring Props
     const { items, isOpen } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const location = useLocation();
     const { t } = useTranslation();
-    //#endregion Declare Hook
 
-    //#region Selector
     const menuItems = items?.map((item) => ({
         key: item.path || item.label,
         icon: <IconSVG IconComponent={item.icon} />,
@@ -49,13 +44,6 @@ const SideBar = (props: Props) => {
             ),
         })),
     }));
-    //#endregion Selector
-
-    //#region Declare State
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     // const handleItemClick = (path: string) => {

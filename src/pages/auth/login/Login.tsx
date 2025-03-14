@@ -24,28 +24,15 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const Login = (props: Props) => {
-    //#region Destructuring Props
-    //#endregion Destructuring Props
-
-    //#region Declare Hook
     const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [dataLogin, setDataLogin] = useState<ILogin>({
         email: '',
         password: '',
     });
-    //#endregion Declare State
-
-    //#region Implement Hook
-    //#endregion Implement Hook
 
     //#region Handle Function
     const handleGetInput = (e: React.ChangeEvent<HTMLInputElement>) => {

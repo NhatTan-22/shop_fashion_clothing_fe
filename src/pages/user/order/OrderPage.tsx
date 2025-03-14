@@ -22,22 +22,16 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const OrderPage = (props: Props) => {
-    //#region Destructuring Props
     // const { content = 'Example Component' } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : '[]';
     const { t } = useTranslation();
     const location = useLocation();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
     //#region Selectors
-    //#endregion Selector
 
-    //#region Declare State
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isNotification, setIsNotification] = useState<boolean>(false);
     const orderStore = useAppSelector((state: RootState) => state.order.order);
@@ -53,9 +47,7 @@ const OrderPage = (props: Props) => {
         paymentMethod: '',
         discount: '',
     });
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         setCurrentStep(0);
         if (orderStore) {
@@ -67,7 +59,6 @@ const OrderPage = (props: Props) => {
             setOrder(newOrder);
         }
     }, [location.pathname]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     function handlePlaceOrder() {

@@ -57,21 +57,13 @@ const getBase64 = (file: FileType): Promise<string> =>
 const cx = classNames.bind(styles);
 
 const FormAddProduct = (props: Props) => {
-    //#region Destructuring Props
     const { isShowModal, onCancel } = props;
-    //#endregion Destructuring Props
 
-    //#region Declare Hook
     const { t } = useTranslation();
     const [form] = useForm<IAddProduct>();
     const dispatch = useAppDispatch();
     const loadingContext = useContext(LoadingContext);
-    //#endregion Declare Hook
 
-    //#region Selector
-    //#endregion Selector
-
-    //#region Declare State
     const [currentStep, setCurrentStep] = useState(0);
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -101,16 +93,13 @@ const FormAddProduct = (props: Props) => {
         // brand: '',
         supplier: '',
     });
-    //#endregion Declare State
 
-    //#region Implement Hook
     useEffect(() => {
         if (isShowModal) {
             getSearchCategories('');
             getSearchSuppliers('');
         }
     }, [isShowModal]);
-    //#endregion Implement Hook
 
     //#region Handle Function
     const steps = [
